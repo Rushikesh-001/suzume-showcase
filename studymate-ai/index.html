@@ -319,10 +319,10 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,
       <a href="studymate_cinematic.mp4" target="_blank" class="btn-s">🎬 Trailer</a>
     </div>
     <div class="hero-stats">
-      <div class="hero-st"><div class="nu" data-t="150">0</div><div class="lb">Dart Files</div></div>
+      <div class="hero-st"><div class="nu" data-t="161">0</div><div class="lb">Dart Files</div></div>
       <div class="hero-st"><div class="nu" data-t="20">0</div><div class="lb">Screens</div></div>
       <div class="hero-st"><div class="nu" data-t="23">0</div><div class="lb">Achievements</div></div>
-      <div class="hero-st"><div class="nu" data-t="174">0</div><div class="lb">APK MB</div></div>
+      <div class="hero-st"><div class="nu" data-t="211">0</div><div class="lb">APK MB</div></div>
     </div>
   </div>
 </section>
@@ -386,26 +386,40 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,
       </div>
       <div class="f-card" data-d="200" onclick="showExplain('gamification')">
         <span class="icon">🎮</span>
-        <h3>Gamification Engine</h3>
-        <p>XP, levels (N²×100), 23 achievements, daily streaks. 13 XP event types make studying feel like a game.</p>
+        <h3>Gamification + XP Shop</h3>
+        <p>XP, levels (N²×100), 23 achievements, daily streaks. Plus XP Shop — spend XP on themes, boosts, and more!</p>
         <span class="tag" style="background:rgba(255,215,0,.1);color:#FFD700">Gamification</span>
         <span class="click-hint">💡 why this?</span>
       </div>
-      <div class="f-card" data-d="300" onclick="showExplain('analytics')">
-        <span class="icon">📊</span>
-        <h3>Analytics Dashboard</h3>
-        <p>Track study time, quiz accuracy by subject, weekly charts, and progress. Data-driven study decisions.</p>
-        <span class="tag" style="background:rgba(76,175,80,.1);color:#4CAF50">Analytics</span>
+      <div class="f-card" data-d="300" onclick="showExplain('xp-shop')">
+        <span class="icon">🛍️</span>
+        <h3>XP Shop System</h3>
+        <p>Spend your hard-earned XP on premium themes, avatar frames, XP boosters, AI boosts, and profile customization.</p>
+        <span class="tag" style="background:rgba(255,215,0,.1);color:#FFD700">Rewards</span>
         <span class="click-hint">💡 why this?</span>
       </div>
       <div class="f-card" data-d="400" onclick="showExplain('social')">
         <span class="icon">👥</span>
-        <h3>Social Learning</h3>
-        <p>QR friends, 4 leaderboard types, community Q&A. Learning together is proven to increase retention.</p>
+        <h3>Social + Chat System</h3>
+        <p>QR friends, real-time Firestore chat, 4 leaderboards, community Q&A with comments. Learn together, anywhere.</p>
         <span class="tag" style="background:rgba(0,188,212,.1);color:#00BCD4">Social</span>
         <span class="click-hint">💡 why this?</span>
       </div>
-      <div class="f-card" data-d="500" onclick="showExplain('focus')">
+      <div class="f-card" data-d="500" onclick="showExplain('education-system')">
+        <span class="icon">🎓</span>
+        <h3>Education System</h3>
+        <p>Indian curriculum support — Science/Commerce/Arts streams, FY/SY/TY years, semester-based subjects for colleges.</p>
+        <span class="tag" style="background:rgba(76,175,80,.1);color:#4CAF50">Academic</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="600" onclick="showExplain('analytics')">
+        <span class="icon">📊</span>
+        <h3>Analytics Dashboard</h3>
+        <p>Track study time, quiz accuracy by subject, weekly charts, and progress. Data-driven study decisions.</p>
+        <span class="tag" style="background:rgba(68,138,255,.1);color:#448AFF">Analytics</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="700" onclick="showExplain('focus')">
         <span class="icon">⏱️</span>
         <h3>Focus Timer</h3>
         <p>Pomodoro sessions with XP-per-minute rewards. 25min optimal focus spans backed by neuroscience.</p>
@@ -485,20 +499,26 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,
         <h4>Riverpod 2.6</h4>
         <p>State management — compile-safe, testable, auto-dispose</p>
       </div>
-      <div class="arch-layer" onclick="showExplain('gemini')">
+      <div class="arch-layer" onclick="showExplain('firebase')">
         <span class="ar-num">03</span>
+        <span class="ar-icon">🔥</span>
+        <h4>Firebase</h4>
+        <p>Cloud DB + Auth — real-time sync, Firestore, auth</p>
+      </div>
+      <div class="arch-layer" onclick="showExplain('gemini')">
+        <span class="ar-num">04</span>
         <span class="ar-icon">🤖</span>
         <h4>Gemini AI API</h4>
         <p>AI engine — 1M token context, STEM-optimized</p>
       </div>
       <div class="arch-layer" onclick="showExplain('sqlite')">
-        <span class="ar-num">04</span>
+        <span class="ar-num">05</span>
         <span class="ar-icon">🗄️</span>
         <h4>SQLite + Prefs</h4>
         <p>Dual-write storage — offline-first, 0ms reads</p>
       </div>
       <div class="arch-layer" onclick="showExplain('fsrs')">
-        <span class="ar-num">05</span>
+        <span class="ar-num">06</span>
         <span class="ar-icon">🧠</span>
         <h4>FSRS Engine</h4>
         <p>Spaced repetition — 30% better than SM-2</p>
@@ -559,15 +579,17 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,
       <div class="t-chip" data-d="100" onclick="showExplain('sqlite')"><span class="ic">🗄️</span><span class="nm">SQLite</span><span class="vr">sqflite</span></div>
       <div class="t-chip" data-d="150" onclick="showExplain('riverpod')"><span class="ic">🔮</span><span class="nm">Riverpod</span><span class="vr">2.6.1</span></div>
       <div class="t-chip" data-d="200" onclick="showExplain('gemini')"><span class="ic">🤖</span><span class="nm">Gemini AI</span><span class="vr">API</span></div>
-      <div class="t-chip" data-d="250" onclick="showExplain('fsrs')"><span class="ic">🧠</span><span class="nm">FSRS</span><span class="vr">Algorithm</span></div>
-      <div class="t-chip" data-d="300" onclick="showExplain('fl_chart')"><span class="ic">📈</span><span class="nm">fl_chart</span><span class="vr">0.69.2</span></div>
-      <div class="t-chip" data-d="350" onclick="showExplain('mobile_scanner')"><span class="ic">📷</span><span class="nm">QR Scanner</span><span class="vr">mobile_scanner</span></div>
-      <div class="t-chip" data-d="400" onclick="showExplain('sharedprefs')"><span class="ic">📦</span><span class="nm">SharedPrefs</span><span class="vr">2.2.3</span></div>
-      <div class="t-chip" data-d="450" onclick="showExplain('gradle')"><span class="ic">🏗️</span><span class="nm">Gradle</span><span class="vr">8.11.1</span></div>
-      <div class="t-chip" data-d="500" onclick="showExplain('googlesignin')"><span class="ic">👤</span><span class="nm">Google Sign-In</span><span class="vr">OAuth</span></div>
-      <div class="t-chip" data-d="550" onclick="showExplain('googlefonts')"><span class="ic">🎨</span><span class="nm">Google Fonts</span><span class="vr">6.2.1</span></div>
-      <div class="t-chip" data-d="600" onclick="showExplain('threejs')"><span class="ic">🧊</span><span class="nm">Three.js</span><span class="vr">r152</span></div>
-      <div class="t-chip" data-d="650" onclick="showExplain('offline-first')"><span class="ic">📡</span><span class="nm">Offline-First</span><span class="vr">Architecture</span></div>
+      <div class="t-chip" data-d="250" onclick="showExplain('firebase')"><span class="ic">🔥</span><span class="nm">Firebase</span><span class="vr">Firestore</span></div>
+      <div class="t-chip" data-d="300" onclick="showExplain('fsrs')"><span class="ic">🧠</span><span class="nm">FSRS</span><span class="vr">Algorithm</span></div>
+      <div class="t-chip" data-d="350" onclick="showExplain('fl_chart')"><span class="ic">📈</span><span class="nm">fl_chart</span><span class="vr">0.69.2</span></div>
+      <div class="t-chip" data-d="400" onclick="showExplain('mobile_scanner')"><span class="ic">📷</span><span class="nm">QR Scanner</span><span class="vr">mobile_scanner</span></div>
+      <div class="t-chip" data-d="450" onclick="showExplain('sharedprefs')"><span class="ic">📦</span><span class="nm">SharedPrefs</span><span class="vr">2.2.3</span></div>
+      <div class="t-chip" data-d="500" onclick="showExplain('gradle')"><span class="ic">🏗️</span><span class="nm">Gradle</span><span class="vr">8.11.1</span></div>
+      <div class="t-chip" data-d="550" onclick="showExplain('googlesignin')"><span class="ic">👤</span><span class="nm">Google Sign-In</span><span class="vr">OAuth</span></div>
+      <div class="t-chip" data-d="600" onclick="showExplain('googlefonts')"><span class="ic">🎨</span><span class="nm">Google Fonts</span><span class="vr">6.2.1</span></div>
+      <div class="t-chip" data-d="650" onclick="showExplain('threejs')"><span class="ic">🧊</span><span class="nm">Three.js</span><span class="vr">r152</span></div>
+      <div class="t-chip" data-d="700" onclick="showExplain('offline-first')"><span class="ic">📡</span><span class="nm">Offline-First</span><span class="vr">Architecture</span></div>
+      <div class="t-chip" data-d="750" onclick="showExplain('education-system')"><span class="ic">🎓</span><span class="nm">Edu System</span><span class="vr">Curriculum DB</span></div>
     </div>
   </div>
 </section>
@@ -640,7 +662,7 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,
       </div>
       <div class="faq-q">
         <div class="faq-q-head" onclick="toggleFaq(this)">What tech was used to build it? <span class="arr">▼</span></div>
-        <div class="faq-q-body">Built with Flutter 3.44.4 and Dart 3.12.2. Database uses SQLite (sqflite 2.4.3) with SharedPreferences dual-write. State management via Riverpod 2.6.1. AI powered by Google Gemini API. Charts with fl_chart 0.69.2. QR scanning via mobile_scanner. Build system: Gradle 8.11.1 / AGP 8.9.1 with JDK 21. The APK is 25.8 MB with 0 errors and 0 warnings.</div>
+        <div class="faq-q-body">Built with Flutter 3.44.4 and Dart 3.12.2. Primary database: Firebase Firestore for cloud sync + real-time features. Local storage: SQLite (sqflite 2.4.3) with SharedPreferences dual-write for offline-first. State management via Riverpod 2.6.1. AI powered by Google Gemini API. Charts with fl_chart 0.69.2. QR scanning via mobile_scanner. Chat via Firestore real-time listeners. XP Shop with 10 items. Education System with 108+ subjects across Science/Commerce/Arts streams. Build system: Gradle 8.11.1 / AGP 8.9.1 with JDK 21.</div>
       </div>
       <div class="faq-q">
         <div class="faq-q-head" onclick="toggleFaq(this)">How does the gamification system work? <span class="arr">▼</span></div>
@@ -667,10 +689,10 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,
         <h3>Get <span class="grad">StudyMate AI</span></h3>
         <p>The complete APK is ready to install. No ads, no subscriptions, no tracking — just pure learning power.</p>
         <div class="dl-meta">
-          <span>📦 174 MB</span>
+          <span>📦 211 MB</span>
           <span>🤖 Android 8.0+</span>
-          <span>✅ Release v1.0</span>
-          <span>🔒 Offline-first</span>
+          <span>✅ Build 2 — Firebase + Shop</span>
+          <span>🔒 Offline-first + Cloud</span>
         </div>
         <a href="https://github.com/Rushikesh-001/suzume-showcase/releases/download/studymate-ai-v1.0/StudyMate_AI.apk" class="dl-btn" download>⬇️ Download APK</a>
       </div>
@@ -998,11 +1020,11 @@ const EXPLAIN={
     alts:'<span class="alt-label">Stack Overflow</span> Hours/days for answers<br><span class="alt-label">Human tutor</span> Expensive, not 24/7<br><span class="alt-label">GPT-4</span> 8x smaller context, 2x cost'
   },
   'gamification':{
-    icon:'🎮',title:'Gamification Engine',
-    what:'XP-based levels (N²×100), 23 achievements, daily streaks, and 4 leaderboard types.',
-    why:'Gamification leverages dopamine release to form study habits. Research shows XP systems increase task persistence by 40%. The N²×100 formula creates fast early progress (satisfying) while maintaining challenge at high levels. 23 achievements provide constant discovery.',
-    benefit:'40% more study persistence. 13 XP event types = always earning. Achievements = constant goals.',
-    alts:'<span class="alt-label">Basic tracking</span> No motivation boost<br><span class="alt-label">Pure leaderboards</span> No personal progress tracking<br><span class="alt-label">Only badges</span> No sense of progression/leveling'
+    icon:'🎮',title:'Gamification + XP Shop',
+    what:'XP-based levels (N²×100), 23 achievements, daily streaks, 4 leaderboard types, and XP Shop with 10 items.',
+    why:'Gamification leverages dopamine release to form study habits. Research shows XP systems increase task persistence by 40%. The N²×100 formula creates fast early progress while maintaining challenge at high levels. XP Shop adds an earn-spend economy — students study to earn XP, then spend on themes/boosts. This dual motivation system is far more effective than earning alone.',
+    benefit:'40% more study persistence. 13 XP event types. 10 shop items to spend on. Earn AND spend = full economy.',
+    alts:'<span class="alt-label">Basic tracking</span> No motivation boost<br><span class="alt-label">Earn-only</span> No reason to keep earning after max level<br><span class="alt-label">Only badges</span> No progression or spending choices'
   },
   'analytics':{
     icon:'📊',title:'Analytics Dashboard',
@@ -1012,11 +1034,11 @@ const EXPLAIN={
     alts:'<span class="alt-label">Basic counters</span> No insight into trends or weak areas<br><span class="alt-label">Manual tracking</span> Nobody actually does it<br><span class="alt-label">No analytics</span> Flying blind — can\'t improve what you don\'t measure'
   },
   'social':{
-    icon:'👥',title:'Social Learning',
-    what:'QR-based friend system, 4 leaderboard types, and community Q&A.',
-    why:'QR codes enable zero-friction friend adding — scan, done, works offline. 4 leaderboard types (daily/weekly/monthly/all-time) cater to different competitive styles. Community Q&A builds a shared knowledge base. Social accountability increases study consistency.',
-    benefit:'Zero-typing friend adding. 4 leaderboard types for everyone. Community knowledge base grows naturally.',
-    alts:'<span class="alt-label">Username search</span> Typing friction, typos, can\'t work offline<br><span class="alt-label">Email invites</span> Privacy invasive, slow<br><span class="alt-label">No social</span> Missed motivation from accountability'
+    icon:'👥',title:'Social + Chat System',
+    what:'QR-based friend system, 4 leaderboard types, community Q&A with comments, and real-time Firestore chat.',
+    why:'QR codes enable zero-friction friend adding — scan, done, works offline. Firestore-powered chat enables real-time messaging with typing indicators and read receipts. 4 leaderboard types (daily/weekly/monthly/all-time) cater to different competitive styles. Community Q&A with threaded comments builds a knowledge base.',
+    benefit:'Real-time chat. Zero-typing QR friends. 4 leaderboards. Threaded community discussions.',
+    alts:'<span class="alt-label">No chat</span> No real-time collaboration<br><span class="alt-label">External chat apps</span> Context switching, no integration<br><span class="alt-label">No community</span> No shared knowledge base'
   },
   'focus':{
     icon:'⏱️',title:'Focus Timer',
@@ -1024,6 +1046,34 @@ const EXPLAIN={
     why:'Pomodoro (25min work / 5min break) aligns with the brain\'s ultradian rhythm — natural attention cycles. XP-per-minute creates immediate positive reinforcement for focusing. Session history reveals your most productive times of day.',
     benefit:'Scientifically optimal work/break ratio. XP turns focus into a reward loop. Find your peak study hours.',
     alts:'<span class="alt-label">Plain timer</span> No intrinsic motivation to use it<br><span class="alt-label">Forest app</span> No study integration, doesn\'t track subjects<br><span class="alt-label">No timer</span> No structure, burnout risk'
+  },
+  'firebase':{
+    icon:'🔥',title:'Firebase Firestore + Auth',
+    what:'Google\'s cloud platform with real-time NoSQL database, authentication, and serverless functions.',
+    why:'Added alongside SQLite for cloud sync — Firestore enables real-time chat, friend requests, community posts, and leaderboards that work across devices. Authentication handles Google Sign-In, email/password, and session management. The dual approach (Firestore for sync, SQLite for offline) gives us the best of both worlds.',
+    benefit:'Real-time sync across devices. Built-in auth with MFA. Serverless — no backend to maintain. Scales automatically.',
+    alts:'<span class="alt-label">SQLite-only</span> No cloud sync, no real-time chat<br><span class="alt-label">Supabase</span> Less mature Flutter SDK<br><span class="alt-label">Custom server</span> Months to build, ongoing maintenance'
+  },
+  'xp-shop':{
+    icon:'🛍️',title:'XP Shop System',
+    what:'In-app store where students spend XP on cosmetic upgrades, boosts, and customization items.',
+    why:'Adding an XP shop creates a complete virtual economy — students earn XP through studying, then spend it on meaningful rewards. This drives engagement through two mechanisms: earning (studying to get XP) AND spending (choosing what to buy). 10 items with tiered costs (100-800 XP) and level requirements provide clear progression goals.',
+    benefit:'Complete earn-spend cycle. 10 unique items. Level-gated unlocks = status. 2x XP booster = strategic spending.',
+    alts:'<span class="alt-label">No shop</span> XP has no use, motivation drops after max level<br><span class="alt-label">Real-money shop</span> Pay-to-win feel, less motivating<br><span class="alt-label">Single reward</span> No variety, no choice'
+  },
+  'education-system':{
+    icon:'🎓',title:'Indian Education System',
+    what:'Structured curriculum database for Indian colleges — 3 streams (Science/Commerce/Arts), 3 years (FY/SY/TY), 6 semesters.',
+    why:'Most study apps ignore the Indian education system structure. Students study by stream+year+semester, not just "subjects." This feature provides pre-built curricula for all 3 streams, each with 6 core+elective subjects per semester. Admin can add/modify courses dynamically without app updates.',
+    benefit:'Indian college curriculum out-of-the-box. 108+ subjects across 3 streams. Admin-addable courses. Semester-based tracking.',
+    alts:'<span class="alt-label">Generic subjects</span> Doesn\'t match real curriculum<br><span class="alt-label">Manual entry</span> Hours of setup per student<br><span class="alt-label">No structure</span> Unorganized, hard to track progress'
+  },
+  'chat-system':{
+    icon:'💬',title:'Real-time Chat System',
+    what:'Firestore-powered instant messaging between friends with typing indicators and read receipts.',
+    why:'Chat with friends makes studying social and collaborative. Built on Firestore\'s real-time snapshots for instant message delivery. Each chat has its own collection with subcollection of messages, ensuring scalability. Typing indicators and read receipts make conversations feel alive.',
+    benefit:'Real-time delivery via Firestore. Typing indicators. Read receipts. Scales to thousands of chats.',
+    alts:'<span class="alt-label">No chat</span> No collaboration, isolated studying<br><span class="alt-label">External apps</span> Context switching, no integration<br><span class="alt-label">WebSocket server</span> Months to build, ongoing maintenance'
   }
 };
 
