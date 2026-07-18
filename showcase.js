@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. SCROLL REVEAL — Intersection Observer
   // ==========================================
   const revealElements = document.querySelectorAll(
-    '.cap-card, .flow-node, .team-card, .project-card'
+    '.power-block, .flow-step-card, .team-card, .project-card'
   );
 
   const revealObserver = new IntersectionObserver((entries) => {

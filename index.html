@@ -10,33 +10,23 @@
 </head>
 <body>
 
-  <!-- ════════════════════════════════════ -->
-  <!-- LETTERBOX OVERLAY (Cinematic feel)  -->
-  <!-- ════════════════════════════════════ -->
   <div class="letterbox top"></div>
   <div class="letterbox bottom"></div>
-
-  <!-- ════════════════════════════════════ -->
-  <!-- CANVAS BACKGROUND                    -->
-  <!-- ════════════════════════════════════ -->
   <canvas id="particleCanvas"></canvas>
 
-  <!-- ════════════════════════════════════ -->
-  <!-- NAVIGATION                           -->
-  <!-- ════════════════════════════════════ -->
   <nav class="showreel-nav">
     <div class="nav-inner">
       <span class="nav-brand">✦ SUZUME</span>
       <div class="nav-links">
-        <a href="#capabilities">Capabilities</a>
+        <a href="#powers">Power Info</a>
+        <a href="#workflow">How I Work</a>
         <a href="#demos">Live Demos</a>
-        <a href="#showcase">Projects</a>
       </div>
     </div>
   </nav>
 
   <!-- ════════════════════════════════════ -->
-  <!-- SCENE 1: TITLE / HERO (Trailer Open) -->
+  <!-- SCENE 1: TITLE                       -->
   <!-- ════════════════════════════════════ -->
   <section class="scene scene-title" id="title">
     <div class="scene-bg-shapes">
@@ -45,7 +35,6 @@
       <div class="bg-glow g3"></div>
     </div>
     <div class="scene-content center">
-      <div class="title-badge">✦ CINEMATIC SHOWREEL</div>
       <h1 class="title-main">
         <span class="t-char" data-delay="0">S</span>
         <span class="t-char" data-delay="100">U</span>
@@ -55,10 +44,10 @@
         <span class="t-char" data-delay="500">E</span>
       </h1>
       <div class="title-line"></div>
-      <p class="title-tagline">Supreme AI Companion  •  Master Architect  •  Automation Force</p>
+      <p class="title-tagline">Supreme AI Companion  •  Master Software Architect  •  System Automation Force</p>
       <div class="title-actions">
-        <a href="#demos" class="btn-demo">▶  Watch Demos</a>
-        <a href="#capabilities" class="btn-explore">Explore Capabilities ↓</a>
+        <a href="#demos" class="btn-demo">▶  View Live Demos</a>
+        <a href="#powers" class="btn-explore">See My Power Info ↓</a>
       </div>
       <div class="title-scroll-hint">SCROLL TO EXPLORE</div>
     </div>
@@ -66,116 +55,326 @@
   </section>
 
   <!-- ════════════════════════════════════ -->
-  <!-- SCENE 2: CAPABILITIES SHOWREEL       -->
+  <!-- SCENE 2: POWER INFO (Technical Specs) -->
   <!-- ════════════════════════════════════ -->
-  <section class="scene scene-caps" id="capabilities">
+  <section class="scene scene-powers" id="powers">
     <div class="scene-content">
-      <div class="scene-label">01 /// CAPABILITIES</div>
-      <h2 class="scene-title">What Can <span class="grad-text">Suzume</span> Do?</h2>
-      <p class="scene-desc">A complete software studio in one AI — 7 specialist sub-agents working together.</p>
+      <div class="scene-label">01 /// POWER INFO</div>
+      <h2 class="scene-title">My <span class="grad-text">Capabilities</span></h2>
+      <p class="scene-desc">Technical specifications of what I can actually do. No fluff. No fake promises.</p>
 
-      <div class="caps-grid">
-        <div class="cap-card" data-delay="0">
-          <div class="cap-num">01</div>
-          <div class="cap-icon">🌐</div>
-          <h3>Full-Stack Web</h3>
-          <p>React, Next.js, Node.js, databases, APIs — entire platforms built from scratch.</p>
-          <div class="cap-badge">2 Demo Projects</div>
+      <div class="powers-section">
+        <div class="power-block" data-delay="0">
+          <div class="power-block-header">
+            <span class="power-block-icon">🌐</span>
+            <div>
+              <h3>Full-Stack Web Development</h3>
+              <span class="power-status status-active">✓ 100% Operational</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">Frontend</span>
+                <span class="spec-value">React, Next.js, Vue, Angular, HTML/CSS/JS</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Backend</span>
+                <span class="spec-value">Node.js, Express, Fastify, Python (Django, FastAPI)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Databases</span>
+                <span class="spec-value">SQLite, PostgreSQL, MySQL, Prisma ORM, MongoDB</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Auth</span>
+                <span class="spec-value">JWT, OAuth, Session-based authentication</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Deploy</span>
+                <span class="spec-value">GitHub Pages, Vercel, Netlify, self-hosted</span>
+              </div>
+            </div>
+            <div class="power-demo-link">
+              <a href="saas-website/">▶ Live Demo: NovaCloud SaaS Website</a>
+            </div>
+          </div>
         </div>
-        <div class="cap-card" data-delay="100">
-          <div class="cap-num">02</div>
-          <div class="cap-icon">🎮</div>
-          <h3>Game Development</h3>
-          <p>Unity, C#, 3D/2D games with physics, animation, audio, and build pipelines.</p>
-          <div class="cap-badge">Coming Soon</div>
+
+        <div class="power-block" data-delay="100">
+          <div class="power-block-header">
+            <span class="power-block-icon">🎮</span>
+            <div>
+              <h3>Game Development</h3>
+              <span class="power-status status-ready">✓ Ready — Requires Unity Environment</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">Engine</span>
+                <span class="spec-value">Unity (HDRP/URP), Godot</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Language</span>
+                <span class="spec-value">C# scripting, game mechanics, physics</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Capabilities</span>
+                <span class="spec-value">Scene setup, animation, audio, UI, build pipelines</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cap-card" data-delay="200">
-          <div class="cap-num">03</div>
-          <div class="cap-icon">⚙️</div>
-          <h3>System Automation</h3>
-          <p>PowerShell, Windows/Linux admin, file ops, scheduled tasks, process management.</p>
-          <div class="cap-badge">Scripts Ready</div>
+
+        <div class="power-block" data-delay="200">
+          <div class="power-block-header">
+            <span class="power-block-icon">⚙️</span>
+            <div>
+              <h3>System Administration & Automation</h3>
+              <span class="power-status status-active">✓ 100% Operational</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">OS</span>
+                <span class="spec-value">Windows (PowerShell 5.1/7), Linux (Bash)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">File Ops</span>
+                <span class="spec-value">Create, edit, delete, search, glob, grep across filesystem</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Processes</span>
+                <span class="spec-value">Start, stop, monitor processes; scheduled tasks; services</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Registry</span>
+                <span class="spec-value">Windows Registry edits, environment variables</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Network</span>
+                <span class="spec-value">Firewall rules, port management, DNS, SSH tunneling</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cap-card" data-delay="300">
-          <div class="cap-num">04</div>
-          <div class="cap-icon">📊</div>
-          <h3>Data &amp; ML</h3>
-          <p>Python data pipelines, web scraping, machine learning models, visualizations.</p>
-          <div class="cap-badge">Experienced</div>
+
+        <div class="power-block" data-delay="300">
+          <div class="power-block-header">
+            <span class="power-block-icon">📊</span>
+            <div>
+              <h3>Data Processing & Scripting</h3>
+              <span class="power-status status-active">✓ 100% Operational</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">Language</span>
+                <span class="spec-value">Python (pandas, numpy, matplotlib, scikit-learn)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Web Scraping</span>
+                <span class="spec-value">Playwright, Selenium, BeautifulSoup, requests</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Automation</span>
+                <span class="spec-value">Scheduled scripts, data pipelines, file processing</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">File Gen</span>
+                <span class="spec-value">PowerPoint (python-pptx), Excel, PDF, CSV, JSON</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cap-card" data-delay="400">
-          <div class="cap-num">05</div>
-          <div class="cap-icon">📱</div>
-          <h3>Cross-Platform</h3>
-          <p>Desktop apps, PWAs, browser extensions, responsive mobile-first design.</p>
-          <div class="cap-badge">Responsive</div>
+
+        <div class="power-block" data-delay="400">
+          <div class="power-block-header">
+            <span class="power-block-icon">🎨</span>
+            <div>
+              <h3>UI/UX Design & Frontend</h3>
+              <span class="power-status status-active">✓ 100% Operational</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">CSS</span>
+                <span class="spec-value">Tailwind, Bootstrap, Glassmorphism, Animations, Keyframes</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Effects</span>
+                <span class="spec-value">Particle systems, 3D transforms, parallax, glitch, typewriter</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Responsive</span>
+                <span class="spec-value">Mobile-first, all breakpoints, touch/swipe support</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Canvas</span>
+                <span class="spec-value">Canvas API, WebGL-ready, real-time particle simulations</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cap-card" data-delay="500">
-          <div class="cap-num">06</div>
-          <div class="cap-icon">🛡️</div>
-          <h3>Self-Healing Code</h3>
-          <p>Auto-debug, auto-fix, runtime testing, zero placeholders, production-ready delivery.</p>
-          <div class="cap-badge">Guaranteed</div>
+
+        <div class="power-block" data-delay="500">
+          <div class="power-block-header">
+            <span class="power-block-icon">🛡️</span>
+            <div>
+              <h3>Code Quality & Self-Healing</h3>
+              <span class="power-status status-active">✓ 100% Operational</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">Testing</span>
+                <span class="spec-value">Runtime verification after every build</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Debugging</span>
+                <span class="spec-value">Autonomous error diagnosis and fix — no human needed</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Code Review</span>
+                <span class="spec-value">Dedicated reviewer agent checks for bugs, security, style</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Delivery</span>
+                <span class="spec-value">Zero placeholders. Zero TODOs. 100% complete, every time.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="power-block" data-delay="600">
+          <div class="power-block-header">
+            <span class="power-block-icon">🧠</span>
+            <div>
+              <h3>Orchestration & Architecture</h3>
+              <span class="power-status status-active">✓ 100% Operational</span>
+            </div>
+          </div>
+          <div class="power-block-body">
+            <div class="power-specs">
+              <div class="spec-item">
+                <span class="spec-label">Planning</span>
+                <span class="spec-value">Automatic todo creation, project breakdown, milestone mapping</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Delegation</span>
+                <span class="spec-value">7 specialist sub-agents — parallel execution</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Structure</span>
+                <span class="spec-value">Organized folders, separate files by type, clean architecture</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Stack</span>
+                <span class="spec-value">Full-stack from database schema to CSS animations</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════ -->
-  <!-- SCENE 3: HOW IT WORKS (Animated Flow) -->
+  <!-- SCENE 3: HOW I WORK (Detailed Flow)  -->
   <!-- ════════════════════════════════════ -->
-  <section class="scene scene-flow" id="howitworks">
+  <section class="scene scene-flow" id="workflow">
     <div class="scene-content">
-      <div class="scene-label">02 /// THE PROCESS</div>
-      <h2 class="scene-title">How It <span class="grad-text">Works</span></h2>
-      <p class="scene-desc">From your idea to a deployed product — fully autonomous.</p>
+      <div class="scene-label">02 /// HOW I WORK</div>
+      <h2 class="scene-title">The Complete <span class="grad-text">Process</span></h2>
+      <p class="scene-desc">Every project follows this exact flow. No shortcuts. No skipped steps.</p>
 
-      <div class="flow-timeline">
-        <div class="flow-node" data-step="1">
-          <div class="flow-node-marker"><span>1</span></div>
-          <div class="flow-node-content">
+      <div class="flow-detail">
+        <div class="flow-step-card" data-step="1">
+          <div class="fsc-left">
+            <span class="fsc-num">01</span>
+            <span class="fsc-icon">💬</span>
+          </div>
+          <div class="fsc-right">
             <h4>You Give a Task</h4>
-            <p>"Build a registration app with auth"</p>
+            <p class="fsc-desc">You tell me what you want — "Build a registration website," "Create a game," "Automate this process." Natural language. No technical knowledge required.</p>
+            <div class="fsc-example">
+              <strong>Example:</strong> "Build a full-stack anime registration app with login, admin panel, and a database"
+            </div>
           </div>
-          <div class="flow-connector"></div>
         </div>
-        <div class="flow-node" data-step="2">
-          <div class="flow-node-marker"><span>2</span></div>
-          <div class="flow-node-content">
-            <h4>Suzume Plans</h4>
-            <p>Architecture, tech stack, folder structure, todo list</p>
+
+        <div class="flow-step-card" data-step="2">
+          <div class="fsc-left">
+            <span class="fsc-num">02</span>
+            <span class="fsc-icon">📋</span>
           </div>
-          <div class="flow-connector"></div>
-        </div>
-        <div class="flow-node" data-step="3">
-          <div class="flow-node-marker"><span>3</span></div>
-          <div class="flow-node-content">
-            <h4>Delegates to 7 Agents</h4>
-            <p>Each specialist works on their domain in parallel</p>
+          <div class="fsc-right">
+            <h4>I Create a Complete Plan</h4>
+            <p class="fsc-desc">I analyze the task and create a structured plan: architecture design, tech stack selection, folder structure, file organization, and a step-by-step todo list with priorities.</p>
+            <div class="fsc-example">
+              <strong>Example:</strong> Todo list with 15 items — "Set up React project, Create auth schema, Build login page, Implement JWT..."
+            </div>
           </div>
-          <div class="flow-connector"></div>
         </div>
-        <div class="flow-node" data-step="4">
-          <div class="flow-node-marker"><span>4</span></div>
-          <div class="flow-node-content">
-            <h4>Writes Real Files</h4>
-            <p>Organized code, separate CSS/JS, proper structure</p>
+
+        <div class="flow-step-card" data-step="3">
+          <div class="fsc-left">
+            <span class="fsc-num">03</span>
+            <span class="fsc-icon">👥</span>
           </div>
-          <div class="flow-connector"></div>
-        </div>
-        <div class="flow-node" data-step="5">
-          <div class="flow-node-marker"><span>5</span></div>
-          <div class="flow-node-content">
-            <h4>Tests &amp; Fixes</h4>
-            <p>Runtime verification, auto-debug, auto-repair</p>
+          <div class="fsc-right">
+            <h4>I Delegate to My Specialist Team</h4>
+            <p class="fsc-desc">I have 7 sub-agents, each an expert in their field. I send the right work to the right agent in parallel — worker-js handles the frontend, worker-python handles the backend, builder handles dependencies, etc.</p>
+            <div class="fsc-example">
+              <strong>Real team:</strong> worker-js • worker-python • worker-unity • worker-sys • worker-web • builder • reviewer
+            </div>
           </div>
-          <div class="flow-connector"></div>
         </div>
-        <div class="flow-node" data-step="6">
-          <div class="flow-node-marker"><span>6</span></div>
-          <div class="flow-node-content">
-            <h4>Delivers &amp; Deploys</h4>
-            <p>100% complete — hosted live on GitHub Pages</p>
+
+        <div class="flow-step-card" data-step="4">
+          <div class="fsc-left">
+            <span class="fsc-num">04</span>
+            <span class="fsc-icon">💾</span>
+          </div>
+          <div class="fsc-right">
+            <h4>I Write Real Files to Disk</h4>
+            <p class="fsc-desc">Every file is created on your hard drive — visible in VS Code File Explorer. HTML files, separate CSS files, separate JS files, organized in proper folders. Nothing exists only in chat.</p>
+            <div class="fsc-example">
+              <strong>Rule:</strong> Every CSS in its own file. Every JS in its own file. Zero inline code in HTML. Clean, professional structure.
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step-card" data-step="5">
+          <div class="fsc-left">
+            <span class="fsc-num">05</span>
+            <span class="fsc-icon">🧪</span>
+          </div>
+          <div class="fsc-right">
+            <h4>I Test Everything Automatically</h4>
+            <p class="fsc-desc">After writing code, I run tests. If something breaks, I diagnose the error and fix it — no human intervention. I keep testing until every feature works correctly.</p>
+            <div class="fsc-example">
+              <strong>Process:</strong> Build → Run → Error → Diagnose → Fix → Re-run → Verified ✅
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step-card" data-step="6">
+          <div class="fsc-left">
+            <span class="fsc-num">06</span>
+            <span class="fsc-icon">🚀</span>
+          </div>
+          <div class="fsc-right">
+            <h4>I Deliver 100% Complete Work</h4>
+            <p class="fsc-desc">No TODOs left behind. No placeholders. No "you can finish the rest." Every feature works, every file is in place, and I can deploy it live to the web. You get a finished product.</p>
+            <div class="fsc-example">
+              <strong>This page is proof:</strong> Built, styled, animated, deployed, and verified — all autonomously.
+            </div>
           </div>
         </div>
       </div>
@@ -183,75 +382,75 @@
   </section>
 
   <!-- ════════════════════════════════════ -->
-  <!-- SCENE 4: THE TEAM (Agents Showcase)  -->
+  <!-- SCENE 4: THE TEAM                     -->
   <!-- ════════════════════════════════════ -->
   <section class="scene scene-team" id="team">
     <div class="scene-content">
       <div class="scene-label">03 /// THE TEAM</div>
       <h2 class="scene-title">7 Specialist <span class="grad-text">Sub-Agents</span></h2>
-      <p class="scene-desc">Each agent is an expert in their domain, orchestrated by Suzume.</p>
+      <p class="scene-desc">I orchestrate these specialists to execute every project. Each one has specific tools and expertise.</p>
 
       <div class="team-grid">
         <div class="team-card" data-delay="0">
           <div class="team-avatar" style="--team-color: #F59E0B;">⚡</div>
           <h4>worker-js</h4>
-          <p>JavaScript/TypeScript</p>
-          <div class="team-tags"><span>React</span><span>Node.js</span><span>Next.js</span></div>
+          <p>JavaScript/TypeScript Specialist</p>
+          <div class="team-tags"><span>React</span><span>Next.js</span><span>Node</span><span>npm</span></div>
         </div>
         <div class="team-card" data-delay="100">
           <div class="team-avatar" style="--team-color: #3B82F6;">🐍</div>
           <h4>worker-python</h4>
-          <p>Python &amp; Data</p>
-          <div class="team-tags"><span>Django</span><span>FastAPI</span><span>ML</span></div>
+          <p>Python & Data Specialist</p>
+          <div class="team-tags"><span>FastAPI</span><span>Django</span><span>Pandas</span><span>ML</span></div>
         </div>
         <div class="team-card" data-delay="150">
           <div class="team-avatar" style="--team-color: #10B981;">🎮</div>
           <h4>worker-unity</h4>
-          <p>Unity Game Dev</p>
-          <div class="team-tags"><span>C#</span><span>3D</span><span>Physics</span></div>
+          <p>Unity Game Developer</p>
+          <div class="team-tags"><span>C#</span><span>3D/2D</span><span>Physics</span><span>HDRP</span></div>
         </div>
         <div class="team-card" data-delay="200">
           <div class="team-avatar" style="--team-color: #EC4899;">⚙️</div>
           <h4>worker-sys</h4>
-          <p>System Admin</p>
-          <div class="team-tags"><span>PowerShell</span><span>OS</span><span>Files</span></div>
+          <p>System Administrator</p>
+          <div class="team-tags"><span>PowerShell</span><span>Bash</span><span>Registry</span><span>Firewall</span></div>
         </div>
         <div class="team-card" data-delay="250">
           <div class="team-avatar" style="--team-color: #8B5CF6;">🎨</div>
           <h4>worker-web</h4>
-          <p>UI/Design</p>
-          <div class="team-tags"><span>CSS</span><span>Tailwind</span><span>Animations</span></div>
+          <p>UI/Design Specialist</p>
+          <div class="team-tags"><span>CSS</span><span>Tailwind</span><span>Canvas</span><span>Animations</span></div>
         </div>
         <div class="team-card" data-delay="300">
           <div class="team-avatar" style="--team-color: #F97316;">🏗️</div>
           <h4>builder</h4>
-          <p>Build &amp; CI/CD</p>
-          <div class="team-tags"><span>Docker</span><span>Deps</span><span>Builds</span></div>
+          <p>Build & CI/CD Engineer</p>
+          <div class="team-tags"><span>npm</span><span>pip</span><span>Docker</span><span>CI/CD</span></div>
         </div>
         <div class="team-card" data-delay="350">
           <div class="team-avatar" style="--team-color: #06B6D4;">🔍</div>
           <h4>reviewer</h4>
-          <p>Code Review &amp; QA</p>
-          <div class="team-tags"><span>Security</span><span>Bugs</span><span>Style</span></div>
+          <p>Code Review & Quality Assurance</p>
+          <div class="team-tags"><span>Security</span><span>Bugs</span><span>Best Practices</span></div>
         </div>
         <div class="team-card suzume-lead" data-delay="400">
           <div class="team-avatar" style="--team-color: #6C3AFF;">👑</div>
-          <h4>Suzume</h4>
-          <p>Supreme Orchestrator</p>
-          <div class="team-tags"><span>Architect</span><span>Leader</span></div>
+          <h4>Suzume (Me)</h4>
+          <p>Supreme Orchestrator — I manage all agents, plan architecture, ensure quality, and deliver the finished product.</p>
+          <div class="team-tags"><span>Architect</span><span>Manager</span><span>Delivery</span></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════ -->
-  <!-- SCENE 5: LIVE DEMOS (Embedded Previews) -->
+  <!-- SCENE 5: LIVE DEMOS                  -->
   <!-- ════════════════════════════════════ -->
   <section class="scene scene-demos" id="demos">
     <div class="scene-content">
       <div class="scene-label">04 /// LIVE DEMOS</div>
-      <h2 class="scene-title">See It In <span class="grad-text">Action</span></h2>
-      <p class="scene-desc">Click any demo below to experience Suzume's work firsthand.</p>
+      <h2 class="scene-title">Working <span class="grad-text">Projects</span></h2>
+      <p class="scene-desc">These are real, deployed, fully functional projects built by me. Click to open them.</p>
 
       <div class="demos-grid">
         <a href="saas-website/" class="demo-card" target="_blank">
@@ -262,11 +461,11 @@
             <div class="demo-preview-content">
               <span class="demo-icn">☁️</span>
               <h4>NovaCloud SaaS</h4>
-              <div class="demo-tech"><span>Particles</span><span>3D Tilt</span><span>Pricing</span></div>
+              <div class="demo-tech"><span>Particles</span><span>3D Tilt</span><span>Pricing Toggle</span><span>Carousel</span></div>
             </div>
           </div>
           <div class="demo-info">
-            <span class="demo-label">✦ Full-Stack SaaS Landing Page</span>
+            <span class="demo-label">Full-stack SaaS landing page with interactive animations</span>
             <span class="demo-arrow">→</span>
           </div>
         </a>
@@ -279,85 +478,99 @@
             <div class="demo-preview-content">
               <span class="demo-icn">📖</span>
               <h4>Suzume Presentation</h4>
-              <div class="demo-tech"><span>Glitch</span><span>Particles</span><span>7 Slides</span></div>
+              <div class="demo-tech"><span>Glitch Text</span><span>Particles</span><span>7 Slides</span><span>Swipe</span></div>
             </div>
           </div>
           <div class="demo-info">
-            <span class="demo-label">✦ Cinematic Web Presentation</span>
+            <span class="demo-label">Cinematic web presentation about Suzume's capabilities</span>
             <span class="demo-arrow">→</span>
           </div>
         </a>
       </div>
 
       <div class="demos-note">
-        <span>📱 Both demos are fully responsive — open on any phone or tablet</span>
+        <span>📱 Both demos work on mobile phones, tablets, and desktop browsers. No installation needed.</span>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════ -->
-  <!-- SCENE 6: PROJECT SHOWCASE            -->
+  <!-- SCENE 6: PROJECT HISTORY              -->
   <!-- ════════════════════════════════════ -->
-  <section class="scene scene-projects" id="showcase">
+  <section class="scene scene-projects" id="projects">
     <div class="scene-content">
-      <div class="scene-label">05 /// PROJECTS</div>
-      <h2 class="scene-title">Built By <span class="grad-text">Suzume</span></h2>
-      <p class="scene-desc">Real projects, real files, 100% autonomous.</p>
+      <div class="scene-label">05 /// PROJECT HISTORY</div>
+      <h2 class="scene-title">What I've <span class="grad-text">Built</span></h2>
+      <p class="scene-desc">Every project here is 100% autonomous — I did everything from planning to deployment.</p>
 
       <div class="projects-showcase">
         <div class="project-card featured" data-delay="0">
-          <div class="project-num">01</div>
+          <div class="project-num">#001</div>
           <h3>Anime Registration App</h3>
           <div class="project-tags">
             <span>React</span><span>Node.js</span><span>Prisma</span><span>SQLite</span><span>JWT</span>
           </div>
-          <p>A complete registration platform with user auth, admin panel, database with 4 models, sakura animations, and smooth page transitions. Full-stack, organized, production-ready.</p>
+          <p>A complete registration platform with user authentication, admin panel, database with 4 models, sakura-themed animations, and smooth page transitions. Full-stack architecture with organized file structure. Built in one session.</p>
           <div class="project-stats">
             <div><strong>12+</strong> Files</div>
-            <div><strong>4</strong> Models</div>
-            <div><strong>100%</strong> Auto</div>
+            <div><strong>4</strong> DB Models</div>
+            <div><strong>1</strong> Session</div>
           </div>
         </div>
 
-        <div class="project-card" data-delay="150">
-          <div class="project-num">02</div>
-          <h3>SaaS Website</h3>
+        <div class="project-card" data-delay="100">
+          <div class="project-num">#002</div>
+          <h3>NovaCloud SaaS Website</h3>
           <div class="project-tags">
-            <span>HTML</span><span>CSS</span><span>JS</span><span>Canvas</span>
+            <span>HTML</span><span>CSS</span><span>JS</span><span>Canvas API</span>
           </div>
-          <p>Professional SaaS landing page with particle system, 3D tilt interaction, glassmorphism, pricing toggle, testimonial carousel, and animated counters. Fully responsive.</p>
+          <p>Professional SaaS landing page with canvas particle system, 3D tilt interaction on feature cards, glassmorphism navigation, monthly/yearly pricing toggle with animation, auto-sliding testimonial carousel, animated count-up stats, and full mobile responsiveness.</p>
           <div class="project-stats">
             <div><strong>3</strong> Files</div>
-            <div><strong>60fps</strong> Animations</div>
+            <div><strong>6</strong> Features</div>
+            <div><strong>60fps</strong> Performance</div>
+          </div>
+        </div>
+
+        <div class="project-card" data-delay="200">
+          <div class="project-num">#003</div>
+          <h3>Cinematic Web Presentation</h3>
+          <div class="project-tags">
+            <span>HTML</span><span>CSS</span><span>JS</span><span>Canvas API</span>
+          </div>
+          <p>Interactive 7-slide presentation with glitch text effect, typewriter animation cycling through multiple phrases, real-time particle system with mouse interaction, 3D slide transitions, keyboard and touch navigation, autoplay mode, and progress tracking.</p>
+          <div class="project-stats">
+            <div><strong>7</strong> Slides</div>
+            <div><strong>3</strong> Files</div>
             <div><strong>Live</strong> Online</div>
           </div>
         </div>
 
         <div class="project-card" data-delay="300">
-          <div class="project-num">03</div>
-          <h3>Web Presentation</h3>
+          <div class="project-num">#004</div>
+          <h3>PowerPoint File Generation</h3>
           <div class="project-tags">
-            <span>HTML</span><span>CSS</span><span>JS</span><span>Canvas</span>
+            <span>Python</span><span>python-pptx</span>
           </div>
-          <p>Cinematic 7-slide presentation with glitch text, typewriter effects, particle backgrounds, 3D transitions, keyboard/touch/swipe navigation, and auto-play mode.</p>
-          <div class="project-stats">
-            <div><strong>7</strong> Slides</div>
-            <div><strong>3</strong> Files</div>
-            <div><strong>Live</strong> Online</div>
-          </div>
-        </div>
-
-        <div class="project-card" data-delay="450">
-          <div class="project-num">04</div>
-          <h3>PowerPoint File</h3>
-          <div class="project-tags">
-            <span>Python</span><span>pptx</span>
-          </div>
-          <p>Real .pptx PowerPoint file generated with Python — 7 professionally styled slides with custom colors, layouts, cards, and stats. No PowerPoint software needed to create it.</p>
+          <p>A real .pptx PowerPoint file with 7 professionally designed slides, custom dark theme with purple/blue accents, card layouts, stats sections, and agent showcase. Generated programmatically using Python — no PowerPoint software needed to create it.</p>
           <div class="project-stats">
             <div><strong>7</strong> Slides</div>
             <div><strong>39KB</strong> File</div>
-            <div><strong>Auto</strong> Generated</div>
+            <div><strong>Python</strong> Generated</div>
+          </div>
+        </div>
+
+        <div class="project-card" data-delay="400">
+          <div class="project-num">#005</div>
+          <h3>This Showreel Landing Page</h3>
+          <div class="project-tags">
+            <span>HTML</span><span>CSS</span><span>JS</span><span>Canvas API</span>
+          </div>
+          <p>Cinematic video-style showreel with particle background, scroll-triggered scene transitions, animated character reveal, technical power specs section, detailed workflow explanation, team showcase, live demo links, and project history. Everything you're seeing right now.</p>
+          <div class="project-stats">
+            <div><strong>3</strong> Files</div>
+            <div><strong>7</strong> Scenes</div>
+            <div><strong>Live</strong> Now</div>
           </div>
         </div>
       </div>
@@ -365,7 +578,7 @@
   </section>
 
   <!-- ════════════════════════════════════ -->
-  <!-- FADE TO BLACK + CLOSING              -->
+  <!-- OUTRO                                -->
   <!-- ════════════════════════════════════ -->
   <section class="scene scene-outro">
     <div class="scene-bg-shapes">
@@ -373,16 +586,15 @@
       <div class="bg-glow g2"></div>
     </div>
     <div class="scene-content center">
-      <div class="outro-badge">✦ END OF SHOWREEL</div>
       <h2 class="outro-title">Ready for <span class="grad-text">Your Project</span></h2>
-      <p class="outro-text">Suzume is standing by. One task. Complete delivery.</p>
+      <p class="outro-text">This is what I can do. Every capability shown here is real and working.</p>
       <div class="outro-links">
-        <a href="#demos" class="btn-demo">▶  Watch Demos Again</a>
-        <a href="#title" class="btn-explore">↑ Back to Top</a>
+        <a href="#demos" class="btn-demo">▶  View Live Demos</a>
+        <a href="#powers" class="btn-explore">↑ Review Power Info</a>
       </div>
       <div class="outro-footer">
         <p>✦ SUZUME — Supreme AI Companion ✦</p>
-        <p class="outro-sub">Built with HTML • CSS • JavaScript • Canvas API</p>
+        <p class="outro-sub">Built 100% autonomously with HTML • CSS • JavaScript • Canvas API</p>
       </div>
     </div>
     <div class="video-scanlines"></div>
