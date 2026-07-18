@@ -1,0 +1,11 @@
+node_modules/
+*.txt
+test_output.*
+ssh_*
+tunnel_*
+gh_auth_*
+deploy.js
+*.pptx
+generate_pptx.py
+package.json
+package-lock.json
