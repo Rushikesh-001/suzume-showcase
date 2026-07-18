@@ -119,6 +119,7 @@ section {
   color: var(--text-secondary);
   max-width: 600px;
   line-height: 1.8;
+  margin: 0 auto;
 }
 
 /* ===== NAVBAR ===== */
@@ -313,10 +314,10 @@ section {
 }
 
 @keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(50px, -50px) scale(1.1); }
-  50% { transform: translate(-30px, 30px) scale(0.9); }
-  75% { transform: translate(40px, 40px) scale(1.05); }
+  0%, 100% { transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+  25% { transform: translate(-50%, -50%) translate(50px, -50px) scale(1.1); }
+  50% { transform: translate(-50%, -50%) translate(-30px, 30px) scale(0.9); }
+  75% { transform: translate(-50%, -50%) translate(40px, 40px) scale(1.05); }
 }
 
 .floating-shapes {
@@ -528,7 +529,6 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-top: 40px;
 }
 
 .stat-card {
@@ -564,7 +564,8 @@ section {
 
 /* ===== CAPABILITIES SECTION ===== */
 .capabilities {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
+  border-top: 1px solid var(--glass-border);
 }
 
 .bento-grid {
@@ -825,30 +826,6 @@ section {
   font-variant-numeric: tabular-nums;
 }
 
-.vc-progress {
-  flex: 1;
-  height: 4px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 2px;
-  cursor: pointer;
-  position: relative;
-}
-
-.vc-progress-fill {
-  height: 100%;
-  background: var(--accent-gradient);
-  border-radius: 2px;
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
-.vc-time {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.7);
-  font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
-}
-
 /* ─── Demo Cards (as links) ─── */
 .demo-card {
   display: block;
@@ -943,7 +920,7 @@ section {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 40px;
+  margin: 40px auto 0;
   max-width: 700px;
 }
 
@@ -987,7 +964,7 @@ section {
 }
 
 .agent-showcase {
-  margin-top: 48px;
+  margin-top: 40px;
   text-align: center;
 }
 
@@ -1026,8 +1003,6 @@ section {
 .footer {
   padding: 60px 24px 30px;
   background: var(--nav-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
 }
 
@@ -1120,9 +1095,6 @@ section {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .agents-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 768px) {
@@ -1172,17 +1144,12 @@ section {
   }
 
   .stats-row {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 
   .stat-number {
     font-size: 1.8rem;
-  }
-
-  .agents-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
   }
 
   .bento-grid {
@@ -1230,10 +1197,6 @@ section {
   .stats-row {
     grid-template-columns: 1fr;
     gap: 12px;
-  }
-
-  .agents-grid {
-    grid-template-columns: 1fr;
   }
 
   .bento-grid {

@@ -12,6 +12,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
 }
 
@@ -20,13 +21,17 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding: 0 12px;
 }
 
 #header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   padding: 8px 4px;
 }
 
@@ -60,11 +65,17 @@ h1 {
   border: 2px solid #39ff14;
   box-shadow: 0 0 20px #39ff1433, inset 0 0 20px #39ff1411;
   border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
 }
 
 canvas {
   display: block;
   background: #111;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  image-rendering: pixelated;
 }
 
 #overlay {
@@ -104,4 +115,21 @@ kbd {
   font-size: 11px;
   color: #444;
   letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  h1 { font-size: 20px; letter-spacing: 4px; }
+  .value { font-size: 18px; }
+  #game-wrapper { gap: 10px; padding: 0 8px; }
+  #overlay-title { font-size: 16px; }
+  #overlay-sub { font-size: 12px; }
+  #controls-hint { display: none; }
+  #header { padding: 4px 2px; }
+}
+
+@media (max-width: 360px) {
+  h1 { font-size: 16px; letter-spacing: 3px; }
+  .value { font-size: 15px; }
+  #game-wrapper { gap: 8px; padding: 0 4px; }
 }

@@ -316,12 +316,19 @@ audio_clips = []
 
 bgm_path = os.path.join(OUTPUT_DIR, "bgm_cinematic.wav")
 if os.path.exists(bgm_path):
-    bgm = AudioFileClip(bgm_path).with_volume_scaled(0.35)
+    bgm = AudioFileClip(bgm_path).with_volume_scaled(0.55)
     audio_clips.append(bgm)
 
+# Tight TTS schedule - gaps reduced to ~0.7s for natural flow
+# tts_07 added for finale climax (aligns with BGM climax section 55-70s)
 tts_schedule = [
-    (1.5, "tts_01.wav"), (11.0, "tts_02.wav"), (21.0, "tts_03.wav"),
-    (31.0, "tts_04.wav"), (41.0, "tts_05.wav"), (52.0, "tts_06.wav"),
+    (1.5, "tts_01.wav"),   # "In a world..." ends ~7.6
+    (8.3, "tts_02.wav"),   # "Suzume is not just..." ends ~17.3
+    (18.0, "tts_03.wav"),  # "Full stack..." ends ~26.1
+    (26.8, "tts_04.wav"),  # "Every pixel..." ends ~35.3
+    (36.0, "tts_05.wav"),  # "From concept..." ends ~42.1
+    (42.8, "tts_06.wav"),  # "Welcome to the future..." ends ~48.1
+    (48.8, "tts_07.wav"),  # "Your vision, brought to life..." ends ~53.0
 ]
 for st, fname in tts_schedule:
     path = os.path.join(OUTPUT_DIR, fname)

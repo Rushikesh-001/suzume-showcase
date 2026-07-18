@@ -39,6 +39,10 @@ segments = [
     {
         "text": "Welcome to the future of creation. Welcome to Suzume.",
         "filename": "tts_06.wav"
+    },
+    {
+        "text": "Your vision, brought to life. Suzume.",
+        "filename": "tts_07.wav"
     }
 ]
 
