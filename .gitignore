@@ -9,3 +9,9 @@ deploy.js
 generate_pptx.py
 package.json
 package-lock.json
+
+# Video build artifacts (intermediate files)
+video/frames/
+video/scene_*.wav
+video/combined_audio.wav
+video/audio_concat.txt
