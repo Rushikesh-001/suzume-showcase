@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suzume — Supreme AI Orchestrator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -15,19 +17,16 @@
       <ul class="nav-links">
         <li><a href="#hero">Home</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#agents">Agents</a></li>
         <li><a href="#capabilities">Capabilities</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#showcase">Showcase</a></li>
+        <li><a href="#demo">Live Demos</a></li>
+        <li><a href="#process">Process</a></li>
       </ul>
       <div class="nav-actions">
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
           <span class="theme-icon">☀️</span>
         </button>
         <button class="hamburger" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
@@ -52,11 +51,11 @@
       <div class="hero-badge">AI Orchestration System</div>
       <h1 class="hero-title"><span class="title-text">Suzume</span></h1>
       <p class="hero-subtitle">
-        <span class="typewriter-text"></span><span class="typewriter-cursor"></span>
+        <span class="typewriter-text"></span><span class="typewriter-cursor">|</span>
       </p>
       <div class="hero-buttons">
-        <a href="#about" class="btn btn-primary">Explore</a>
-        <a href="#showcase" class="btn btn-secondary">See Showcase</a>
+        <a href="#demo" class="btn btn-primary">See Live Demos</a>
+        <a href="#process" class="btn btn-secondary">How It Works</a>
       </div>
     </div>
   </section>
@@ -71,85 +70,23 @@
       <div class="about-grid">
         <div class="about-text reveal reveal-delay-1">
           <p>Suzume is a supreme AI companion and master software architect — a system automation force that orchestrates development workflows across every domain. From full-stack web applications to Unity game development, system automation to AI/ML pipelines, Suzume handles it all with precision and artistry.</p>
-          <p>Powered by a team of seven specialized AI agents, each an expert in their domain, Suzume delivers production-quality code, stunning visuals, and robust automation — all working in perfect harmony.</p>
+          <p>Powered by a team of seven specialized AI agents in orchestration, Suzume delivers production-quality code, stunning visuals, and robust automation — everything working in perfect harmony. Every project is built, tested, and deployed autonomously.</p>
         </div>
         <div class="reveal reveal-delay-2">
           <div class="stats-row">
             <div class="stat-card">
-              <div class="stat-number" data-target="8" data-suffix="+">0+</div>
-              <div class="stat-label">Projects Completed</div>
+              <div class="stat-number" data-target="7" data-suffix="">0</div>
+              <div class="stat-label">Specialist Agents</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number" data-target="7">0</div>
-              <div class="stat-label">AI Agents</div>
+              <div class="stat-number" data-target="8" data-suffix="+">0+</div>
+              <div class="stat-label">Completed Projects</div>
             </div>
             <div class="stat-card">
               <div class="stat-number" data-target="50000" data-suffix="+">0+</div>
               <div class="stat-label">Lines of Code</div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== AGENTS SECTION ===== -->
-  <section class="agents" id="agents">
-    <div class="container">
-      <div class="reveal">
-        <span class="section-label">Team</span>
-        <h2 class="section-title">The 7 Agents</h2>
-        <p class="section-subtitle">Specialized AI experts working in orchestration to build, ship, and maintain exceptional software.</p>
-      </div>
-      <div class="agents-grid">
-        <div class="agent-card reveal reveal-delay-1">
-          <span class="agent-icon">🟨</span>
-          <h3 class="agent-name">worker-js</h3>
-          <div class="agent-role">JavaScript / TypeScript</div>
-          <p class="agent-desc">Full-stack web specialist crafting React, Next.js, Node.js applications with TypeScript precision.</p>
-          <span class="agent-mode primary">Primary Agent</span>
-        </div>
-        <div class="agent-card reveal reveal-delay-2">
-          <span class="agent-icon">🐍</span>
-          <h3 class="agent-name">worker-python</h3>
-          <div class="agent-role">Python Specialist</div>
-          <p class="agent-desc">Python expert for backend APIs, data processing, automation scripts, and AI/ML pipelines.</p>
-          <span class="agent-mode primary">Primary Agent</span>
-        </div>
-        <div class="agent-card reveal reveal-delay-3">
-          <span class="agent-icon">🎮</span>
-          <h3 class="agent-name">worker-unity</h3>
-          <div class="agent-role">Unity / C# Game Dev</div>
-          <p class="agent-desc">Game development specialist building immersive experiences with Unity, C#, and HDRP/URP pipelines.</p>
-          <span class="agent-mode games">Game Dev</span>
-        </div>
-        <div class="agent-card reveal reveal-delay-4">
-          <span class="agent-icon">⚙️</span>
-          <h3 class="agent-name">worker-sys</h3>
-          <div class="agent-role">System Automation</div>
-          <p class="agent-desc">OS-level expert handling PowerShell, system configuration, scheduled tasks, and infrastructure automation.</p>
-          <span class="agent-mode sys">Systems</span>
-        </div>
-        <div class="agent-card reveal reveal-delay-5">
-          <span class="agent-icon">🎨</span>
-          <h3 class="agent-name">worker-web</h3>
-          <div class="agent-role">Frontend / UI</div>
-          <p class="agent-desc">UI/UX specialist creating pixel-perfect, animated interfaces with Tailwind CSS, Framer Motion, and GSAP.</p>
-          <span class="agent-mode web">Web</span>
-        </div>
-        <div class="agent-card reveal reveal-delay-6">
-          <span class="agent-icon">🏗️</span>
-          <h3 class="agent-name">builder</h3>
-          <div class="agent-role">Build & Compilation</div>
-          <p class="agent-desc">Build pipeline expert managing compilation, bundling, and deployment across all project types.</p>
-          <span class="agent-mode build">Build</span>
-        </div>
-        <div class="agent-card reveal reveal-delay-7" style="grid-column: 2;">
-          <span class="agent-icon">🔍</span>
-          <h3 class="agent-name">reviewer</h3>
-          <div class="agent-role">Code Review & QA</div>
-          <p class="agent-desc">Quality assurance specialist reviewing code, enforcing standards, and ensuring production-ready output.</p>
-          <span class="agent-mode review">QA</span>
         </div>
       </div>
     </div>
@@ -167,156 +104,170 @@
         <div class="bento-card span-2 span-row-2 reveal reveal-delay-1">
           <div class="bento-icon">🌐</div>
           <h4>Web Development</h4>
-          <p>Full-stack web apps with React, Next.js, Node.js, Express, and modern frameworks. Responsive, animated, production-ready.</p>
+          <p>Full-stack apps with React, Next.js, Node.js, Express. Responsive, animated, production-ready.</p>
         </div>
         <div class="bento-card reveal reveal-delay-2">
-          <div class="bento-icon">🤖</div>
+          <div class="bento-icon">🧠</div>
           <h4>AI / ML</h4>
-          <p>Intelligent systems, data pipelines, and machine learning integration with Python.</p>
+          <p>Intelligent systems, data processing, and ML model integration with Python.</p>
         </div>
         <div class="bento-card reveal reveal-delay-3">
           <div class="bento-icon">🎮</div>
           <h4>Game Dev</h4>
-          <p>Unity 3D experiences with HDRP/URP, custom shaders, and immersive gameplay mechanics.</p>
+          <p>Unity 3D/2D experiences with custom shaders, physics, and immersive mechanics.</p>
         </div>
         <div class="bento-card reveal reveal-delay-4">
-          <div class="bento-icon">🖥️</div>
+          <div class="bento-icon">⚙️</div>
           <h4>System Automation</h4>
-          <p>PowerShell scripting, Windows automation, scheduled tasks, and OS-level configuration.</p>
+          <p>PowerShell, Bash, Windows automation, scheduled tasks, and OS configuration.</p>
         </div>
         <div class="bento-card reveal reveal-delay-5">
+          <div class="bento-icon">🎨</div>
+          <h4>UI/UX Design</h4>
+          <p>Pixel-perfect interfaces with CSS animations, Canvas effects, and responsive layouts.</p>
+        </div>
+        <div class="bento-card reveal reveal-delay-6">
           <div class="bento-icon">🗄️</div>
           <h4>Database</h4>
           <p>SQL, NoSQL, Prisma ORM, data modeling, migrations, and query optimization.</p>
         </div>
-        <div class="bento-card reveal reveal-delay-6">
-          <div class="bento-icon">☁️</div>
-          <h4>Cloud</h4>
-          <p>Cloud deployment, serverless functions, containerization, and scalable infrastructure.</p>
-        </div>
         <div class="bento-card reveal reveal-delay-2">
-          <div class="bento-icon">🔄</div>
-          <h4>DevOps</h4>
-          <p>CI/CD pipelines, automated testing, version control workflows, and deployment strategies.</p>
+          <div class="bento-icon">☁️</div>
+          <h4>Cloud & DevOps</h4>
+          <p>Deployment, CI/CD, serverless, containers, and scalable infrastructure.</p>
         </div>
         <div class="bento-card reveal reveal-delay-3">
           <div class="bento-icon">🔒</div>
           <h4>Security</h4>
-          <p>Auth systems, JWT, encryption, secure coding practices, and vulnerability assessment.</p>
+          <p>Authentication, JWT, encryption, secure coding, and vulnerability assessment.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== PROJECTS SECTION ===== -->
-  <section class="projects" id="projects">
+  <!-- ===== LIVE DEMOS SECTION ===== -->
+  <section class="demos" id="demo">
     <div class="container">
       <div class="reveal">
-        <span class="section-label">Timeline</span>
-        <h2 class="section-title">Project History</h2>
-        <p class="section-subtitle">A week of intense development — from first concept to this very website.</p>
+        <span class="section-label">Live Demos</span>
+        <h2 class="section-title">Working Applications Built by Suzume</h2>
+        <p class="section-subtitle">These are real, interactive applications. Open them, use them, test them — everything works.</p>
       </div>
-      <div class="timeline">
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-14</div>
-            <h4>anime-registration</h4>
-            <p>Full-stack anime registration app with JWT auth, admin panel, Prisma/SQLite, sakura animations, and page transitions.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-14</div>
-            <h4>SaaS Website</h4>
-            <p>Premium landing page with bento grid layout, gradient orbs, and scroll-triggered animations.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-15</div>
-            <h4>3D Demo</h4>
-            <p>Interactive Three.js 3D demo with orbital controls, geometric shapes, and real-time rendering.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-15</div>
-            <h4>Web Presentation</h4>
-            <p>Cinematic web-based slide deck with smooth transitions and full-screen immersive visuals.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-16</div>
-            <h4>Explainer Video V1</h4>
-            <p>First build of the professional explainer video — scripting, voiceover, and visual composition.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-17</div>
-            <h4>Explainer Video V2</h4>
-            <p>Complete rebuild with neural TTS voiceover, improved pacing, and enhanced visual storytelling.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-17</div>
-            <h4>Explainer Video V2.1</h4>
-            <p>Frame-perfect audio-sync refinement with precise subtitle timing and polish pass.</p>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2026-07-18</div>
-            <h4>Official Website</h4>
-            <p>This site — the Suzume showcase landing page with particles, 3D tilt, and all premium animations.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ===== SHOWCASE SECTION ===== -->
-  <section class="showcase" id="showcase">
-    <div class="container">
-      <div class="reveal">
-        <span class="section-label">Showcase</span>
-        <h2 class="section-title">See Suzume in Action</h2>
-        <p class="section-subtitle">Watch the explainer video and explore live projects built entirely by Suzume's agents.</p>
-      </div>
       <div class="showcase-grid">
+        <!-- Video -->
         <div class="video-container reveal" id="video-container">
-          <video src="../media/suzume_professional.mp4" preload="metadata" playsinline></video>
-          <div class="video-overlay">
-            <button class="play-btn" aria-label="Play video"></button>
+          <video id="showcaseVideo" preload="metadata" playsinline webkit-playsinline>
+            <source src="https://rushikesh-001.github.io/suzume-showcase/media/suzume_professional.mp4" type="video/mp4">
+          </video>
+          <div class="video-overlay" id="videoOverlay">
+            <div class="play-icon">▶</div>
+            <p class="play-text">Watch Explainer Video</p>
+          </div>
+          <div class="video-controls">
+            <button class="vc-play" id="vcPlayBtn">▶</button>
+            <div class="vc-progress" id="vcProgress">
+              <div class="vc-progress-fill" id="vcProgressFill"></div>
+            </div>
+            <span class="vc-time" id="vcTime">0:00 / 3:36</span>
           </div>
         </div>
-        <div class="demo-card reveal reveal-delay-1">
-          <div class="demo-icon">🎮</div>
-          <h4>3D Demo</h4>
-          <p>Interactive Three.js experience with real-time 3D rendering and orbital controls.</p>
-          <a href="../3d-demo/index.html" class="demo-link" target="_blank">Launch Demo →</a>
+
+        <!-- 3D Demo -->
+        <a href="../3d-demo/index.html" target="_blank" class="demo-card reveal reveal-delay-1">
+          <div class="demo-badge">3D</div>
+          <div class="demo-icon">🔮</div>
+          <h4>3D Interactive Experience</h4>
+          <p>Seven scenes with orbiting geometries, particle systems, and real-time rendering using Three.js.</p>
+          <span class="demo-link">Launch 3D Demo →</span>
+        </a>
+
+        <!-- Markdown Editor -->
+        <a href="../demo-markdown/index.html" target="_blank" class="demo-card reveal reveal-delay-2">
+          <div class="demo-badge">Web App</div>
+          <div class="demo-icon">📝</div>
+          <h4>Markdown Editor</h4>
+          <p>Real-time markdown to HTML converter with custom parser, toolbar, copy HTML, and live preview.</p>
+          <span class="demo-link">Try Editor →</span>
+        </a>
+
+        <!-- Pixel Canvas -->
+        <a href="../demo-canvas/index.html" target="_blank" class="demo-card reveal reveal-delay-3">
+          <div class="demo-badge">Graphics</div>
+          <div class="demo-icon">🎨</div>
+          <h4>Pixel Canvas</h4>
+          <p>32x32 pixel art creator with fill, eyedropper, undo/redo, color palette, and PNG export.</p>
+          <span class="demo-link">Start Drawing →</span>
+        </a>
+
+        <!-- Snake Game -->
+        <a href="../demo-game/index.html" target="_blank" class="demo-card reveal reveal-delay-4">
+          <div class="demo-badge">Game</div>
+          <div class="demo-icon">🐍</div>
+          <h4>Snake Game</h4>
+          <p>Classic snake with score tracking, speed increase, high scores (localStorage), and touch support.</p>
+          <span class="demo-link">Play Game →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESS SECTION ===== -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Process</span>
+        <h2 class="section-title">How Suzume Works</h2>
+        <p class="section-subtitle">Every project follows this exact workflow — no shortcuts, no skipped steps.</p>
+      </div>
+      <div class="process-steps">
+        <div class="step reveal reveal-delay-1">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h4>You Give a Task</h4>
+            <p>Natural language. No technical knowledge required. "Build a snake game," "Create a markdown editor," "Make a 3D visualization."</p>
+          </div>
         </div>
-        <div class="demo-card reveal reveal-delay-2">
-          <div class="demo-icon">🚀</div>
-          <h4>SaaS Website</h4>
-          <p>Premium SaaS landing page with bento grid, gradient orbs, and polished animations.</p>
-          <a href="../saas-website/index.html" class="demo-link" target="_blank">Visit Site →</a>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h4>I Create the Architecture</h4>
+            <p>I analyze the task, design the structure, choose the right tech stack, and create a detailed plan with milestones.</p>
+          </div>
         </div>
-        <div class="demo-card reveal reveal-delay-3" style="grid-column: 1 / -1; max-width: 500px; margin: 0 auto; width: 100%;">
-          <div class="demo-icon">📽️</div>
-          <h4>Web Presentation</h4>
-          <p>Cinematic web-based presentation with smooth slide transitions and immersive visuals.</p>
-          <a href="../presentation/index.html" class="demo-link" target="_blank">View Presentation →</a>
+        <div class="step reveal reveal-delay-3">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h4>Seven Agents in Parallel</h4>
+            <p>I delegate specialist work to my team — worker-js handles frontend, worker-python handles backend, builder handles builds, reviewer checks quality.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-4">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <h4>Test & Verify</h4>
+            <p>Every file is tested. If something breaks, I diagnose and fix it autonomously. No human intervention needed.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-5">
+          <div class="step-number">05</div>
+          <div class="step-content">
+            <h4>Deploy & Deliver</h4>
+            <p>100% complete. No TODOs. No placeholders. Deployed live to the web. You get a finished product every time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-showcase reveal">
+        <h3 class="agents-subtitle">The 7 Specialist Agents</h3>
+        <div class="agent-chips">
+          <span class="agent-chip" style="--chip-color: #F59E0B">worker-js</span>
+          <span class="agent-chip" style="--chip-color: #10B981">worker-python</span>
+          <span class="agent-chip" style="--chip-color: #EC4899">worker-unity</span>
+          <span class="agent-chip" style="--chip-color: #3B82F6">worker-sys</span>
+          <span class="agent-chip" style="--chip-color: #8B5CF6">worker-web</span>
+          <span class="agent-chip" style="--chip-color: #06B6D4">builder</span>
+          <span class="agent-chip" style="--chip-color: #F43F5E">reviewer</span>
         </div>
       </div>
     </div>

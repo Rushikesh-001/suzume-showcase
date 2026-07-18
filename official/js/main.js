@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       }
-
       animId = requestAnimationFrame(draw);
     }
 
@@ -95,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     start();
-
     return { stop: () => cancelAnimationFrame(animId) };
   }
 
@@ -106,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = document.querySelector('.typewriter-text');
     if (!el) return;
     const text = 'Supreme AI Orchestrator';
-    const cursor = document.querySelector('.typewriter-cursor');
     let index = 0;
     let isDeleting = false;
 
@@ -130,15 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(type, 40);
       }
     }
-
     setTimeout(type, 500);
   }
 
   // ============================================
-  // 3. 3D PERSPECTIVE TILT ON CARDS
+  // 3. 3D PERSPECTIVE TILT
   // ============================================
   function init3DTilt() {
-    const cards = document.querySelectorAll('.agent-card, .bento-card, .demo-card');
+    const cards = document.querySelectorAll('.bento-card, .demo-card');
     cards.forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -146,8 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -8;
-        const rotateY = ((x - centerX) / centerX) * 8;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
       });
 
@@ -172,10 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // 4 & 5. SCROLL-TRIGGERED REVEALS + STAGGER
+  // 4. SCROLL REVEAL
   // ============================================
   function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.reveal');
+    const els = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -184,12 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, { threshold: 0.15 });
-
-    revealElements.forEach(el => observer.observe(el));
+    els.forEach(el => observer.observe(el));
   }
 
   // ============================================
-  // 6. ANIMATED COUNTERS
+  // 5. ANIMATED COUNTERS
   // ============================================
   function initCounters() {
     const statNumbers = document.querySelectorAll('.stat-number');
@@ -214,18 +209,16 @@ document.addEventListener('DOMContentLoaded', () => {
               el.textContent = target + suffix;
             }
           }
-
           requestAnimationFrame(animate);
           observer.unobserve(el);
         }
       });
     }, { threshold: 0.5 });
-
     statNumbers.forEach(el => observer.observe(el));
   }
 
   // ============================================
-  // 7. THEME TOGGLE (Dark/Light)
+  // 6. THEME TOGGLE
   // ============================================
   function initThemeToggle() {
     const toggle = document.getElementById('theme-toggle');
@@ -246,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // 8. MAGNETIC BUTTONS
+  // 7. MAGNETIC BUTTONS
   // ============================================
   function initMagneticButtons() {
     const buttons = document.querySelectorAll('.btn');
@@ -255,10 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        const strength = 8;
-        btn.style.transform = `translate(${x / strength}px, ${y / strength}px)`;
+        btn.style.transform = `translate(${x / 8}px, ${y / 8}px)`;
       });
-
       btn.addEventListener('mouseleave', () => {
         btn.style.transform = 'translate(0, 0)';
       });
@@ -266,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // 9. SMOOTH SCROLL (Nav links)
+  // 8. SMOOTH SCROLL
   // ============================================
   function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -283,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // 10. MOBILE HAMBURGER MENU
+  // 9. MOBILE HAMBURGER
   // ============================================
   function initHamburger() {
     const hamburger = document.querySelector('.hamburger');
@@ -304,37 +295,127 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // 11. VIDEO PLAYER
+  // 10. VIDEO PLAYER — FIXED VERSION
   // ============================================
   function initVideoPlayer() {
     const container = document.getElementById('video-container');
     if (!container) return;
-    const video = container.querySelector('video');
-    const overlay = container.querySelector('.video-overlay');
-    const playBtn = container.querySelector('.play-btn');
 
+    const video = document.getElementById('showcaseVideo');
+    const overlay = document.getElementById('videoOverlay');
+    const playBtn = document.getElementById('vcPlayBtn');
+    const progressBar = document.getElementById('vcProgress');
+    const progressFill = document.getElementById('vcProgressFill');
+    const timeDisplay = document.getElementById('vcTime');
+
+    if (!video) return;
+
+    // Format time helper
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    // Toggle play/pause
     function togglePlay() {
       if (video.paused) {
-        video.play();
-        container.classList.add('playing');
+        video.play().catch(e => console.log('Play prevented:', e));
       } else {
         video.pause();
-        container.classList.remove('playing');
       }
     }
 
-    playBtn?.addEventListener('click', togglePlay);
-    overlay?.addEventListener('click', togglePlay);
+    // Update UI based on play state
+    function updatePlayState() {
+      if (video.paused) {
+        container.classList.remove('playing');
+        if (playBtn) playBtn.textContent = '▶';
+      } else {
+        container.classList.add('playing');
+        if (playBtn) playBtn.textContent = '⏸';
+      }
+    }
 
+    // Update progress
+    function updateProgress() {
+      if (video.duration) {
+        const pct = (video.currentTime / video.duration) * 100;
+        if (progressFill) progressFill.style.width = pct + '%';
+        if (timeDisplay) {
+          timeDisplay.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
+        }
+      }
+    }
+
+    // Click on overlay to play
+    if (overlay) {
+      overlay.addEventListener('click', togglePlay);
+    }
+
+    // Play/pause button
+    if (playBtn) {
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+      });
+    }
+
+    // Click on video to toggle
+    video.addEventListener('click', togglePlay);
+
+    // Progress bar click
+    if (progressBar) {
+      progressBar.addEventListener('click', (e) => {
+        const rect = progressBar.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        if (video.duration) {
+          video.currentTime = pct * video.duration;
+        }
+      });
+    }
+
+    // Events
+    video.addEventListener('play', updatePlayState);
+    video.addEventListener('pause', updatePlayState);
+    video.addEventListener('timeupdate', updateProgress);
     video.addEventListener('ended', () => {
       container.classList.remove('playing');
+      if (playBtn) playBtn.textContent = '▶';
+      if (timeDisplay && video.duration) {
+        timeDisplay.textContent = '0:00 / ' + formatTime(video.duration);
+      }
+      if (progressFill) progressFill.style.width = '0%';
     });
 
-    video.addEventListener('click', togglePlay);
+    // Load metadata for duration display
+    video.addEventListener('loadedmetadata', () => {
+      if (timeDisplay && video.duration) {
+        timeDisplay.textContent = '0:00 / ' + formatTime(video.duration);
+      }
+    });
+
+    // Initial display
+    if (timeDisplay && video.duration) {
+      timeDisplay.textContent = '0:00 / ' + formatTime(video.duration);
+    }
+
+    // Keyboard: space to toggle
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === ' ' || e.key === 'Space') {
+        const rect = container.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isVisible) {
+          e.preventDefault();
+          togglePlay();
+        }
+      }
+    });
   }
 
   // ============================================
-  // 12. PARALLAX NAVBAR
+  // 11. NAVBAR PARALLAX (hide on scroll down)
   // ============================================
   function initNavParallax() {
     let lastScroll = 0;
@@ -366,5 +447,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initVideoPlayer();
   initNavParallax();
 
-  console.log('Suzume website initialized.');
+  console.log('Suzume website initialized successfully.');
 });

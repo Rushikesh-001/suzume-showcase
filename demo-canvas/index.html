@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Canvas — Suzume Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <span class="logo">✦ Pixel Canvas</span>
+    <div class="nav-actions">
+      <button id="undoBtn" title="Undo (Ctrl+Z)">↩ Undo</button>
+      <button id="redoBtn" title="Redo (Ctrl+Y)">↪ Redo</button>
+      <button id="clearBtn" title="Clear canvas">🗑 Clear</button>
+      <button id="exportBtn" title="Export PNG">💾 Export</button>
+    </div>
+  </nav>
+
+  <main class="canvas-container">
+    <!-- Tool Sidebar -->
+    <aside class="tools">
+      <div class="tool-section">
+        <label class="tool-label">Tools</label>
+        <div class="tool-group">
+          <button class="tool-btn active" data-tool="pencil" title="Pencil">✏️</button>
+          <button class="tool-btn" data-tool="eraser" title="Eraser">🧹</button>
+          <button class="tool-btn" data-tool="fill" title="Flood Fill">🪣</button>
+          <button class="tool-btn" data-tool="eyedropper" title="Eyedropper">💉</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <label class="tool-label">Brush Size</label>
+        <div class="brush-group">
+          <button class="brush-btn" data-size="1">1px</button>
+          <button class="brush-btn active" data-size="2">2px</button>
+          <button class="brush-btn" data-size="3">3px</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <label class="tool-label">Colors</label>
+        <div class="color-palette" id="colorPalette">
+          <button class="color-swatch" style="background:#1a1a2e" data-color="#1a1a2e"></button>
+          <button class="color-swatch" style="background:#ffffff" data-color="#ffffff"></button>
+          <button class="color-swatch" style="background:#ff6b6b" data-color="#ff6b6b"></button>
+          <button class="color-swatch" style="background:#ffa94d" data-color="#ffa94d"></button>
+          <button class="color-swatch" style="background:#ffd93d" data-color="#ffd93d"></button>
+          <button class="color-swatch" style="background:#6bcb77" data-color="#6bcb77"></button>
+          <button class="color-swatch" style="background:#4d96ff" data-color="#4d96ff"></button>
+          <button class="color-swatch" style="background:#6C3AFF" data-color="#6C3AFF"></button>
+          <button class="color-swatch" style="background:#ff6bff" data-color="#ff6bff"></button>
+          <button class="color-swatch" style="background:#845ef7" data-color="#845ef7"></button>
+          <button class="color-swatch" style="background:#20c997" data-color="#20c997"></button>
+          <button class="color-swatch" style="background:#f06595" data-color="#f06595"></button>
+        </div>
+        <div class="custom-color-row">
+          <label class="color-input-label">Custom:</label>
+          <input type="color" id="customColor" value="#6C3AFF">
+        </div>
+      </div>
+
+      <div class="tool-section info-section">
+        <div class="info-row"><span>Pos:</span><span id="gridPos">—</span></div>
+        <div class="info-row"><span>Color:</span><span id="colorDisplay" class="color-dot" style="background:#6C3AFF"></span></div>
+      </div>
+    </aside>
+
+    <!-- Canvas -->
+    <div class="canvas-wrapper">
+      <canvas id="pixelCanvas" width="320" height="320"></canvas>
+    </div>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

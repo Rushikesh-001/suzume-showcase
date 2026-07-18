@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor — Suzume Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="toolbar">
+    <div class="toolbar-left">
+      <span class="logo">✦ MD Editor</span>
+      <div class="tool-group">
+        <button class="tool-btn" data-cmd="bold" title="Bold"><strong>B</strong></button>
+        <button class="tool-btn" data-cmd="italic" title="Italic"><em>I</em></button>
+        <button class="tool-btn" data-cmd="heading" title="Heading">H</button>
+        <button class="tool-btn" data-cmd="link" title="Link">🔗</button>
+        <button class="tool-btn" data-cmd="code" title="Code Block">&lt;/&gt;</button>
+        <button class="tool-btn" data-cmd="list" title="List">•</button>
+        <button class="tool-btn" data-cmd="quote" title="Quote">❝</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <span class="word-count" id="wordCount">0 words</span>
+      <button class="action-btn" id="copyBtn">📋 Copy HTML</button>
+    </div>
+  </nav>
+
+  <main class="editor-container">
+    <div class="editor-pane">
+      <div class="pane-header">Markdown</div>
+      <textarea id="editor" class="editor-textarea" spellcheck="false" placeholder="Type markdown here..."></textarea>
+    </div>
+    <div class="preview-pane">
+      <div class="pane-header">Preview</div>
+      <div id="preview" class="preview-content"></div>
+    </div>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

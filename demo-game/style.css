@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', 'Courier New', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+  padding: 8px 4px;
+}
+
+.score-box {
+  text-align: center;
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #555;
+  display: block;
+}
+
+.value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #39ff14;
+  font-variant-numeric: tabular-nums;
+}
+
+h1 {
+  font-size: 26px;
+  letter-spacing: 8px;
+  color: #39ff14;
+  text-shadow: 0 0 12px #39ff1466;
+}
+
+#canvas-container {
+  position: relative;
+  border: 2px solid #39ff14;
+  box-shadow: 0 0 20px #39ff1433, inset 0 0 20px #39ff1411;
+  border-radius: 4px;
+}
+
+canvas {
+  display: block;
+  background: #111;
+}
+
+#overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  gap: 8px;
+  pointer-events: none;
+}
+
+#overlay-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #39ff14;
+  text-shadow: 0 0 10px #39ff1480;
+}
+
+#overlay-sub {
+  font-size: 14px;
+  color: #aaa;
+}
+
+kbd {
+  background: #222;
+  border: 1px solid #39ff14;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: inherit;
+  color: #39ff14;
+}
+
+#controls-hint {
+  font-size: 11px;
+  color: #444;
+  letter-spacing: 1px;
+}
