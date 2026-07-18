@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI — How It's Made</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #7C4DFF; --secondary: #448AFF; --gold: #FFD700;
+      --bg: #0D0D1A; --surface: #1A1A2E; --surface2: #252540;
+      --text: #E8E8F0; --text2: #B0B0C0; --text3: #707090;
+      --gradient: linear-gradient(135deg, #7C4DFF, #448AFF);
+      --gradient2: linear-gradient(135deg, #7C4DFF, #FFD700);
+      --border: rgba(124,77,255,0.2);
+      --green: #4CAF50; --orange: #FF9800; --red: #EF5350; --cyan: #00BCD4;
+    }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--text);
+      overflow: hidden;
+    }
+    .slides { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 50px 70px;
+      opacity: 0; transform: scale(0.92);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none; text-align: center;
+      background: radial-gradient(ellipse at center, #1A1A3E 0%, #0D0D1A 70%);
+    }
+    .slide.active { opacity: 1; transform: scale(1); pointer-events: auto; }
+
+    .bg-accent {
+      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    }
+    .bg-accent::before {
+      content: ''; position: absolute;
+      width: 500px; height: 500px; border-radius: 50%;
+      filter: blur(100px); opacity: 0.12;
+      animation: float 10s ease-in-out infinite;
+    }
+    .slide:nth-child(odd) .bg-accent::before { background: var(--primary); top: -150px; right: -150px; }
+    .slide:nth-child(even) .bg-accent::before { background: var(--secondary); bottom: -150px; left: -150px; animation-delay: -5s; }
+    @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-30px)} }
+    .slide > * { position: relative; z-index: 1; }
+
+    h1 {
+      font-family: 'Poppins', sans-serif; font-size: 64px; font-weight: 900;
+      background: var(--gradient2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: -1px;
+    }
+    h2 {
+      font-family: 'Poppins', sans-serif; font-size: 42px; font-weight: 800;
+      background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 12px;
+    }
+    h3 {
+      font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    h4 {
+      font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 600;
+      color: var(--text); margin-bottom: 4px;
+    }
+    p { font-size: 18px; line-height: 1.6; color: var(--text2); max-width: 800px; margin: 0 auto; }
+    .subtitle {
+      font-size: 18px; color: var(--gold); font-weight: 500;
+      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .tagline { font-size: 16px; color: var(--text2); margin-top: 16px; }
+
+    /* ─── GRIDS ─── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; width: 100%; margin-top: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; max-width: 1000px; width: 100%; margin-top: 20px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; max-width: 1100px; width: 100%; margin-top: 20px; }
+
+    .card {
+      background: rgba(26,26,46,0.8); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 18px; text-align: center;
+      backdrop-filter: blur(10px); transition: all 0.3s ease;
+    }
+    .card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(124,77,255,0.12); }
+    .card .icon { font-size: 34px; margin-bottom: 8px; }
+    .card h4 { font-size: 15px; }
+    .card p { font-size: 13px; color: var(--text2); }
+    .card .detail { font-size: 12px; color: var(--text3); margin-top: 4px; font-family: 'Fira Code', monospace; }
+
+    .card-sm {
+      background: rgba(26,26,46,0.6); border: 1px solid rgba(68,138,255,0.12);
+      border-radius: 10px; padding: 14px 12px; text-align: center;
+    }
+    .card-sm h4 { font-size: 14px; }
+    .card-sm p { font-size: 12px; color: var(--text2); }
+    .card-sm .ver { color: var(--gold); font-family: 'Fira Code', monospace; font-size: 11px; }
+
+    /* ─── METRICS ─── */
+    .metrics { display: flex; gap: 32px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+    .metric { text-align: center; }
+    .metric .num {
+      font-family: 'Poppins', sans-serif; font-size: 40px; font-weight: 900;
+      background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric .label { font-size: 13px; color: var(--text2); margin-top: 2px; }
+    .metric-sub { font-size: 22px; font-weight: 700; color: var(--gold); }
+
+    /* ─── TECH BADGES ─── */
+    .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 800px; margin: 16px auto 0; }
+    .badge {
+      background: linear-gradient(135deg, rgba(124,77,255,0.12), rgba(68,138,255,0.08));
+      border: 1px solid rgba(124,77,255,0.2); padding: 6px 18px; border-radius: 20px;
+      font-size: 13px; font-weight: 500; color: var(--text);
+    }
+    .badge .v { color: var(--gold); font-size: 11px; font-weight: 400; }
+
+    /* ─── CODE BLOCK ─── */
+    .code-block {
+      background: rgba(0,0,0,0.4); border: 1px solid rgba(124,77,255,0.15);
+      border-radius: 10px; padding: 14px 20px; text-align: left;
+      font-family: 'Fira Code', monospace; font-size: 12px; line-height: 1.7;
+      color: var(--text2); max-width: 700px; width: 100%; margin: 12px auto 0;
+      overflow-x: auto; white-space: pre;
+    }
+    .code-block .k { color: var(--primary); }
+    .code-block .s { color: var(--green); }
+    .code-block .c { color: var(--text3); font-style: italic; }
+    .code-block .n { color: var(--cyan); }
+    .code-block .f { color: var(--gold); }
+
+    /* ─── TIMELINE ─── */
+    .timeline { position: relative; max-width: 750px; width: 100%; margin: 20px auto 0; text-align: left; }
+    .timeline::before {
+      content: ''; position: absolute; left: 20px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    }
+    .tl-item { position: relative; padding: 8px 0 8px 50px; }
+    .tl-item::before {
+      content: ''; position: absolute; left: 14px; top: 14px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--primary); border: 2px solid var(--bg);
+    }
+    .tl-item h4 { font-size: 15px; color: var(--gold); }
+    .tl-item p { font-size: 13px; color: var(--text2); margin: 0; }
+
+    /* ─── FEATURE LIST ─── */
+    .ft-list { list-style: none; max-width: 600px; margin: 12px auto 0; text-align: left; }
+    .ft-list li {
+      padding: 7px 0; border-bottom: 1px solid rgba(124,77,255,0.08);
+      font-size: 14px; color: var(--text2); display: flex; align-items: center; gap: 10px;
+    }
+    .ft-list li::before { content: '▸'; color: var(--gold); font-weight: 700; }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 10px; z-index: 100;
+      background: rgba(13,13,26,0.85); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: 28px; padding: 7px 14px;
+    }
+    .nav button {
+      background: none; border: none; color: var(--text2); font-size: 18px;
+      cursor: pointer; padding: 5px 8px; border-radius: 6px; transition: all 0.2s;
+    }
+    .nav button:hover { color: var(--text); background: rgba(124,77,255,0.15); }
+    .nav .dots { display: flex; gap: 6px; margin: 0 6px; }
+    .nav .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--surface2);
+      transition: all 0.3s; cursor: pointer; border: none; padding: 0;
+    }
+    .nav .dot.active { background: var(--primary); width: 20px; border-radius: 3px; }
+    .nav .num { font-size: 12px; color: var(--text3); min-width: 36px; text-align: center; font-variant-numeric: tabular-nums; }
+    .counter {
+      position: fixed; top: 20px; right: 28px;
+      font-size: 13px; color: rgba(255,255,255,0.1); z-index: 100;
+      font-variant-numeric: tabular-nums; font-family: 'Poppins', sans-serif; font-weight: 600;
+    }
+
+    /* ─── LAYER DIAGRAM ─── */
+    .layer-stack { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 16px; }
+    .layer {
+      background: rgba(124,77,255,0.08); border: 1px solid rgba(124,77,255,0.15);
+      border-radius: 6px; padding: 6px 20px; font-size: 12px; color: var(--text2);
+      min-width: 260px; text-align: center;
+    }
+    .layer.hl { background: rgba(255,215,0,0.08); border-color: rgba(255,215,0,0.2); color: var(--gold); }
+    .layer-arr { color: var(--primary); font-size: 10px; opacity: 0.35; }
+
+    @media (max-width: 768px) {
+      .slide { padding: 24px 20px; }
+      h1 { font-size: 36px; } h2 { font-size: 26px; } h3 { font-size: 20px; } p { font-size: 15px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .metrics { gap: 16px; }
+      .metric .num { font-size: 28px; }
+      .badges { gap: 6px; }
+      .badge { font-size: 11px; padding: 4px 12px; }
+      .code-block { font-size: 10px; padding: 10px 14px; }
+      .nav { gap: 4px; padding: 5px 8px; }
+      .subtitle { font-size: 14px; }
+    }
+    @media (max-width: 480px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      h1 { font-size: 28px; } h2 { font-size: 22px; }
+    }
+
+    /* ─── TOGGLE SWITCH ─── */
+    .tbl { max-width: 650px; width: 100%; margin: 16px auto 0; border-collapse: collapse; text-align: left; }
+    .tbl th { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .tbl td { font-size: 13px; color: var(--text2); padding: 10px 12px; border-bottom: 1px solid rgba(124,77,255,0.06); }
+    .tbl td:first-child { color: var(--gold); font-weight: 500; font-family: 'Fira Code', monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="counter" id="counter">01 / 22</div>
+
+<div class="slides" id="slides">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active" data-index="0">
+    <div class="bg-accent"></div>
+    <p class="subtitle">How It's Made</p>
+    <h1>STUDYMATE AI</h1>
+    <p style="font-size: 22px; margin-top: 8px;">The Complete Development Breakdown</p>
+    <p class="tagline">Languages • Frameworks • Tools • Architecture • Everything</p>
+    <div class="metrics">
+      <div class="metric"><div class="num">Flutter</div><div class="label">Frontend Framework</div></div>
+      <div class="metric"><div class="num">Dart</div><div class="label">Programming Language</div></div>
+      <div class="metric"><div class="num">SQLite</div><div class="label">Database</div></div>
+      <div class="metric"><div class="num">Gemini</div><div class="label">AI Engine</div></div>
+    </div>
+    <p style="margin-top: 28px; font-size: 13px; color: rgba(255,255,255,0.15);">By Suzume • July 2026</p>
+  </div>
+
+  <!-- SLIDE 2: TECH STACK OVERVIEW -->
+  <div class="slide" data-index="1">
+    <div class="bg-accent"></div>
+    <h2>Full Tech Stack</h2>
+    <p>Everything used to build StudyMate AI — from language to deployment</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card"><div class="icon">🔤</div><h4>Language</h4><p>Dart 3.12.2</p><div class="detail">Statically-typed, AOT-compiled, null-safe</div></div>
+      <div class="card"><div class="icon">📱</div><h4>Framework</h4><p>Flutter 3.44.4</p><div class="detail">Cross-platform UI toolkit, Skia engine</div></div>
+      <div class="card"><div class="icon">🗄️</div><h4>Database</h4><p>SQLite (sqflite 2.4.3)</p><div class="detail">Embedded SQL engine, WAL mode, FTS5</div></div>
+      <div class="card"><div class="icon">🔮</div><h4>State</h4><p>Riverpod 2.6.1</p><div class="detail">Compile-safe DI, auto-dispose, family</div></div>
+      <div class="card"><div class="icon">🤖</div><h4>AI API</h4><p>Google Gemini</p><div class="detail">google_generative_ai 0.4.7, text + vision</div></div>
+      <div class="card"><div class="icon">📈</div><h4>Charts</h4><p>fl_chart 0.69.2</p><div class="detail">Bar, line, pie charts with animations</div></div>
+      <div class="card"><div class="icon">📷</div><h4>QR Scanner</h4><p>mobile_scanner</p><div class="detail">CameraX, auto-zoom, real-time decode</div></div>
+      <div class="card"><div class="icon">🏗️</div><h4>Build</h4><p>Gradle 8.11.1 / AGP 8.9.1</p><div class="detail">R8 shrinker, bundle tool, NDK r27</div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: DART LANGUAGE -->
+  <div class="slide" data-index="2">
+    <div class="bg-accent"></div>
+    <h2>🔤 Dart 3.12.2</h2>
+    <p>The programming language that powers StudyMate AI</p>
+    <div class="grid-2" style="max-width: 750px;">
+      <div class="card" style="text-align: left;">
+        <h4 style="text-align: center;">Key Language Features Used</h4>
+        <ul class="ft-list">
+          <li><strong>Null Safety</strong> — Sound null safety, ?, !, late</li>
+          <li><strong>Records</strong> — (x, y) multi-return without classes</li>
+          <li><strong>Pattern Matching</strong> — switch + destructuring</li>
+          <li><strong>Sealed Classes</strong> — Exhaustive type hierarchies</li>
+          <li><strong>Extension Methods</strong> — Add methods to any type</li>
+          <li><strong>Async/Await</strong> — All DB/API calls are async</li>
+          <li><strong>Mixins</strong> — Reusable behavior composition</li>
+          <li><strong>Collections</strong> — Spread, null-aware, collection-if</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4 style="text-align: center;">Why Dart?</h4>
+        <ul class="ft-list">
+          <li>AOT → Native machine code (fast startup)</li>
+          <li>JIT → Hot reload (fast development)</li>
+          <li>Single language → UI + logic + backend</li>
+          <li>Strong typing → Fewer runtime bugs</li>
+          <li>Rich stdlib → dart:io, dart:convert, dart:math</li>
+          <li>Isolates → True parallelism with shared nothing</li>
+          <li>Tree-shaking → Minimal APK size</li>
+          <li>Google-backed → Long-term stability</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// Example: StudyMate AI model with records + sealed class</span>
+<span class="k">sealed class</span> <span class="n">StudySession</span> {}
+<span class="k">class</span> <span class="n">FocusSession</span> <span class="k">extends</span> <span class="n">StudySession</span> { <span class="k">final</span> <span class="k">int</span> minutes; }
+<span class="k">class</span> <span class="n">QuizAttempt</span> <span class="k">extends</span> <span class="n">StudySession</span> { <span class="k">final</span> (<span class="k">int</span> score, <span class="k">int</span> total) result; }
+<span class="k">typedef</span> <span class="n">XpEvent</span> = ({<span class="k">String</span> type, <span class="k">int</span> amount, <span class="n">DateTime</span> timestamp});</div>
+  </div>
+
+  <!-- SLIDE 4: FLUTTER FRAMEWORK -->
+  <div class="slide" data-index="3">
+    <div class="bg-accent"></div>
+    <h2>📱 Flutter 3.44.4</h2>
+    <p>Cross-platform UI framework by Google — single codebase, native performance</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card"><div class="icon">🎨</div><h4>Widget Tree</h4><p>Everything is a widget. Composition over inheritance. 20+ custom screens built as widget hierarchies.</p><div class="detail">StatelessWidget + StatefulWidget + InheritedWidget</div></div>
+      <div class="card"><div class="icon">⚡</div><h4>Skia Engine</h4><p>Custom 2D rendering engine. No OEM widgets. Same pixels on every device. 60fps guaranteed.</p><div class="detail">Impeller backend on Android</div></div>
+      <div class="card"><div class="icon">🔄</div><h4>Hot Reload</h4><p>Sub-second code changes reflected instantly. Kept development speed at peak throughout the project.</p><div class="detail">JIT during dev → AOT for release</div></div>
+      <div class="card"><div class="icon">📦</div><h4>Package Ecosystem</h4><p>pub.dev — 50,000+ packages. We used 20 direct dependencies including sqflite, riverpod, fl_chart.</p><div class="detail">pubspec.yaml dependency manager</div></div>
+    </div>
+    <p style="margin-top: 12px; font-size: 13px; color: var(--text3);">Min SDK: Android 5.0 (API 21) • Target SDK: Android 14 (API 34) • 25.8 MB APK</p>
+  </div>
+
+  <!-- SLIDE 5: DEVELOPMENT ENVIRONMENT -->
+  <div class="slide" data-index="4">
+    <div class="bg-accent"></div>
+    <h2>💻 Development Environment</h2>
+    <p>Tools & software used throughout the build process</p>
+    <div class="grid-3" style="max-width: 900px;">
+      <div class="card"><div class="icon">🖥️</div><h4>Visual Studio Code</h4><p>Primary editor with Dart/Flutter extensions, error lens, git lens, and custom snippets for rapid widget creation.</p><div class="detail">Extensions: Dart, Flutter, GitLens, Error Lens</div></div>
+      <div class="card"><div class="icon">📱</div><h4>Android Studio</h4><p>Used for Android-specific tasks: emulator management, APK signing, device profiling, and layout inspector.</p><div class="detail">Android SDK 34, Android Emulator (API 34)</div></div>
+      <div class="card"><div class="icon">🔧</div><h4>Gradle 8.11.1</h4><p>Build automation system. Handles compilation, resource packaging, code shrinking (R8), and APK generation.</p><div class="detail">AGP 8.9.1 • Kotlin DSL • JDK 21</div></div>
+      <div class="card"><div class="icon">🧪</div><h4>Flutter Test</h4><p>Built-in testing framework. Widget tests for UI components, unit tests for business logic (gamification, FSRS).</p><div class="detail">flutter_test • flutter_lints 4.0.0</div></div>
+      <div class="card"><div class="icon">📊</div><h4>DevTools</h4><p>Flutter DevTools suite: widget inspector, performance overlay, CPU profiler, memory view, network tracker.</p><div class="detail">Flutter DevTools 2.34+</div></div>
+      <div class="card"><div class="icon">🐙</div><h4>Git + GitHub</h4><p>Version control with semantic commits. Branch management for features. Remote backup on GitHub.</p><div class="detail">Git 2.45+ • GitHub repository</div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: DEPENDENCIES (pubspec.yaml) -->
+  <div class="slide" data-index="5">
+    <div class="bg-accent"></div>
+    <h2>📦 Dependencies</h2>
+    <p>All packages declared in pubspec.yaml — 20 direct dependencies</p>
+    <div class="grid-3" style="max-width: 950px;">
+      <div class="card-sm"><h4>cupertino_icons</h4><p>iOS-style icons</p><span class="ver">^1.0.8</span></div>
+      <div class="card-sm"><h4>provider</h4><p>State management (legacy)</p><span class="ver">^6.1.2</span></div>
+      <div class="card-sm"><h4>google_fonts</h4><p>Poppins + Inter fonts</p><span class="ver">^6.2.1</span></div>
+      <div class="card-sm"><h4>lottie</h4><p>After Effects anims</p><span class="ver">^3.1.2</span></div>
+      <div class="card-sm"><h4>fl_chart</h4><p>Charts & graphs</p><span class="ver">^0.69.0</span></div>
+      <div class="card-sm"><h4>percent_indicator</h4><p>Progress bars</p><span class="ver">^4.2.3</span></div>
+      <div class="card-sm"><h4>flutter_animate</h4><p>Micro-animations</p><span class="ver">^4.5.0</span></div>
+      <div class="card-sm"><h4>intl</h4><p>Date/Number format</p><span class="ver">^0.19.0</span></div>
+      <div class="card-sm"><h4>uuid</h4><p>Unique ID gen</p><span class="ver">^4.4.0</span></div>
+      <div class="card-sm"><h4>shared_preferences</h4><p>Key-value storage</p><span class="ver">^2.2.3</span></div>
+      <div class="card-sm"><h4>sqflite</h4><p>SQLite database</p><span class="ver">^2.4.1</span></div>
+      <div class="card-sm"><h4>path</h4><p>File path utils</p><span class="ver">^1.9.0</span></div>
+      <div class="card-sm"><h4>flutter_riverpod</h4><p>State management</p><span class="ver">^2.6.1</span></div>
+      <div class="card-sm"><h4>riverpod_annotation</h4><p>Code gen for RP</p><span class="ver">^2.6.1</span></div>
+      <div class="card-sm"><h4>equatable</h4><p>Value equality</p><span class="ver">^2.0.7</span></div>
+      <div class="card-sm"><h4>shimmer</h4><p>Loading skeletons</p><span class="ver">^3.0.0</span></div>
+      <div class="card-sm"><h4>image</h4><p>Image processing</p><span class="ver">^4.9.1</span></div>
+      <div class="card-sm"><h4>http</h4><p>HTTP client</p><span class="ver">^1.6.0</span></div>
+      <div class="card-sm"><h4>google_generative_ai</h4><p>Gemini API SDK</p><span class="ver">^0.4.7</span></div>
+      <div class="card-sm"><h4>mobile_scanner</h4><p>QR/barcode scan</p><span class="ver">any</span></div>
+    </div>
+    <p style="margin-top: 10px; font-size: 12px; color: var(--text3);">Dev: flutter_launcher_icons 0.14.4 • flutter_lints 4.0.0 • flutter_test</p>
+  </div>
+
+  <!-- SLIDE 7: PROJECT STRUCTURE -->
+  <div class="slide" data-index="6">
+    <div class="bg-accent"></div>
+    <h2>📁 Project Structure</h2>
+    <p>150+ Dart files organized in clean domain folders</p>
+    <div class="code-block"><span class="c">/* Top-level directory structure */</span>
+studymate_ai/
+├── <span class="f">lib/</span>                          <span class="c">// Source code (heart of the app)</span>
+│   ├── <span class="f">main.dart</span>                  <span class="c">// Entry point</span>
+│   ├── <span class="f">app.dart</span>                   <span class="c">// Root widget + providers</span>
+│   ├── <span class="f">navigation/</span>                <span class="c">// Bottom nav, routing</span>
+│   ├── <span class="f">theme/</span>                     <span class="c">// AppColors, AppTheme (dark)</span>
+│   ├── <span class="f">screens/</span>                   <span class="c">// 20+ screen folders</span>
+│   │   ├── <span class="f">splash/</span>                  <span class="c">// Animated splash + auto-login</span>
+│   │   ├── <span class="f">auth/</span>                    <span class="c">// Login, Register, Forgot PW</span>
+│   │   ├── <span class="f">home/</span>                    <span class="c">// Dashboard with stats</span>
+│   │   ├── <span class="f">focus/</span>                   <span class="c">// Pomodoro timer + XP</span>
+│   │   ├── <span class="f">notes/</span>                   <span class="c">// Notes + AI summaries</span>
+│   │   ├── <span class="f">flashcards/</span>              <span class="c">// FSRS spaced repetition</span>
+│   │   ├── <span class="f">quiz/</span>                    <span class="c">// Subject quizzes</span>
+│   │   ├── <span class="f">mentor/</span>                  <span class="c">// Gemini AI Mentor</span>
+│   │   ├── <span class="f">analytics/</span>               <span class="c">// Charts + breakdown</span>
+│   │   ├── <span class="f">planner/</span>                 <span class="c">// Study plans</span>
+│   │   ├── <span class="f">friends/</span>                 <span class="c">// QR + friend requests</span>
+│   │   ├── <span class="f">community/</span>               <span class="c">// Discussion board</span>
+│   │   ├── <span class="f">leaderboard/</span>             <span class="c">// 4 leaderboard types</span>
+│   │   ├── <span class="f">achievements/</span>            <span class="c">// 23 achievements</span>
+│   │   ├── <span class="f">settings/</span>                <span class="c">// Prefs + API key</span>
+│   │   ├── <span class="f">profile/</span>                 <span class="c">// User profile</span>
+│   │   ├── <span class="f">search/</span>                  <span class="c">// Full-text search</span>
+│   │   ├── <span class="f">roadmap/</span>                 <span class="c">// Subject progress</span>
+│   │   ├── <span class="f">eduforge/</span>                <span class="c">// Course browser</span>
+│   │   └── <span class="f">...</span>
+│   ├── <span class="f">services/</span>                   <span class="c">// Business logic layer</span>
+│   │   ├── <span class="f">database_service.dart</span>     <span class="c">// AppDatabase (dual-write)</span>
+│   │   ├── <span class="f">education_system.dart</span>     <span class="c">// Seed data (12 courses)</span>
+│   │   ├── <span class="f">ai_api_service.dart</span>       <span class="c">// Gemini API client</span>
+│   │   ├── <span class="f">ai_brain.dart</span>             <span class="c">// AI orchestration</span>
+│   │   ├── <span class="f">ai_memory.dart</span>            <span class="c">// Conversation memory</span>
+│   │   ├── <span class="f">quiz_generator.dart</span>       <span class="c">// Quiz logic</span>
+│   │   ├── <span class="f">recommendation_engine.dart</span><span class="c">// Study recommendations</span>
+│   │   └── <span class="f">smart_roadmap.dart</span>         <span class="c">// Learning path</span>
+│   └── <span class="f">widgets/</span>                    <span class="c">// 12 reusable widgets</span>
+│       ├── <span class="f">glass_card.dart</span>           <span class="c">// Glassmorphism cards</span>
+│       ├── <span class="f">xp_bar.dart</span>               <span class="c">// XP progress bar</span>
+│       ├── <span class="f">study_timer.dart</span>          <span class="c">// Pomodoro timer widget</span>
+│       ├── <span class="f">stat_card.dart</span>            <span class="c">// Metric stat card</span>
+│       ├── <span class="f">quiz_card.dart</span>            <span class="c">// Quiz display card</span>
+│       ├── <span class="f">flashcard_widget.dart</span>     <span class="c">// Flashcard flip</span>
+│       ├── <span class="f">achievement_badge.dart</span>   <span class="c">// Achievement icon</span>
+│       ├── <span class="f">subject_progress_card.dart</span><span class="c">// Subject progress</span>
+│       └── <span class="f">gradient_button.dart</span>      <span class="c">// Styled buttons</span>
+├── <span class="f">web/</span>                           <span class="c">// Web platform files</span>
+├── <span class="f">android/</span>                        <span class="c">// Android native config</span>
+├── <span class="f">test/</span>                           <span class="c">// Unit + widget tests</span>
+├── <span class="f">tool/</span>                           <span class="c">// App icon generator</span>
+└── <span class="f">pubspec.yaml</span>                    <span class="c">// Dependency manifest</span></div>
+  </div>
+
+  <!-- SLIDE 8: ARCHITECTURE DEEP DIVE -->
+  <div class="slide" data-index="7">
+    <div class="bg-accent"></div>
+    <h2>🏛️ Architecture Deep Dive</h2>
+    <p>Clean layered architecture with separation of concerns</p>
+    <div class="layer-stack">
+      <div class="layer hl" style="min-width: 350px;">PRESENTATION LAYER — 20+ Screens (Widgets)</div>
+      <div class="layer-arr">▼ uses Riverpod providers</div>
+      <div class="layer" style="min-width: 370px;">SERVICE LAYER — Business Logic & State</div>
+      <div class="layer-arr" style="display: flex; gap: 40px; justify-content: center;">
+        <span>▼ AppDatabase (sync API)</span>
+        <span>▼ AI Services (Gemini)</span>
+        <span>▼ Gamification Engine</span>
+      </div>
+      <div class="layer" style="min-width: 400px; display: flex; gap: 16px; justify-content: center; border: none; background: none;">
+        <span style="background:rgba(124,77,255,0.08);border:1px solid rgba(124,77,255,0.15);border-radius:6px;padding:4px 14px;font-size:11px;">SharedPrefs (fast reads)</span>
+        <span style="background:rgba(68,138,255,0.08);border:1px solid rgba(68,138,255,0.15);border-radius:6px;padding:4px 14px;font-size:11px;">SQLite (durable storage)</span>
+      </div>
+      <div class="layer-arr">▼ 6 repositories + DatabaseHelper</div>
+      <div class="layer" style="min-width: 350px;">DATA LAYER — 15+ Tables, FTS5, WAL Mode</div>
+    </div>
+    <p style="margin-top: 14px; font-size: 13px; color: var(--text3);">Pattern: Repository Pattern • State Mgmt: Riverpod 2.6.1 • Database: Dual-write (SP + SQLite)</p>
+  </div>
+
+  <!-- SLIDE 9: RIVERPOD STATE MANAGEMENT -->
+  <div class="slide" data-index="8">
+    <div class="bg-accent"></div>
+    <h2>🔮 Riverpod 2.6.1</h2>
+    <p>State management — compile-safe, testable, scalable</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="text-align: left;">
+        <h4>Provider Types Used</h4>
+        <ul class="ft-list">
+          <li><strong>Provider</strong> — Pure computed values (e.g. levelFromXp)</li>
+          <li><strong>StateProvider</strong> — Simple mutable state (e.g. currentTab)</li>
+          <li><strong>StateNotifierProvider</strong> — Complex state with logic (e.g. AuthNotifier)</li>
+          <li><strong>FutureProvider</strong> — Async data (e.g. quiz list)</li>
+          <li><strong>StreamProvider</strong> — Real-time data (e.g. study timer)</li>
+          <li><strong>Family</strong> — Parameterized providers (e.g. quizBySubject)</li>
+          <li><strong>AutoDispose</strong> — Auto-cleanup when not watched</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Why Riverpod over Provider?</h4>
+        <ul class="ft-list">
+          <li><strong>Compile-time safe</strong> — No runtime ProviderNotFoundException</li>
+          <li><strong>No BuildContext needed</strong> — Access state anywhere</li>
+          <li><strong>Auto-dispose</strong> — Prevents memory leaks</li>
+          <li><strong>Testable</strong> — Override any provider in tests</li>
+          <li><strong>Family</strong> — Create providers with parameters</li>
+          <li><strong>Ref.watch/listen/read</strong> — Granular rebuild control</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// Example: Gamification provider</span>
+<span class="k">final</span> xpProvider = <span class="n">StateNotifierProvider</span>&lt;<span class="n">XpNotifier</span>, <span class="k">int</span>&gt;((ref) {
+  <span class="k">return</span> <span class="n">XpNotifier</span>(ref.<span class="k">read</span>(dbProvider));
+});
+
+<span class="k">final</span> levelProvider = <span class="n">Provider</span>&lt;<span class="k">int</span>&gt;((ref) {
+  <span class="k">final</span> xp = ref.<span class="k">watch</span>(xpProvider);
+  <span class="k">return</span> (<span class="n">sqrt</span>(xp / 100)).<span class="k">floor</span>();  <span class="c">// N² × 100 formula</span>
+});</div>
+  </div>
+
+  <!-- SLIDE 10: SQLITE DATABASE -->
+  <div class="slide" data-index="9">
+    <div class="bg-accent"></div>
+    <h2>🗄️ SQLite (sqflite 2.4.3)</h2>
+    <p>Embedded SQL database — zero configuration, full SQL support</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="text-align: left;">
+        <h4>Database Configuration</h4>
+        <ul class="ft-list">
+          <li><strong>WAL Mode</strong> — Write-Ahead Logging for concurrent reads/writes</li>
+          <li><strong>FTS5</strong> — Full-text search on notes and content</li>
+          <li><strong>Foreign Keys</strong> — Referential integrity enforced</li>
+          <li><strong>Auto-vacuum</strong> — Automatic space reclamation</li>
+          <li><strong>Custom Migrations</strong> — Versioned schema updates</li>
+          <li><strong>6 Repositories</strong> — User, Education, Study, Content, Gamification, Social</li>
+        </ul>
+        <div class="detail" style="margin-top: 8px;">DatabaseHelper class manages all connections</div>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Dual-Write Strategy</h4>
+        <ul class="ft-list">
+          <li><strong>SharedPreferences</strong> — Immediate synchronous reads/writes (JSON-serialized)</li>
+          <li><strong>SQLite</strong> — Asynchronous background writes for durability</li>
+          <li><strong>AppDatabase</strong> — Unified API that abstracts both storage layers</li>
+          <li><strong>Migration Plan</strong> — All future data goes SQLite-only</li>
+        </ul>
+        <div class="detail" style="margin-top: 8px;">Offline-first — no internet required for any core feature</div>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// DatabaseHelper — singleton with lazy init</span>
+<span class="k">class</span> <span class="n">DatabaseHelper</span> {
+  <span class="k">static final</span> <span class="n">DatabaseHelper</span> instance = <span class="n">DatabaseHelper</span>._();
+  <span class="n">Database</span>? _db;
+  
+  <span class="k">Future</span>&lt;<span class="n">Database</span>&gt; get db <span class="k">async</span> {
+    _db ??= <span class="k">await</span> <span class="n">openDatabase</span>(
+      <span class="s">'studymate.db'</span>,
+      version: 3, <span class="c">// 3 migration versions</span>
+      onCreate: _createTables,
+      onUpgrade: _migrate,
+      <span class="n">onConfigure</span>: (db) <span class="k">async</span> {
+        <span class="k">await</span> db.execute(<span class="s">'PRAGMA journal_mode=WAL;'</span>);
+        <span class="k">await</span> db.execute(<span class="s">'PRAGMA foreign_keys=ON;'</span>);
+      },
+    );
+    <span class="k">return</span> _db!;
+  }
+}</div>
+  </div>
+
+  <!-- SLIDE 11: DATABASE SCHEMA (TABLES) -->
+  <div class="slide" data-index="10">
+    <div class="bg-accent"></div>
+    <h2>📋 15+ Database Tables</h2>
+    <p>Complete schema powering all features</p>
+    <div class="grid-3" style="max-width: 950px;">
+      <div class="card-sm" style="border-color: rgba(124,77,255,0.25);"><h4>👤 users</h4><p>Auth, profile, gamification stats, streak</p></div>
+      <div class="card-sm" style="border-color: rgba(68,138,255,0.25);"><h4>📚 courses</h4><p>12 engineering courses catalog</p></div>
+      <div class="card-sm" style="border-color: rgba(68,138,255,0.25);"><h4>🏛️ departments</h4><p>Department structure within courses</p></div>
+      <div class="card-sm" style="border-color: rgba(68,138,255,0.25);"><h4>📅 academic_years</h4><p>1st, 2nd, 3rd, 4th year structure</p></div>
+      <div class="card-sm" style="border-color: rgba(68,138,255,0.25);"><h4>📖 semesters</h4><p>Semester/subject mapping per year</p></div>
+      <div class="card-sm" style="border-color: rgba(68,138,255,0.25);"><h4>📐 subjects</h4><p>38+ subjects across all courses</p></div>
+      <div class="card-sm" style="border-color: rgba(68,138,255,0.25);"><h4>📚 subject_units</h4><p>Unit/topic breakdown within subjects</p></div>
+      <div class="card-sm"><h4>📝 notes</h4><p>User notes with AI summaries</p></div>
+      <div class="card-sm"><h4>🃏 flashcards</h4><p>FSRS: stability, difficulty, retrievability</p></div>
+      <div class="card-sm"><h4>📊 quiz_attempts</h4><p>Score, accuracy, per-subject tracking</p></div>
+      <div class="card-sm"><h4>⏱️ study_sessions</h4><p>Focus timer history with XP earned</p></div>
+      <div class="card-sm"><h4>🏆 user_achievements</h4><p>23 achievements unlock tracking</p></div>
+      <div class="card-sm"><h4>⭐ xp_ledger</h4><p>Transaction audit trail (every XP event)</p></div>
+      <div class="card-sm"><h4>👥 friend_requests</h4><p>Pending friend requests</p></div>
+      <div class="card-sm"><h4>🤝 friendships</h4><p>Bidirectional friend connections</p></div>
+      <div class="card-sm"><h4>🔔 notifications</h4><p>In-app notification center</p></div>
+      <div class="card-sm"><h4>💬 community_posts</h4><p>Q&A board posts</p></div>
+      <div class="card-sm"><h4>💬 community_answers</h4><p>Answers on community posts</p></div>
+      <div class="card-sm"><h4>📎 uploaded_files</h4><p>AI Mentor file references</p></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: GEMINI AI INTEGRATION -->
+  <div class="slide" data-index="11">
+    <div class="bg-accent"></div>
+    <h2>🤖 Google Gemini AI</h2>
+    <p>google_generative_ai 0.4.7 — text + vision capabilities</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="text-align: left;">
+        <h4>Integration Architecture</h4>
+        <ul class="ft-list">
+          <li><strong>ai_api_service.dart</strong> — HTTP client wrapper for Gemini REST API</li>
+          <li><strong>ai_brain.dart</strong> — Orchestrates prompts, context, and response parsing</li>
+          <li><strong>ai_memory.dart</strong> — Conversation memory (sliding window of recent QA)</li>
+          <li><strong>System Prompt</strong> — Custom instruction: "You are a patient study mentor..."</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>API Features Used</h4>
+        <ul class="ft-list">
+          <li><strong>Text Generation</strong> — Subject Q&A, explanations</li>
+          <li><strong>File Analysis</strong> — Upload PDF/images for AI to read</li>
+          <li><strong>Summarization</strong> — Notes → concise summaries</li>
+          <li><strong>Safety Settings</strong> — Blocked harmful content categories</li>
+          <li><strong>Temperature 0.7</strong> — Balanced creativity/accuracy</li>
+          <li><strong>Max Tokens 2048</strong> — Sufficient for detailed responses</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// AI Mentor — Gemini API call</span>
+<span class="k">final</span> model = <span class="n">GenerativeModel</span>(
+  model: <span class="s">'gemini-1.5-flash'</span>,
+  apiKey: apiKey,
+  systemInstruction: <span class="n">Content</span>.text(<span class="s">'You are a patient, knowledgeable study mentor...'</span>),
+  generationConfig: <span class="n">GenerationConfig</span>(
+    temperature: <span class="k">0.7</span>, maxOutputTokens: <span class="k">2048</span>,
+  ),
+);
+<span class="k">final</span> response = <span class="k">await</span> model.generateContent([<span class="n">Content</span>.text(userQuery)]);
+<span class="k">return</span> response.text ?? <span class="s">'I could not generate an answer.'</span>;</div>
+  </div>
+
+  <!-- SLIDE 13: GAMIFICATION ENGINE -->
+  <div class="slide" data-index="12">
+    <div class="bg-accent"></div>
+    <h2>🎮 Gamification Engine</h2>
+    <p>Built from scratch — 13 XP events, quadratic levels, 23 achievements</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="text-align: left;">
+        <h4>Level Formula</h4>
+        <p style="font-size: 14px;"><strong>XP Required = N² × 100</strong></p>
+        <ul class="ft-list">
+          <li>Level 1: 0 XP &nbsp;|&nbsp; Level 10: 10,000 XP</li>
+          <li>Level 5: 2,500 XP &nbsp;|&nbsp; Level 20: 40,000 XP</li>
+          <li>Level 50: 250,000 XP &nbsp;|&nbsp; Cap: Level 100</li>
+        </ul>
+        <div class="detail" style="margin-top: 6px;">13 XP event types trigger on user actions</div>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Achievement System</h4>
+        <ul class="ft-list">
+          <li><strong>Auto-checked</strong> — On every XP event, all 23 achievements re-evaluated</li>
+          <li><strong>Progress tracking</strong> — Each achievement has target number</li>
+          <li><strong>Unlock notification</strong> — Popup when achievement is earned</li>
+          <li><strong>Categories:</strong> Study, Quiz, Social, Streak, XP, Milestone, Special</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// Gamification core logic</span>
+<span class="k">int</span> levelForXp(<span class="k">int</span> xp) => (<span class="n">sqrt</span>(xp / 100)).<span class="k">floor</span>();
+<span class="k">int</span> xpForLevel(<span class="k">int</span> level) => level * level * 100;
+<span class="k">double</span> xpProgress(<span class="k">int</span> xp) {
+  <span class="k">final</span> lvl = levelForXp(xp);
+  <span class="k">final</span> cur = xp - xpForLevel(lvl);
+  <span class="k">final</span> next = xpForLevel(lvl + 1) - xpForLevel(lvl);
+  <span class="k">return</span> cur / next;  <span class="c">// 0.0 → 1.0 progress bar</span>
+}</div>
+  </div>
+
+  <!-- SLIDE 14: FSRS SPACED REPETITION -->
+  <div class="slide" data-index="13">
+    <div class="bg-accent"></div>
+    <h2>🃏 FSRS Algorithm</h2>
+    <p>Free Spaced Repetition Scheduler — next-gen flashcard review</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="text-align: left;">
+        <h4>4 Rating Levels</h4>
+        <ul class="ft-list">
+          <li><strong>Again</strong> — Total recall failure, reset interval</li>
+          <li><strong>Hard</strong> — Recalled with difficulty, shorter interval</li>
+          <li><strong>Good</strong> — Correct recall, normal progression</li>
+          <li><strong>Easy</strong> — Effortless recall, longest interval jump</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Core Metrics Tracked</h4>
+        <ul class="ft-list">
+          <li><strong>Stability (S)</strong> — How long the card will retain memory (days)</li>
+          <li><strong>Difficulty (D)</strong> — How inherently hard the card is (1-10)</li>
+          <li><strong>Retrievability (R)</strong> — Probability of recall today (0-100%)</li>
+          <li><strong>Next Review</strong> — Calculated based on S × desired R threshold</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// FSRS state for each flashcard</span>
+<span class="k">class</span> <span class="n">FlashcardFsrs</span> {
+  <span class="k">final</span> <span class="k">double</span> stability;      <span class="c">// S — interval in days</span>
+  <span class="k">final</span> <span class="k">double</span> difficulty;     <span class="c">// D — 1 (easy) to 10 (hard)</span>
+  <span class="k">final</span> <span class="k">double</span> retrievability; <span class="c">// R — 0.0 to 1.0</span>
+  <span class="k">final</span> <span class="n">DateTime</span> nextReview;
+  
+  <span class="n">FlashcardFsrs</span> advance(<span class="k">int</span> rating) { <span class="c">// rating: 1=again, 2=hard, 3=good, 4=easy</span>
+    <span class="c">// Update stability and difficulty based on rating</span>
+    <span class="c">// Calculate new nextReview = now + new stability</span>
+  }
+}</div>
+  </div>
+
+  <!-- SLIDE 15: EDUCATION SYSTEM (SEED DATA) -->
+  <div class="slide" data-index="14">
+    <div class="bg-accent"></div>
+    <h2>📚 Education System</h2>
+    <p>education_system.dart — Complete CS curriculum seeded into the database</p>
+    <div class="grid-2" style="max-width: 850px;">
+      <div class="card" style="text-align: left;">
+        <h4>12 Courses</h4>
+        <ul class="ft-list">
+          <li>Computer Science, IT, Mechanical, Civil</li>
+          <li>Electrical, Electronics, Chemical, Aerospace</li>
+          <li>Biotechnology, Robotics, AI/ML, Data Science</li>
+        </ul>
+        <div class="detail" style="margin-top: 6px;">Each course has departments → years → semesters → subjects</div>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>CS Curriculum (Sample)</h4>
+        <ul class="ft-list">
+          <li>Year 1: Programming, Maths, Physics, English</li>
+          <li>Year 2: DSA, OOP, DBMS, Computer Networks</li>
+          <li>Year 3: OS, AI, Compiler Design, Web Dev</li>
+          <li>Year 4: ML, Cloud, Blockchain, Capstone</li>
+        </ul>
+        <div class="detail" style="margin-top: 6px;">38+ subjects with unit/topic breakdowns</div>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// Seed data structure</span>
+<span class="k">final</span> <span class="n">EducationSystem</span> _edu = <span class="n">EducationSystem</span>();
+<span class="k">await</span> _edu.seedAll();  <span class="c">// Inserts courses, subjects, units into SQLite</span>
+<span class="c">// Only runs once — checks if data already exists</span></div>
+  </div>
+
+  <!-- SLIDE 16: AUTH SYSTEM -->
+  <div class="slide" data-index="15">
+    <div class="bg-accent"></div>
+    <h2>🔐 Authentication System</h2>
+    <p>Email/Password + Google Sign-In with local session persistence</p>
+    <div class="grid-2" style="max-width: 750px;">
+      <div class="card" style="text-align: left;">
+        <h4>Auth Flow</h4>
+        <ul class="ft-list">
+          <li><strong>Registration</strong> — Email + password with validation</li>
+          <li><strong>Login</strong> — Local credential verification via SQLite</li>
+          <li><strong>Google Sign-In</strong> — OAuth 2.0 for one-tap login</li>
+          <li><strong>Session Persistence</strong> — Remember me via SharedPrefs token</li>
+          <li><strong>Auto-login</strong> — Splash screen checks saved session</li>
+          <li><strong>Password Reset</strong> — Forgot password flow with email</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Screens</h4>
+        <ul class="ft-list">
+          <li><strong>Login Screen</strong> — Email/password fields, social buttons</li>
+          <li><strong>Register Screen</strong> — Name, email, password, confirm</li>
+          <li><strong>Forgot Password</strong> — Email input with reset link</li>
+          <li><strong>Splash Screen</strong> — Animated logo + auto-login check</li>
+          <li><strong>Onboarding</strong> — 3-page walkthrough for first launch</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: QR SCANNER + SOCIAL -->
+  <div class="slide" data-index="16">
+    <div class="bg-accent"></div>
+    <h2>📷 QR Scanner (mobile_scanner)</h2>
+    <p>CameraX-based barcode scanner for instant friend adding</p>
+    <div class="grid-2" style="max-width: 750px;">
+      <div class="card" style="text-align: left;">
+        <h4>How It Works</h4>
+        <ul class="ft-list">
+          <li><strong>User A</strong> — Goes to Friends → "My QR" → Shows own QR code</li>
+          <li><strong>User B</strong> — Goes to Friends → "Scan QR" → Camera opens</li>
+          <li><strong>CameraX</strong> — MobileScanner widget wraps CameraX lifecycle</li>
+          <li><strong>Auto-detect</strong> — QR decoded → user ID extracted → friend request sent</li>
+          <li><strong>Permissions</strong> — Runtime camera permission request on first scan</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Social Features</h4>
+        <ul class="ft-list">
+          <li>Friend requests (send/accept/reject)</li>
+          <li>Bidirectional friendships</li>
+          <li>Friend leaderboards (XP, study, quiz, streak)</li>
+          <li>Community Q&A with posts + answers + likes</li>
+          <li>Notification center for social activity</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// QR Scanner — one-liner integration</span>
+<span class="n">MobileScanner</span>(
+  controller: <span class="n">MobileScannerController</span>(detectionSpeed: <span class="n">DetectionSpeed</span>.noDuplicates),
+  onDetect: (barcode) {
+    <span class="k">final</span> userId = barcode.barcodes.first.rawValue;
+    <span class="n">FriendService</span>().sendRequest(userId!);
+  },
+)</div>
+  </div>
+
+  <!-- SLIDE 18: CHARTS & ANALYTICS -->
+  <div class="slide" data-index="17">
+    <div class="bg-accent"></div>
+    <h2>📈 fl_chart 0.69.2</h2>
+    <p>Beautiful, animated charts for the analytics dashboard</p>
+    <div class="grid-2" style="max-width: 750px;">
+      <div class="card" style="text-align: left;">
+        <h4>Chart Types Used</h4>
+        <ul class="ft-list">
+          <li><strong>BarChart</strong> — Weekly study minutes (7 bars, one per day)</li>
+          <li><strong>PieChart</strong> — Subject time distribution</li>
+          <li><strong>LineChart</strong> — Quiz accuracy over time</li>
+        </ul>
+        <div class="detail" style="margin-top: 6px;">All charts are animated with touch tooltips</div>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Analytics Computed</h4>
+        <ul class="ft-list">
+          <li>Total study sessions count</li>
+          <li>Total minutes studied</li>
+          <li>Quiz accuracy by subject</li>
+          <li>Overall accuracy percentage</li>
+          <li>Current streak length</li>
+          <li>Current level + XP progress</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code-block"><span class="c">// Weekly bar chart example</span>
+<span class="n">BarChart</span>(
+  <span class="n">BarChartData</span>(
+    barGroups: weeklyData.map((day) => <span class="n">BarChartGroupData</span>(
+      x: day.weekday, barRods: [<span class="n">BarChartRodData</span>(toY: day.minutes)],
+    )).toList(),
+    titlesData: ..., gridData: ..., borderData: ...,
+  ),
+)</div>
+  </div>
+
+  <!-- SLIDE 19: WIDGET SYSTEM -->
+  <div class="slide" data-index="18">
+    <div class="bg-accent"></div>
+    <h2>🧩 12 Reusable Widgets</h2>
+    <p>Custom widget library for consistent UI across all 20+ screens</p>
+    <div class="grid-3" style="max-width: 900px;">
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">🪟</div><h4>GlassCard</h4><p>Glassmorphism container with backdrop blur, gradient border, glow</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">⭐</div><h4>XPBar</h4><p>Animated XP progress bar with level indicator + smooth fill animation</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">📊</div><h4>StatCard</h4><p>Metric display with icon, value, label — used in home dashboard</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">⏱️</div><h4>StudyTimer</h4><p>Pomodoro countdown with circular progress, start/pause/reset</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">📝</div><h4>QuizCard</h4><p>Question card with 4 options, correct/wrong highlights, timer</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">🃏</div><h4>FlashcardWidget</h4><p>Flip animation card with front/back, swipe gestures, rating buttons</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">🎖️</div><h4>AchievementBadge</h4><p>Locked/unlocked badge with icon, name, progress indicator</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">📐</div><h4>SubjectProgressCard</h4><p>Subject name + progress bar + topic completion count</p></div>
+      <div class="card-sm"><div class="icon" style="font-size: 24px;">🔘</div><h4>GradientButton</h4><p>Styled button with purple/blue gradient, elevation, ripple effect</p></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: BUILD SYSTEM -->
+  <div class="slide" data-index="19">
+    <div class="bg-accent"></div>
+    <h2>🏗️ Build & Deployment</h2>
+    <p>From source code to production APK — the complete build pipeline</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="text-align: left;">
+        <h4>Build Process</h4>
+        <ul class="ft-list">
+          <li><strong>flutter build apk --release</strong> — Main build command</li>
+          <li><strong>R8 Shrinker</strong> — Removes unused code (reduces APK by ~40%)</li>
+          <li><strong>AOT Compilation</strong> — Dart → native ARM64 machine code</li>
+          <li><strong>APK Split</strong> — arm64-v8a (25.8 MB), armeabi-v7a, x86_64</li>
+          <li><strong>App Bundle</strong> — aab format for Play Store distribution</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Gradle Configuration</h4>
+        <ul class="ft-list">
+          <li><strong>AGP 8.9.1</strong> — Android Gradle Plugin</li>
+          <li><strong>Kotlin DSL</strong> — build.gradle.kts for type-safe config</li>
+          <li><strong>JDK 21</strong> — Java Development Kit</li>
+          <li><strong>NDK r27</strong> — Native Development Kit</li>
+          <li><strong>Min SDK 21</strong> — Android 5.0 Lollipop+</li>
+          <li><strong>Target SDK 34</strong> — Android 14</li>
+          <li><strong>Compile SDK 34</strong> — Latest API level</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top: 14px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+      <span class="badge" style="background: rgba(76,175,80,0.15); border-color: rgba(76,175,80,0.3);">✅ flutter analyze — 0 errors, 0 warnings</span>
+      <span class="badge" style="background: rgba(76,175,80,0.15); border-color: rgba(76,175,80,0.3);">✅ flutter test — all passing</span>
+      <span class="badge" style="background: rgba(76,175,80,0.15); border-color: rgba(76,175,80,0.3);">✅ APK 25.8 MB — release ready</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: THEME SYSTEM -->
+  <div class="slide" data-index="20">
+    <div class="bg-accent"></div>
+    <h2>🎨 Theme System</h2>
+    <p>app_theme.dart — Dark theme with purple/blue brand identity</p>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card">
+        <h4>Color Palette</h4>
+        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 8px;">
+          <span style="width: 32px; height: 32px; border-radius: 8px; background: #7C4DFF; display: inline-block; border: 1px solid rgba(255,255,255,0.1);" title="Primary #7C4DFF"></span>
+          <span style="width: 32px; height: 32px; border-radius: 8px; background: #448AFF; display: inline-block; border: 1px solid rgba(255,255,255,0.1);" title="Secondary #448AFF"></span>
+          <span style="width: 32px; height: 32px; border-radius: 8px; background: #0D0D1A; display: inline-block; border: 1px solid rgba(255,255,255,0.1);" title="Background #0D0D1A"></span>
+          <span style="width: 32px; height: 32px; border-radius: 8px; background: #1A1A2E; display: inline-block; border: 1px solid rgba(255,255,255,0.1);" title="Surface #1A1A2E"></span>
+          <span style="width: 32px; height: 32px; border-radius: 8px; background: #252540; display: inline-block; border: 1px solid rgba(255,255,255,0.1);" title="Surface Variant #252540"></span>
+          <span style="width: 32px; height: 32px; border-radius: 8px; background: #FFD700; display: inline-block; border: 1px solid rgba(255,255,255,0.1);" title="Gold #FFD700"></span>
+        </div>
+        <div class="detail" style="margin-top: 8px;">LinearGradient primary: #7C4DFF → #448AFF</div>
+      </div>
+      <div class="card" style="text-align: left;">
+        <h4>Theme Configuration</h4>
+        <ul class="ft-list">
+          <li><strong>useMaterial3: true</strong> — Material Design 3 components</li>
+          <li><strong>Brightness.dark</strong> — Full dark theme</li>
+          <li><strong>Google Fonts</strong> — Poppins (headings) + Inter (body)</li>
+          <li><strong>Custom CardTheme</strong> — 16px radius, surface color, subtle border</li>
+          <li><strong>Custom AppBar</strong> — Transparent, scrolled under-elevation</li>
+          <li><strong>Custom BottomNav</strong> — Fixed type, purple selected state</li>
+          <li><strong>10 subject colors</strong> — Math=purple, Science=green, English=blue...</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: CREDITS & SUMMARY -->
+  <div class="slide" data-index="21">
+    <div class="bg-accent"></div>
+    <h2 style="font-size: 48px;">✅ Development Complete</h2>
+    <p style="font-size: 20px;">StudyMate AI — built with precision, care, and no shortcuts</p>
+    <div class="metrics" style="gap: 24px;">
+      <div class="metric"><div class="num">Dart</div><div class="label">Primary Language</div></div>
+      <div class="metric"><div class="num">Flutter</div><div class="label">UI Framework</div></div>
+      <div class="metric"><div class="num">SQLite</div><div class="label">Database</div></div>
+      <div class="metric"><div class="num">Gemini</div><div class="label">AI Engine</div></div>
+      <div class="metric"><div class="num">VS Code</div><div class="label">Editor</div></div>
+      <div class="metric"><div class="num">Gradle</div><div class="label">Build System</div></div>
+    </div>
+    <div class="grid-2" style="max-width: 500px; margin-top: 20px;">
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h4>Built by Suzume</h4>
+        <p style="font-size: 13px;">Supreme AI Architect<br>
+        Code • Architecture • Design • Testing</p>
+      </div>
+      <div class="card">
+        <div class="icon">👤</div>
+        <h4>For Rushikesh</h4>
+        <p style="font-size: 13px;">Product Owner • Visionary<br>
+        Direction • Feedback • Deployment</p>
+      </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 16px; color: var(--gold);">Thank you for exploring how StudyMate AI was made! 🚀</p>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prevSlide()">◀</button>
+  <div class="dots" id="dots"></div>
+  <button onclick="nextSlide()">▶</button>
+  <span class="num" id="num">1/22</span>
+</div>
+
+<script>
+let cur = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+
+function go(n) {
+  slides[cur].classList.remove('active');
+  cur = (n + total) % total;
+  slides[cur].classList.add('active');
+  update();
+}
+function nextSlide() { go(cur + 1); }
+function prevSlide() { go(cur - 1); }
+
+function update() {
+  document.getElementById('num').textContent = `${cur+1}/${total}`;
+  document.getElementById('counter').textContent =
+    `${String(cur+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+}
+
+const dots = document.getElementById('dots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  dots.appendChild(d);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(total - 1);
+});
+
+let tx = 0;
+document.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const d = e.changedTouches[0].clientX - tx;
+  if (Math.abs(d) > 50) d < 0 ? nextSlide() : prevSlide();
+});
+
+let timer = setInterval(nextSlide, 25000);
+document.querySelector('.nav').addEventListener('click', () => {
+  clearInterval(timer);
+  timer = setInterval(nextSlide, 25000);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI — Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #7C4DFF;
+      --secondary: #448AFF;
+      --gold: #FFD700;
+      --bg: #0D0D1A;
+      --surface: #1A1A2E;
+      --surface2: #252540;
+      --text: #E8E8F0;
+      --text2: #B0B0C0;
+      --gradient: linear-gradient(135deg, #7C4DFF, #448AFF);
+      --gradient2: linear-gradient(135deg, #7C4DFF, #FFD700);
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* ─── SLIDE CONTAINER ─── */
+    .slides {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    /* ─── BACKGROUNDS ─── */
+    .slide {
+      background: radial-gradient(ellipse at center, #1A1A3E 0%, #0D0D1A 70%);
+    }
+
+    .slide-bg-accent {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .slide-bg-accent::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .slide:nth-child(odd) .slide-bg-accent::before {
+      background: var(--primary);
+      top: -200px;
+      right: -200px;
+    }
+
+    .slide:nth-child(even) .slide-bg-accent::before {
+      background: var(--secondary);
+      bottom: -200px;
+      left: -200px;
+      animation-delay: -4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -40px); }
+    }
+
+    .slide > * { position: relative; z-index: 1; }
+
+    /* ─── TYPOGRAPHY ─── */
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 72px;
+      font-weight: 900;
+      background: var(--gradient2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--text2);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .subtitle {
+      font-size: 22px;
+      color: var(--gold);
+      font-weight: 500;
+      margin-top: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      font-size: 18px;
+      color: var(--text2);
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* ─── GRID ─── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 900px;
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      max-width: 1000px;
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 16px;
+      max-width: 1100px;
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: rgba(26,26,46,0.8);
+      border: 1px solid rgba(124,77,255,0.2);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(124,77,255,0.15);
+    }
+
+    .card .icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .card h4 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .card-small {
+      background: rgba(26,26,46,0.6);
+      border: 1px solid rgba(68,138,255,0.15);
+      border-radius: 12px;
+      padding: 16px 14px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .card-small h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    /* ─── TECH BADGES ─── */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      max-width: 700px;
+      margin: 20px auto 0;
+    }
+
+    .tech-item {
+      background: linear-gradient(135deg, rgba(124,77,255,0.15), rgba(68,138,255,0.1));
+      border: 1px solid rgba(124,77,255,0.25);
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .tech-item .ver {
+      color: var(--text2);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    /* ─── METRICS ─── */
+    .metrics {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .metric {
+      text-align: center;
+    }
+
+    .metric .num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .metric .label {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+
+    /* ─── FEATURE LIST ─── */
+    .feature-list {
+      list-style: none;
+      max-width: 600px;
+      margin: 20px auto 0;
+      text-align: left;
+    }
+
+    .feature-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(124,77,255,0.1);
+      font-size: 16px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-list li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    /* ─── NAVIGATION ─── */
+    .nav {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 100;
+      background: rgba(13,13,26,0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(124,77,255,0.2);
+      border-radius: 30px;
+      padding: 8px 16px;
+    }
+
+    .nav button {
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav button:hover {
+      color: var(--text);
+      background: rgba(124,77,255,0.15);
+    }
+
+    .nav .dots {
+      display: flex;
+      gap: 8px;
+      margin: 0 8px;
+    }
+
+    .nav .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--surface2);
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+
+    .nav .dot.active {
+      background: var(--primary);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .nav .slide-num {
+      font-size: 13px;
+      color: var(--text2);
+      min-width: 40px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ─── SLIDE NUMBER TOP-RIGHT ─── */
+    .slide-counter {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.15);
+      z-index: 100;
+      font-variant-numeric: tabular-nums;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .slide { padding: 30px 24px; }
+      h1 { font-size: 42px; }
+      h2 { font-size: 30px; }
+      h3 { font-size: 22px; }
+      p { font-size: 16px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .metrics { gap: 20px; flex-wrap: wrap; }
+      .metric .num { font-size: 32px; }
+      .nav { gap: 6px; padding: 6px 10px; }
+      .nav button { font-size: 16px; padding: 4px 6px; }
+      .subtitle { font-size: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      h1 { font-size: 32px; }
+      h2 { font-size: 24px; }
+      .tech-stack { gap: 8px; }
+      .tech-item { padding: 6px 14px; font-size: 12px; }
+    }
+
+    /* ─── ANIMATED PARTICLES (title slide) ─── */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.4;
+      animation: particle-float linear infinite;
+    }
+
+    @keyframes particle-float {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.2; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* ─── ARCHITECTURE DIAGRAM ─── */
+    .arch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .arch-layer {
+      background: rgba(124,77,255,0.1);
+      border: 1px solid rgba(124,77,255,0.2);
+      border-radius: 8px;
+      padding: 8px 24px;
+      font-size: 13px;
+      color: var(--text2);
+      min-width: 280px;
+      text-align: center;
+    }
+
+    .arch-layer.highlight {
+      background: rgba(255,215,0,0.1);
+      border-color: rgba(255,215,0,0.3);
+      color: var(--gold);
+    }
+
+    .arch-arrow {
+      color: var(--primary);
+      font-size: 12px;
+      opacity: 0.4;
+    }
+
+    /* ─── LISTS ─── */
+    .list-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+      max-width: 700px;
+      margin: 16px auto 0;
+      text-align: left;
+    }
+
+    .list-columns li {
+      font-size: 14px;
+      color: var(--text2);
+      padding: 4px 0;
+    }
+
+    /* ─── XP TABLE ─── */
+    .xp-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      max-width: 500px;
+      margin: 16px auto 0;
+      text-align: left;
+    }
+
+    .xp-row {
+      display: contents;
+    }
+
+    .xp-row span {
+      padding: 4px 12px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .xp-row span:first-child {
+      text-align: right;
+      color: var(--gold);
+    }
+
+    .xp-row:nth-child(odd) span {
+      background: rgba(124,77,255,0.05);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide-counter" id="slideCounter">01 / 20</div>
+
+<div class="slides" id="slides">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active" data-index="0">
+    <div class="particles" id="particles"></div>
+    <div class="slide-bg-accent"></div>
+    <p class="subtitle">Your AI-Powered Learning Companion</p>
+    <h1>STUDYMATE<br>AI</h1>
+    <p class="tagline">Built with Flutter • Powered by Gemini • Gamified Learning</p>
+    <div class="metrics">
+      <div class="metric"><div class="num">150+</div><div class="label">Dart Files</div></div>
+      <div class="metric"><div class="num">20+</div><div class="label">Screens</div></div>
+      <div class="metric"><div class="num">15+</div><div class="label">DB Tables</div></div>
+      <div class="metric"><div class="num">23</div><div class="label">Achievements</div></div>
+    </div>
+    <p style="margin-top: 30px; font-size: 14px; color: rgba(255,255,255,0.2);">
+      Built by Suzume for Rushikesh • July 2026
+    </p>
+  </div>
+
+  <!-- SLIDE 2: WHAT IS STUDYMATE -->
+  <div class="slide" data-index="1">
+    <div class="slide-bg-accent"></div>
+    <h2>What is StudyMate AI?</h2>
+    <p style="font-size: 22px; max-width: 800px;">
+      A full-featured, offline-first Android study companion app that combines 
+      <strong style="color: var(--gold);">AI-powered learning tools</strong>, 
+      <strong style="color: var(--gold);">gamification</strong>, 
+      <strong style="color: var(--gold);">social features</strong>, and 
+      <strong style="color: var(--gold);">smart scheduling</strong> 
+      into one seamless experience.
+    </p>
+    <div class="grid-3" style="margin-top: 40px;">
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h4>Smart Learning</h4>
+        <p>FSRS spaced repetition, AI quizzes, Gemini mentor</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎮</div>
+        <h4>Gamified</h4>
+        <p>XP, levels, 23 achievements, streaks, leaderboards</p>
+      </div>
+      <div class="card">
+        <div class="icon">👥</div>
+        <h4>Social</h4>
+        <p>QR friends, community, leaderboards, challenges</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: TECH STACK -->
+  <div class="slide" data-index="2">
+    <div class="slide-bg-accent"></div>
+    <h2>Tech Stack</h2>
+    <div class="tech-stack">
+      <span class="tech-item">Flutter <span class="ver">3.44.4</span></span>
+      <span class="tech-item">Dart <span class="ver">3.12.2</span></span>
+      <span class="tech-item">SQLite <span class="ver">sqflite</span></span>
+      <span class="tech-item">Riverpod <span class="ver">2.6.1</span></span>
+      <span class="tech-item">Gemini API</span>
+      <span class="tech-item">fl_chart <span class="ver">0.69.2</span></span>
+      <span class="tech-item">mobile_scanner</span>
+      <span class="tech-item">SharedPreferences</span>
+      <span class="tech-item">Gradle <span class="ver">8.11.1</span></span>
+      <span class="tech-item">AGP <span class="ver">8.9.1</span></span>
+    </div>
+    <div style="margin-top: 30px;">
+      <div class="metrics" style="gap: 30px;">
+        <div class="metric"><div class="num">15,000+</div><div class="label">Lines of Code</div></div>
+        <div class="metric"><div class="num">25.8 MB</div><div class="label">APK Size</div></div>
+        <div class="metric"><div class="num">0</div><div class="label">Errors / Warnings</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: ARCHITECTURE -->
+  <div class="slide" data-index="3">
+    <div class="slide-bg-accent"></div>
+    <h2>Architecture</h2>
+    <p>Clean layered architecture with dual-write data layer</p>
+    <div class="arch">
+      <div class="arch-layer highlight">SCREENS (20+) — Home, Focus, Notes, Flashcards, Quizzes, Mentor...</div>
+      <div class="arch-arrow">▼ sync</div>
+      <div class="arch-layer">AppDatabase — Synchronous API + In-Memory Cache</div>
+      <div class="arch-arrow">▼ dual-write</div>
+      <div class="arch-layer" style="display: flex; gap: 20px; justify-content: center; border: none; background: none;">
+        <span style="background: rgba(124,77,255,0.1); border: 1px solid rgba(124,77,255,0.2); border-radius: 8px; padding: 6px 16px;">SharedPrefs (JSON)</span>
+        <span style="background: rgba(68,138,255,0.1); border: 1px solid rgba(68,138,255,0.2); border-radius: 8px; padding: 6px 16px;">SQLite (15+ tables)</span>
+      </div>
+      <div class="arch-arrow">▼</div>
+      <div class="arch-layer">6 Domain Repositories + DatabaseHelper (WAL + FTS5)</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: DATABASE SCHEMA -->
+  <div class="slide" data-index="4">
+    <div class="slide-bg-accent"></div>
+    <h2>Database Schema</h2>
+    <p>15+ tables powering every feature</p>
+    <div class="grid-3" style="max-width: 900px;">
+      <div class="card-small"><h4>👤 User</h4>Auth, profiles, gamification stats</div>
+      <div class="card-small"><h4>📚 Courses</h4>12 courses catalog</div>
+      <div class="card-small"><h4>🏛️ Departments</h4>Department structure</div>
+      <div class="card-small"><h4>📅 Academic Years</h4>1st-4th year structure</div>
+      <div class="card-small"><h4>📖 Semesters</h4>Subject mapping per sem</div>
+      <div class="card-small"><h4>📐 Subjects</h4>38+ subjects catalog</div>
+      <div class="card-small"><h4>📝 Notes</h4>User notes with AI summaries</div>
+      <div class="card-small"><h4>🃏 Flashcards</h4>FSRS spaced repetition</div>
+      <div class="card-small"><h4>📊 Quiz Attempts</h4>Score history tracking</div>
+      <div class="card-small"><h4>🏆 Achievements</h4>23 unlockable achievements</div>
+      <div class="card-small"><h4>⭐ XP Ledger</h4>Transaction audit trail</div>
+      <div class="card-small"><h4>👥 Friends</h4>Requests + bidirectional</div>
+      <div class="card-small"><h4>🔔 Notifications</h4>In-app notification center</div>
+      <div class="card-small"><h4>💬 Community</h4>Posts + answers board</div>
+      <div class="card-small"><h4>📁 Uploaded Files</h4>AI Mentor file uploads</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: SCREENS OVERVIEW -->
+  <div class="slide" data-index="5">
+    <div class="slide-bg-accent"></div>
+    <h2>20+ Screens</h2>
+    <p>Every screen built for a specific learning purpose</p>
+    <div class="grid-4">
+      <div class="card-small"><h4>🏠 Home</h4>Dashboard & quick actions</div>
+      <div class="card-small"><h4>⏱️ Focus</h4>Pomodoro timer + XP</div>
+      <div class="card-small"><h4>📝 Notes</h4>AI-summarized notes</div>
+      <div class="card-small"><h4>🃏 Flashcards</h4>FSRS spaced repetition</div>
+      <div class="card-small"><h4>📊 Quizzes</h4>Subject-wise tests</div>
+      <div class="card-small"><h4>🧠 AI Mentor</h4>Gemini Q&A with upload</div>
+      <div class="card-small"><h4>📅 Planner</h4>Daily/weekly study plan</div>
+      <div class="card-small"><h4>📈 Analytics</h4>Charts & breakdowns</div>
+      <div class="card-small"><h4>👥 Friends</h4>QR add, requests</div>
+      <div class="card-small"><h4>💬 Community</h4>Discussion board</div>
+      <div class="card-small"><h4>🏆 Leaderboard</h4>XP, study, quiz rankings</div>
+      <div class="card-small"><h4>🎯 Achievements</h4>23 with progress</div>
+      <div class="card-small"><h4>⭐ Daily Rewards</h4>Streak-based claims</div>
+      <div class="card-small"><h4>👤 Profile</h4>Edit, stats view</div>
+      <div class="card-small"><h4>⚙️ Settings</h4>Preferences, API key</div>
+      <div class="card-small"><h4>🔍 Search</h4>Notes, flashcards, subjects</div>
+      <div class="card-small"><h4>🗺️ Roadmap</h4>Visual subject progress</div>
+      <div class="card-small"><h4>🔔 Notifications</h4>Notification center</div>
+      <div class="card-small"><h4>🏗️ EduForge</h4>Course browser</div>
+      <div class="card-small"><h4>📱 Onboarding</h4>First-launch walkthrough</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: FEATURES — SMART LEARNING -->
+  <div class="slide" data-index="6">
+    <div class="slide-bg-accent"></div>
+    <h2>🧠 Smart Learning</h2>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card">
+        <div class="icon">🔄</div>
+        <h4>FSRS Spaced Repetition</h4>
+        <p>4 rating levels (again/hard/good/easy) with stability, difficulty, and retrievability tracking. Optimized review scheduling.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h4>AI-Powered</h4>
+        <p>Gemini API integration for real-time Q&A, smart summaries, and content generation from uploaded materials.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📝</div>
+        <h4>Smart Notes</h4>
+        <p>Create, organize, and AI-summarize your notes. All stored locally with full offline access.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📐</div>
+        <h4>Complete Curriculum</h4>
+        <p>12 courses, 38+ subjects covering 4-year CS curriculum. Pre-seeded and ready to study.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: FEATURES — GAMIFICATION -->
+  <div class="slide" data-index="7">
+    <div class="slide-bg-accent"></div>
+    <h2>🎮 Gamification System</h2>
+    <p>13 XP event types powering engagement</p>
+    <div class="grid-2" style="max-width: 700px;">
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h4>XP Events</h4>
+        <div class="xp-table">
+          <div class="xp-row"><span>Study session</span><span>10 XP/min</span></div>
+          <div class="xp-row"><span>Complete quiz</span><span>50 XP</span></div>
+          <div class="xp-row"><span>Perfect score</span><span>100 XP</span></div>
+          <div class="xp-row"><span>Review flashcard</span><span>5 XP</span></div>
+          <div class="xp-row"><span>Create notes</span><span>15 XP</span></div>
+          <div class="xp-row"><span>Daily login</span><span>10 XP</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="icon">📈</div>
+        <h4>Level Progression</h4>
+        <p style="font-size: 13px;">Level N needs N² × 100 XP</p>
+        <div class="xp-table" style="max-width: 250px;">
+          <div class="xp-row"><span>Lv 1</span><span>0 XP</span></div>
+          <div class="xp-row"><span>Lv 5</span><span>2,500 XP</span></div>
+          <div class="xp-row"><span>Lv 10</span><span>10,000 XP</span></div>
+          <div class="xp-row"><span>Lv 20</span><span>40,000 XP</span></div>
+          <div class="xp-row"><span>Lv 50</span><span>250,000 XP</span></div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top: 16px; font-size: 14px; color: var(--gold);">23 achievements • Daily streaks • Leaderboards • Daily rewards</p>
+  </div>
+
+  <!-- SLIDE 9: FEATURES — AI MENTOR -->
+  <div class="slide" data-index="8">
+    <div class="slide-bg-accent"></div>
+    <h2>🤖 AI Mentor</h2>
+    <p style="max-width: 700px;">Gemini-powered intelligent study assistant available 24/7</p>
+    <div class="grid-3" style="max-width: 800px;">
+      <div class="card">
+        <div class="icon">💬</div>
+        <h4>Question & Answer</h4>
+        <p>Ask any subject-related question. Get clear, contextual explanations powered by Gemini AI.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📎</div>
+        <h4>File Upload</h4>
+        <p>Upload PDFs, images, or documents. AI analyzes the content and answers based on your materials.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h4>Smart Summaries</h4>
+        <p>Generate concise summaries of notes, chapters, or uploaded content for quick revision.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: FEATURES — SOCIAL -->
+  <div class="slide" data-index="9">
+    <div class="slide-bg-accent"></div>
+    <h2>👥 Social Learning</h2>
+    <div class="grid-3" style="max-width: 800px;">
+      <div class="card">
+        <div class="icon">📱</div>
+        <h4>QR Code Friends</h4>
+        <p>Scan to add friends instantly. No usernames, no search — just point and connect.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏆</div>
+        <h4>Leaderboards</h4>
+        <p>Compete in XP, study time, quiz scores, and streaks. See where you rank among friends.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💭</div>
+        <h4>Community Board</h4>
+        <p>Ask questions, share resources, answer peers. Built-in Q&A with likes and replies.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: FEATURES — ANALYTICS -->
+  <div class="slide" data-index="10">
+    <div class="slide-bg-accent"></div>
+    <h2>📊 Analytics Dashboard</h2>
+    <div class="grid-3" style="max-width: 800px;">
+      <div class="card">
+        <div class="icon">📈</div>
+        <h4>Weekly Study Chart</h4>
+        <p>Bar chart showing daily study minutes. Track consistency and identify study patterns.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h4>Quiz Accuracy</h4>
+        <p>Per-subject accuracy tracking. Know which subjects need more attention.</p>
+      </div>
+      <div class="card">
+        <div class="icon">⏱️</div>
+        <h4>Subject Breakdown</h4>
+        <p>Study time distribution across subjects. See where your time goes.</p>
+      </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 14px; color: var(--text2);">Total sessions • Minutes studied • Overall accuracy • Heatmap (coming soon)</p>
+  </div>
+
+  <!-- SLIDE 12: FEATURES — FOCUS TIMER -->
+  <div class="slide" data-index="11">
+    <div class="slide-bg-accent"></div>
+    <h2>⏱️ Focus Timer</h2>
+    <p>Pomodoro-style study sessions with XP rewards</p>
+    <div class="grid-2" style="max-width: 600px;">
+      <div class="card">
+        <div class="icon">🍅</div>
+        <h4>Pomodoro Mode</h4>
+        <p>25min focus sessions with 5min breaks. Earn 10 XP per minute of focused study.</p>
+      </div>
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h4>XP Rewards</h4>
+        <p>Every minute studied = XP earned. Longer sessions = bigger rewards. Streak bonuses included.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: FEATURES — FLASHCARDS -->
+  <div class="slide" data-index="12">
+    <div class="slide-bg-accent"></div>
+    <h2>🃏 Flashcard System</h2>
+    <p>FSRS (Free Spaced Repetition Scheduler) — next-gen review algorithm</p>
+    <div class="grid-2" style="max-width: 700px;">
+      <div class="card">
+        <div class="icon">🔢</div>
+        <h4>4 Rating Levels</h4>
+        <p>Again → Hard → Good → Easy. Each rating adjusts stability, difficulty, and next review date.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h4>Retrievability Tracking</h4>
+        <p>Know exactly how likely you are to remember each card. Review at the optimal time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: GAMIFICATION — ACHIEVEMENTS -->
+  <div class="slide" data-index="13">
+    <div class="slide-bg-accent"></div>
+    <h2>🏆 23 Achievements</h2>
+    <p>Unlockable milestones that track your learning journey</p>
+    <div class="grid-3" style="max-width: 900px;">
+      <div class="card-small"><h4>🥇 First Steps</h4>Complete first session</div>
+      <div class="card-small"><h4>📝 Note Taker</h4>Create first note</div>
+      <div class="card-small"><h4>🃏 Flashcard Learner</h4>Review first card</div>
+      <div class="card-small"><h4>🎯 Perfect Score</h4>100% on any quiz</div>
+      <div class="card-small"><h4>🔥 Streak Starter</h4>3-day streak</div>
+      <div class="card-small"><h4>⚔️ Study Warrior</h4>30-day streak</div>
+      <div class="card-small"><h4>⭐ XP Hunter</h4>1,000 total XP</div>
+      <div class="card-small"><h4>👑 XP Legend</h4>100,000 total XP</div>
+      <div class="card-small"><h4>📈 High Achiever</h4>Reach level 10</div>
+      <div class="card-small"><h4>👥 Popular</h4>5 friends</div>
+      <div class="card-small"><h4>🌙 Night Owl</h4>Study after 10 PM</div>
+      <div class="card-small"><h4>🌅 Early Bird</h4>Study before 6 AM</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: USER JOURNEY -->
+  <div class="slide" data-index="14">
+    <div class="slide-bg-accent"></div>
+    <h2>🎯 User Journey</h2>
+    <div class="grid-3" style="max-width: 900px;">
+      <div class="card">
+        <div class="icon">🎬</div>
+        <h4>Before Studying</h4>
+        <ul class="feature-list" style="margin: 10px 0 0;">
+          <li>Check daily XP goal</li>
+          <li>Review due flashcards</li>
+          <li>Set a Focus session</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">📝</div>
+        <h4>During Studying</h4>
+        <ul class="feature-list" style="margin: 10px 0 0;">
+          <li>Take AI-summarized notes</li>
+          <li>Ask AI Mentor questions</li>
+          <li>Mark study plan tasks</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">✅</div>
+        <h4>After Studying</h4>
+        <ul class="feature-list" style="margin: 10px 0 0;">
+          <li>Take a quick quiz</li>
+          <li>Check analytics</li>
+          <li>Claim daily reward</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: DATA LAYER -->
+  <div class="slide" data-index="15">
+    <div class="slide-bg-accent"></div>
+    <h2>🗄️ Data Storage</h2>
+    <div class="grid-2" style="max-width: 700px;">
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h4>Dual-Write System</h4>
+        <p>SharedPreferences for immediate reads + SQLite background writes. <strong style="color: var(--gold);">Offline-first</strong> — no internet required.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔒</div>
+        <h4>Local-First</h4>
+        <p>All data stored locally on device. Full privacy. No cloud dependency. Your study data stays yours.</p>
+      </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 14px; color: var(--text2);">6 domain repositories • DatabaseHelper with WAL mode • FTS5 full-text search</p>
+  </div>
+
+  <!-- SLIDE 17: DEVELOPMENT PHASES -->
+  <div class="slide" data-index="16">
+    <div class="slide-bg-accent"></div>
+    <h2>🏗️ Development Phases</h2>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card" style="border-color: rgba(76,175,80,0.3);">
+        <div style="color: #4CAF50; font-size: 13px; margin-bottom: 8px;">✅ COMPLETE</div>
+        <h4>Phase 1 — Foundation</h4>
+        <ul class="feature-list" style="margin: 8px 0 0;">
+          <li>SQLite database with migrations</li>
+          <li>6 domain repositories</li>
+          <li>Dual-write AppDatabase</li>
+          <li>Riverpod state management</li>
+          <li>Gamification engine</li>
+          <li>FSRS spaced repetition</li>
+          <li>QR scanner</li>
+          <li>Full CS curriculum seeded</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div style="color: var(--gold); font-size: 13px; margin-bottom: 8px;">🔜 NEXT</div>
+        <h4>Phase 2 — Features</h4>
+        <ul class="feature-list" style="margin: 8px 0 0;">
+          <li>Full SQLite migration</li>
+          <li>AI-generated quizzes</li>
+          <li>Smart study planner</li>
+          <li>Voice AI Mentor</li>
+          <li>Study heatmap</li>
+          <li>Social challenges</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: FUTURE ROADMAP -->
+  <div class="slide" data-index="17">
+    <div class="slide-bg-accent"></div>
+    <h2>🚀 Future Roadmap</h2>
+    <div class="grid-4" style="max-width: 1100px;">
+      <div class="card-small"><h4>🧠 AI Evolution</h4>Multi-model AI, image/ handwriting recognition, voice notes</div>
+      <div class="card-small"><h4>📊 Deep Analytics</h4>Study heatmap, focus score, PDF reports, weakness analysis</div>
+      <div class="card-small"><h4>👥 Social Expansion</h4>Study groups, peer challenges, shared decks, real-time chat</div>
+      <div class="card-small"><h4>🌐 Platform</h4>iOS support, web version, cloud sync, Wear OS</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: WHY STUDYMATE -->
+  <div class="slide" data-index="18">
+    <div class="slide-bg-accent"></div>
+    <h2>❓ Why StudyMate AI?</h2>
+    <div class="grid-2" style="max-width: 800px;">
+      <div class="card">
+        <div class="icon">😫</div>
+        <h4>Problem</h4>
+        <ul class="feature-list" style="margin: 8px 0 0;">
+          <li>Forgetting what you studied</li>
+          <li>No study motivation</li>
+          <li>Hard to track progress</li>
+          <li>Can't find study partners</li>
+          <li>Boring study routine</li>
+          <li>Disorganized notes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">💡</div>
+        <h4>Solution</h4>
+        <ul class="feature-list" style="margin: 8px 0 0;">
+          <li>FSRS spaced repetition</li>
+          <li>Gamification: XP, levels, streaks</li>
+          <li>Analytics dashboard with charts</li>
+          <li>QR friends + community</li>
+          <li>Pomodoro + AI Mentor + quizzes</li>
+          <li>Smart notes with AI summaries</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: CREDITS -->
+  <div class="slide" data-index="19">
+    <div class="slide-bg-accent"></div>
+    <h2 style="font-size: 56px;">🙏 Built By</h2>
+    <div class="grid-2" style="max-width: 500px; margin-top: 30px;">
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h4>Suzume</h4>
+        <p style="font-size: 13px;">Supreme AI Architect & Developer<br>
+        Full-stack Flutter • Database design<br>
+        Gamification algorithms • Testing</p>
+      </div>
+      <div class="card">
+        <div class="icon">👤</div>
+        <h4>Rushikesh</h4>
+        <p style="font-size: 13px;">Product Owner & Visionary<br>
+        Feature direction • Testing • Feedback<br>
+        Deployment & distribution</p>
+      </div>
+    </div>
+    <p style="margin-top: 30px; font-size: 18px; color: var(--gold);">Thank you for exploring StudyMate AI! 🚀</p>
+    <p style="font-size: 14px; color: var(--text2); margin-top: 8px;">Built with ❤️ • July 2026</p>
+  </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button onclick="prevSlide()" title="Previous">◀</button>
+  <div class="dots" id="dots"></div>
+  <button onclick="nextSlide()" title="Next">▶</button>
+  <span class="slide-num" id="slideNum">1/20</span>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  currentSlide = (n + totalSlides) % totalSlides;
+  slides[currentSlide].classList.add('active');
+  updateUI();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+function updateUI() {
+  document.getElementById('slideNum').textContent = `${currentSlide+1}/${totalSlides}`;
+  document.getElementById('slideCounter').textContent = 
+    `${String(currentSlide+1).padStart(2,'0')} / ${String(totalSlides).padStart(2,'0')}`;
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+}
+
+// Create dots
+const dotsContainer = document.getElementById('dots');
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('button');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault(); nextSlide();
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault(); prevSlide();
+  }
+  if (e.key === 'Home') goToSlide(0);
+  if (e.key === 'End') goToSlide(totalSlides - 1);
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 50) diff < 0 ? nextSlide() : prevSlide();
+});
+
+// Particles on title slide
+(function() {
+  const container = document.getElementById('particles');
+  if (!container) return;
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.background = i % 3 === 0 ? '#7C4DFF' : i % 3 === 1 ? '#448AFF' : '#FFD700';
+    container.appendChild(p);
+  }
+})();
+
+// Auto-advance every 30s
+let autoTimer = setInterval(nextSlide, 30000);
+
+// Reset timer on manual nav
+document.querySelector('.nav').addEventListener('click', () => {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(nextSlide, 30000);
+});
+</script>
+
+</body>
+</html>
