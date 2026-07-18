@@ -15,3 +15,6 @@ video/frames/
 video/scene_*.wav
 video/combined_audio.wav
 video/audio_concat.txt
+
+# APK files (too large for repo — hosted via GitHub Releases)
+studymate-ai/*.apk
