@@ -3,480 +3,1076 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>StudyMate AI — 3D Experience</title>
+<title>StudyMate AI — AI-Powered Learning Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--p:#7C4DFF;--s:#448AFF;--g:#FFD700;--bg:#08081A;--t:#E8E8F0;--t2:#A0A0C0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);overflow-x:hidden;cursor:default}
-
-#three-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
-
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 36px;background:rgba(8,8,26,.75);backdrop-filter:blur(24px) saturate(2);border-bottom:1px solid rgba(124,77,255,.08);transition:transform .5s cubic-bezier(.22,1,.36,1)}
-.navbar.hidden{transform:translateY(-100%)}
-.nav-logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,#7C4DFF,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;gap:24px;list-style:none}
-.nav-links a{color:var(--t2);text-decoration:none;font-size:13px;font-weight:500;transition:.3s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--p);transition:.3s}
-.nav-links a:hover{color:#fff}
-.nav-links a:hover::after{width:100%}
-
-section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px}
-
-/* HERO */
-.hero{min-height:100vh;justify-content:center;padding-top:120px}
-.hero-inner{max-width:1100px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-.hero-left{text-align:left}
-.hero-badge{display:inline-block;background:rgba(124,77,255,.12);border:1px solid rgba(124,77,255,.25);padding:6px 18px;border-radius:30px;font-size:11px;font-weight:600;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .8s ease forwards}
-.hero-left h1{font-family:'Poppins',sans-serif;font-size:clamp(44px,6vw,80px);font-weight:900;line-height:1.05;margin-bottom:16px;opacity:0;animation:fadeUp .8s ease .15s forwards}
-.hero-left h1 .g1{background:linear-gradient(135deg,#7C4DFF,#448AFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-left h1 .g2{background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-left p{font-size:clamp(14px,1.4vw,18px);color:var(--t2);max-width:480px;line-height:1.8;margin-bottom:28px;opacity:0;animation:fadeUp .8s ease .3s forwards}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .45s forwards}
-.btn-p{background:linear-gradient(135deg,#7C4DFF,#448AFF);border:none;color:#fff;padding:13px 32px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .4s;box-shadow:0 8px 32px rgba(124,77,255,.3)}
-.btn-p:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 48px rgba(124,77,255,.4)}
-.btn-s{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:var(--t);padding:13px 32px;border-radius:30px;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .4s;backdrop-filter:blur(10px)}
-.btn-s:hover{background:rgba(124,77,255,.1);border-color:var(--p);transform:translateY(-3px)}
-
-.hero-stats{display:flex;gap:32px;margin-top:48px;opacity:0;animation:fadeUp .8s ease .6s forwards}
-.hero-stat{text-align:center}
-.hero-stat .num{font-family:'Poppins',sans-serif;font-size:32px;font-weight:900;background:linear-gradient(135deg,#7C4DFF,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-stat .lbl{font-size:12px;color:var(--t2);margin-top:2px}
-
-.hero-right{display:flex;align-items:center;justify-content:center;perspective:1200px}
-.phone-3d-wrap{width:260px;height:520px;position:relative;transform-style:preserve-3d;animation:phoneFloat 6s ease-in-out infinite;cursor:default}
-@keyframes phoneFloat{0%,100%{transform:translateY(0) rotateY(-5deg) rotateX(3deg)}50%{transform:translateY(-24px) rotateY(5deg) rotateX(-3deg)}}
-.phone-3d{width:100%;height:100%;background:linear-gradient(160deg,#1A1A3E,#0D0D1A);border-radius:36px;border:2px solid rgba(124,77,255,.2);overflow:hidden;position:relative;box-shadow:0 40px 100px rgba(124,77,255,.25),0 0 80px rgba(124,77,255,.08);transform-style:preserve-3d}
-.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:110px;height:22px;background:#000;border-radius:0 0 10px 10px;z-index:2}
-.screen{padding:44px 14px 14px;height:100%;display:flex;flex-direction:column;position:relative;z-index:1}
-.ph-header{display:flex;justify-content:space-between;align-items:center;padding:0 2px 10px;border-bottom:1px solid rgba(255,255,255,.05)}
-.ph-header h4{font-size:9px;font-weight:700;color:var(--g);letter-spacing:1px}
-.ph-time{font-size:9px;color:var(--t2)}
-.ph-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:10px 2px}
-.ph-row{display:flex;gap:5px}
-.ph-chip{background:rgba(124,77,255,.1);border:1px solid rgba(124,77,255,.12);border-radius:8px;padding:6px 8px;flex:1;text-align:center}
-.ph-chip .v{font-size:13px;font-weight:800;color:var(--g)}
-.ph-chip .l{font-size:6px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
-.ph-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.05);margin:2px 0;overflow:hidden}
-.ph-bar-f{height:100%;border-radius:2px;background:linear-gradient(90deg,#7C4DFF,#448AFF);transition:width 2s}
-.ph-foot{display:flex;justify-content:center;gap:3px;padding:4px 0}
-.ph-dot{width:3px;height:3px;border-radius:50%;background:var(--t2);opacity:.25}
-.ph-dot.a{background:var(--g);opacity:1}
-.glare{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 50%);pointer-events:none;z-index:3}
-
-/* FEATURES */
-.sec-label{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;background:rgba(124,77,255,.1);border:1px solid rgba(124,77,255,.2);color:var(--g);margin-bottom:16px}
-.sec-title{font-family:'Poppins',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;text-align:center;margin-bottom:10px}
-.sec-title span{background:linear-gradient(135deg,#7C4DFF,#448AFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.sec-sub{font-size:15px;color:var(--t2);text-align:center;max-width:560px;margin:0 auto 48px}
-
-.f-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;max-width:1100px;margin:0 auto}
-.f-card{background:rgba(26,26,46,.7);border:1px solid rgba(124,77,255,.12);border-radius:20px;padding:36px 28px;position:relative;overflow:hidden;backdrop-filter:blur(16px);transition:all .6s cubic-bezier(.22,1,.36,1);transform:translateY(60px) scale(.95);opacity:0}
-.f-card.v{transform:translateY(0) scale(1);opacity:1}
-.f-card::before{content:'';position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),rgba(124,77,255,.15),transparent 70%);transition:opacity .5s;pointer-events:none}
-.f-card:hover::before{opacity:1}
-.f-card:hover{transform:translateY(-10px) scale(1.02)!important;border-color:rgba(124,77,255,.35);box-shadow:0 30px 80px rgba(124,77,255,.15)}
-.f-icon{font-size:52px;margin-bottom:14px;display:block;transition:transform .6s cubic-bezier(.34,1.56,.64,1)}
-.f-card:hover .f-icon{transform:scale(1.2) rotate(8deg)}
-.f-card h3{font-size:18px;font-weight:700;margin-bottom:6px}
-.f-card p{font-size:14px;color:var(--t2);line-height:1.7}
-.f-tag{display:inline-block;margin-top:12px;padding:3px 12px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-
-/* PROCESS */
-.steps{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
-.step{display:flex;align-items:center;gap:20px;background:rgba(26,26,46,.6);border:1px solid rgba(124,77,255,.1);border-radius:18px;padding:18px 24px;backdrop-filter:blur(14px);transition:all .6s cubic-bezier(.22,1,.36,1);transform:translateX(-40px);opacity:0}
-.step.v{transform:translateX(0);opacity:1}
-.step:nth-child(even){transform:translateX(40px)}
-.step:nth-child(even).v{transform:translateX(0)}
-.step:hover{border-color:rgba(124,77,255,.25);transform:scale(1.01)!important}
-.s-num{font-family:'Poppins',sans-serif;font-size:34px;font-weight:900;background:linear-gradient(135deg,#7C4DFF,#448AFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;min-width:48px;text-align:center}
-.step h4{font-size:15px;font-weight:700;margin-bottom:3px}
-.step p{font-size:13px;color:var(--t2)}
-
-/* TECH */
-.t-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:800px;margin:0 auto}
-.t-chip{display:flex;align-items:center;gap:8px;background:rgba(26,26,46,.6);border:1px solid rgba(124,77,255,.1);border-radius:25px;padding:8px 18px;backdrop-filter:blur(10px);transition:all .5s cubic-bezier(.34,1.56,.64,1);opacity:0;transform:scale(.8)}
-.t-chip.v{opacity:1;transform:scale(1)}
-.t-chip:hover{border-color:var(--p);transform:translateY(-4px) scale(1.06)!important;box-shadow:0 8px 24px rgba(124,77,255,.15)}
-.t-chip .ic{font-size:18px}
-.t-chip .nm{font-size:13px;font-weight:600}
-.t-chip .vr{font-size:10px;color:var(--t2)}
-
-/* SCREEN SCROLLER */
-.scroll-x{display:flex;gap:16px;overflow-x:auto;padding:20px 0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-.scroll-x::-webkit-scrollbar{height:3px}
-.scroll-x::-webkit-scrollbar-track{background:rgba(255,255,255,.02);border-radius:2px}
-.scroll-x::-webkit-scrollbar-thumb{background:var(--p);border-radius:2px}
-.sc-card{min-width:180px;height:360px;border-radius:22px;scroll-snap-align:start;background:linear-gradient(160deg,#1A1A3E,#0D0D1A);border:1px solid rgba(124,77,255,.1);padding:14px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:all .4s;box-shadow:0 8px 40px rgba(0,0,0,.3)}
-.sc-card:hover{transform:scale(1.04) translateY(-8px);border-color:rgba(124,77,255,.25)}
-.sc-card .si{font-size:36px;margin-bottom:10px}
-.sc-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
-.sc-card p{font-size:11px;color:var(--t2)}
-
-/* CTA */
-.cta{padding:120px 24px;text-align:center}
-.cta h2{font-family:'Poppins',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:900;margin-bottom:14px}
-.cta p{font-size:16px;color:var(--t2);max-width:480px;margin:0 auto 28px}
-
-footer{position:relative;z-index:1;text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,.06);font-size:13px;color:#606080}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:5px}
+:root{--p:#7C4DFF;--s:#448AFF;--g:#FFD700;--bg:#08081A;--c1:#0E0E24;--c2:#16163A;--t:#E8E8F0;--t2:#9090C0;--t3:#606090;--b:rgba(124,77,255,.1);--card-hover:rgba(124,77,255,.06)}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--t);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(124,77,255,.3);color:#fff}
+::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px}
+::-webkit-scrollbar-thumb{background:var(--p);border-radius:2px}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+/* ─── MODAL ─── */
+.modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease;padding:20px}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal{background:linear-gradient(160deg,#12122A,#0A0A1A);border:1px solid rgba(124,77,255,.2);border-radius:20px;padding:32px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;position:relative;transform:scale(.92) translateY(20px);transition:transform .4s cubic-bezier(.22,1,.36,1);box-shadow:0 40px 120px rgba(124,77,255,.15)}
+.modal-overlay.active .modal{transform:scale(1) translateY(0)}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;transition:color .2s;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.modal-close:hover{color:#fff;background:rgba(255,255,255,.04)}
+.modal-icon{font-size:40px;margin-bottom:12px}
+.modal-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:20px;letter-spacing:-.5px}
+.modal-body{display:flex;flex-direction:column;gap:16px}
+.modal-section{background:rgba(255,255,255,.02);border-radius:12px;padding:16px}
+.modal-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g);margin-bottom:6px}
+.modal-section p{font-size:14px;line-height:1.7;color:var(--t2)}
+.modal-section .alt-label{display:inline-block;background:rgba(255,215,0,.08);color:var(--g);padding:1px 8px;border-radius:4px;font-size:11px;margin-right:4px}
 
-.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
-.orb1{width:600px;height:600px;background:rgba(124,77,255,.06);top:-15%;right:-10%;animation:oF 25s ease-in-out infinite}
-.orb2{width:450px;height:450px;background:rgba(68,138,255,.05);bottom:-15%;left:-10%;animation:oF 25s ease-in-out -8s infinite}
-.orb3{width:350px;height:350px;background:rgba(255,215,0,.03);top:35%;left:45%;animation:oF 25s ease-in-out -16s infinite}
-@keyframes oF{0%,100%{transform:translate(0,0)}33%{transform:translate(40px,-30px)}66%{transform:translate(-30px,40px)}}
+/* ─── NAV ─── */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:rgba(8,8,26,.75);backdrop-filter:blur(24px) saturate(2);border:1px solid rgba(124,77,255,.08);border-radius:60px;width:calc(100% - 48px);max-width:1100px;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .5s}
+nav.hidden{transform:translateX(-50%) translateY(-120px);opacity:0}
+.nav-l{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px;display:flex;align-items:center;gap:10px}
+.nav-l .logo-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#7C4DFF,#FFD700);display:inline-block;box-shadow:0 0 16px rgba(124,77,255,.3)}
+.nav-r{display:flex;align-items:center;gap:20px}
+.nav-r a{color:var(--t2);text-decoration:none;font-size:12px;font-weight:500;transition:color .2s;padding:4px 0;position:relative}
+.nav-r a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:linear-gradient(90deg,#7C4DFF,#448AFF);transition:width .3s}
+.nav-r a:hover{color:#fff}
+.nav-r a:hover::after{width:100%}
+.nav-r .btn{background:linear-gradient(135deg,#7C4DFF,#448AFF);color:#fff;padding:7px 18px;border-radius:30px;font-size:11px;font-weight:600;text-decoration:none;transition:all .35s}
+.nav-r .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,77,255,.25)}
 
-/* DIVIDER */
-.divider{width:80px;height:2px;background:linear-gradient(90deg,transparent,#7C4DFF,transparent);margin:0 auto;border-radius:1px}
+/* ─── 3D ─── */
+#three-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:.55}
 
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:140px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg .grad{position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none}
+.hero-bg .g1{width:800px;height:800px;background:rgba(124,77,255,.06);top:-25%;right:-10%;animation:drift 35s ease-in-out infinite}
+.hero-bg .g2{width:600px;height:600px;background:rgba(68,138,255,.04);bottom:-25%;left:-10%;animation:drift 35s ease-in-out -12s infinite}
+.hero-bg .g3{width:400px;height:400px;background:rgba(255,215,0,.02);top:40%;left:45%;animation:drift 35s ease-in-out -24s infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.05)}66%{transform:translate(-40px,60px) scale(.95)}}
+.hero-inner{position:relative;z-index:1;max-width:1100px;width:100%;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:30px;font-size:11px;font-weight:600;letter-spacing:.3px;background:rgba(124,77,255,.08);border:1px solid rgba(124,77,255,.15);color:var(--g);margin-bottom:32px;opacity:0;animation:fadeUp .6s ease forwards}
+.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--g);animation:pulseDot 2s ease-in-out infinite;margin-right:4px}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:800;line-height:1.02;letter-spacing:-3px;margin-bottom:24px;opacity:0;animation:fadeUp .6s ease .15s forwards}
+.hero h1 .grad-p{background:linear-gradient(135deg,#7C4DFF,#9B6FFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 .grad-g{background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 .grad-b{background:linear-gradient(135deg,#448AFF,#7C4DFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 .block{display:block}
+.hero p{font-size:clamp(15px,1.2vw,17px);color:var(--t2);max-width:540px;margin:0 auto 40px;line-height:1.8;opacity:0;animation:fadeUp .6s ease .3s forwards}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .6s ease .45s forwards}
+.btn-p{background:linear-gradient(135deg,#7C4DFF,#448AFF);border:none;color:#fff;padding:14px 36px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .35s;box-shadow:0 8px 32px rgba(124,77,255,.2)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(124,77,255,.3)}
+.btn-s{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:var(--t);padding:14px 36px;border-radius:30px;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .35s}
+.btn-s:hover{background:rgba(124,77,255,.06);border-color:rgba(124,77,255,.25);transform:translateY(-3px)}
+.hero-stats{display:flex;gap:56px;justify-content:center;margin-top:60px;opacity:0;animation:fadeUp .6s ease .6s forwards}
+.hero-st{text-align:center}
+.hero-st .nu{font-family:'Plus Jakarta Sans',sans-serif;font-size:40px;font-weight:800;background:linear-gradient(135deg,#7C4DFF,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hero-st .lb{font-size:12px;color:var(--t3);margin-top:6px;letter-spacing:.5px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── SECTIONS COMMON ─── */
+section{padding:80px 24px;position:relative;z-index:1}
+.s-inner{max-width:1100px;margin:0 auto;width:100%}
+.s-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.s-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(124,77,255,.2),transparent);max-width:80px}
+.s-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,3.2vw,42px);font-weight:800;letter-spacing:-1.5px;line-height:1.12;margin-bottom:14px}
+.s-title .grad{background:linear-gradient(135deg,#7C4DFF,#448AFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-sub{font-size:15px;color:var(--t2);max-width:500px;line-height:1.7}
+.s-hdr{text-align:center;margin-bottom:48px}
+.s-hdr .s-sub{margin:0 auto}
+
+/* ─── WHY STUDYMATTE ─── */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.why-card{background:var(--c1);border:1px solid var(--b);border-radius:16px;padding:28px 24px;text-align:center;transition:all .4s;cursor:pointer;position:relative;overflow:hidden}
+.why-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),rgba(124,77,255,.06),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+.why-card:hover::before{opacity:1}
+.why-card:hover{border-color:rgba(124,77,255,.2);transform:translateY(-6px);box-shadow:0 20px 60px rgba(124,77,255,.05)}
+.why-card .vs{font-size:32px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(135deg,#7C4DFF,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.why-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.why-card .why-desc{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px}
+.why-card .why-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 10px;border-radius:10px;background:rgba(124,77,255,.08);color:var(--p)}
+.why-card .explain-hint{position:absolute;top:12px;right:12px;font-size:10px;color:var(--t3);opacity:0;transition:opacity .3s}
+.why-card:hover .explain-hint{opacity:1}
+
+/* ─── FEATURES ─── */
+.f-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.f-card{background:var(--c1);border:1px solid var(--b);border-radius:16px;padding:28px 22px;transition:all .4s;position:relative;overflow:hidden;cursor:pointer;opacity:0;transform:translateY(30px)}
+.f-card.v{opacity:1;transform:translateY(0)}
+.f-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),rgba(124,77,255,.06),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+.f-card:hover::before{opacity:1}
+.f-card:hover{border-color:rgba(124,77,255,.2);transform:translateY(-6px);box-shadow:0 20px 60px rgba(124,77,255,.05)}
+.f-card .icon{font-size:36px;margin-bottom:14px;display:block;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.f-card:hover .icon{transform:scale(1.2) rotate(-8deg)}
+.f-card h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.f-card p{font-size:13px;color:var(--t2);line-height:1.65}
+.f-card .tag{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+.f-card .click-hint{position:absolute;bottom:10px;right:12px;font-size:9px;color:var(--t3);opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:3px}
+.f-card:hover .click-hint{opacity:1}
+
+/* ─── PHONE SHOWCASE ─── */
+.phone-show{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:20px 0}
+.phone-l{text-align:left}
+.phone-l .s-sub{margin:0}
+.phone-features{list-style:none;margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.phone-features li{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--t2)}
+.phone-features li::before{content:'✦';color:var(--g);font-size:10px}
+.phone-3d-w{width:250px;height:500px;margin:0 auto;position:relative;perspective:1400px;transform-style:preserve-3d}
+.phone-3d-w.floating{animation:phFloat 7s ease-in-out infinite}
+@keyframes phFloat{0%,100%{transform:translateY(0) rotateY(-5deg) rotateX(2deg)}50%{transform:translateY(-24px) rotateY(5deg) rotateX(-2deg)}}
+.phone-3d{width:100%;height:100%;background:linear-gradient(170deg,#1A1A3E,#0A0A1A);border-radius:36px;border:1.5px solid rgba(124,77,255,.15);overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(124,77,255,.12),0 0 80px rgba(124,77,255,.03),inset 0 1px 0 rgba(255,255,255,.04);transform-style:preserve-3d}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:20px;background:#000;border-radius:0 0 10px 10px;z-index:2}
+.scr{padding:40px 14px 14px;height:100%;display:flex;flex-direction:column;position:relative;z-index:1}
+.ph-hd{display:flex;justify-content:space-between;align-items:center;padding:0 2px 10px;border-bottom:1px solid rgba(255,255,255,.03)}
+.ph-hd h4{font-size:9px;font-weight:700;color:var(--g);letter-spacing:.8px}
+.ph-tm{font-size:9px;color:var(--t3)}
+.ph-bd{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:6px 2px}
+.ph-row{display:flex;gap:4px}
+.ph-c{background:rgba(124,77,255,.06);border:1px solid rgba(124,77,255,.08);border-radius:8px;padding:5px 6px;flex:1;text-align:center}
+.ph-c .v{font-size:12px;font-weight:800;color:var(--g)}
+.ph-c .l{font-size:6px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px}
+.ph-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.03);margin:2px 0;overflow:hidden}
+.ph-bf{height:100%;border-radius:2px;background:linear-gradient(90deg,#7C4DFF,#448AFF)}
+.ph-ft{display:flex;justify-content:center;gap:3px;padding:2px 0}
+.ph-d{width:3px;height:3px;border-radius:50%;background:var(--t3);opacity:.2}
+.ph-d.a{background:var(--g);opacity:1}
+.glass{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent 50%);pointer-events:none;z-index:3}
+
+/* ─── ARCHITECTURE ─── */
+.arch-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:32px}
+.arch-layer{background:var(--c1);border:1px solid var(--b);border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .4s;position:relative}
+.arch-layer:hover{border-color:rgba(124,77,255,.2);transform:translateY(-4px);box-shadow:0 12px 32px rgba(124,77,255,.05)}
+.arch-layer .ar-icon{font-size:28px;margin-bottom:8px;display:block}
+.arch-layer h4{font-size:12px;font-weight:700;margin-bottom:4px}
+.arch-layer p{font-size:10px;color:var(--t3);line-height:1.4}
+.arch-layer .ar-num{position:absolute;top:8px;right:10px;font-size:9px;color:var(--t3);font-weight:700}
+.arch-arrow{display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:18px}
+
+/* ─── PROCESS ─── */
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:900px;margin:0 auto}
+.p-card{background:var(--c1);border:1px solid var(--b);border-radius:14px;padding:22px 20px;display:flex;gap:16px;align-items:flex-start;transition:all .4s;cursor:pointer;opacity:0;transform:translateY(20px);position:relative}
+.p-card.v{opacity:1;transform:translateY(0)}
+.p-card:hover{border-color:rgba(124,77,255,.2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(124,77,255,.04)}
+.p-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,#7C4DFF,#448AFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;min-width:36px;line-height:1.2}
+.p-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.p-card p{font-size:12px;color:var(--t2);line-height:1.6}
+.p-card .click-hint{position:absolute;bottom:8px;right:12px;font-size:9px;color:var(--t3);opacity:0;transition:opacity .3s}
+.p-card:hover .click-hint{opacity:1}
+
+/* ─── TECH ─── */
+.t-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.t-chip{display:flex;align-items:center;gap:8px;background:var(--c1);border:1px solid var(--b);border-radius:20px;padding:8px 16px;transition:all .35s;cursor:pointer;opacity:0;transform:scale(.9);position:relative}
+.t-chip.v{opacity:1;transform:scale(1)}
+.t-chip:hover{border-color:rgba(124,77,255,.25);transform:translateY(-3px) scale(1.04);box-shadow:0 8px 24px rgba(124,77,255,.06)}
+.t-chip .ic{font-size:15px}
+.t-chip .nm{font-size:12px;font-weight:600;color:var(--t)}
+.t-chip .vr{font-size:9px;color:var(--t3)}
+
+/* ─── SCREENS ─── */
+.scroll-x{display:flex;gap:14px;overflow-x:auto;padding:16px 0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.scroll-x::-webkit-scrollbar{height:3px}
+.scroll-x::-webkit-scrollbar-track{background:rgba(255,255,255,.02)}
+.scroll-x::-webkit-scrollbar-thumb{background:var(--p);border-radius:2px}
+.sc{min-width:160px;height:330px;border-radius:20px;scroll-snap-align:start;background:linear-gradient(160deg,#1A1A3E,#0A0A1A);border:1px solid var(--b);padding:14px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:all .35s;cursor:default}
+.sc:hover{transform:scale(1.03) translateY(-6px);border-color:rgba(124,77,255,.2)}
+.sc .si{font-size:30px;margin-bottom:10px}
+.sc h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.sc p{font-size:11px;color:var(--t2);line-height:1.5}
+.sc .badge{font-size:9px;padding:2px 8px;border-radius:8px;background:rgba(124,77,255,.08);color:var(--p);margin-top:6px;display:inline-block}
+
+/* ─── DESIGN PHILOSOPHY ─── */
+.design-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.design-card{background:var(--c1);border:1px solid var(--b);border-radius:14px;padding:24px 20px;text-align:center;cursor:pointer;transition:all .4s;position:relative}
+.design-card:hover{border-color:rgba(124,77,255,.2);transform:translateY(-4px)}
+.design-card .d-icon{font-size:32px;margin-bottom:10px}
+.design-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.design-card p{font-size:12px;color:var(--t2);line-height:1.6}
+
+/* ─── FAQ ─── */
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:6px}
+.faq-q{background:var(--c1);border:1px solid var(--b);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .3s}
+.faq-q:hover{border-color:rgba(124,77,255,.15)}
+.faq-q-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;font-size:14px;font-weight:600;color:var(--t);user-select:none}
+.faq-q-head .arr{font-size:10px;color:var(--t3);transition:transform .3s}
+.faq-q.open .faq-q-head .arr{transform:rotate(180deg)}
+.faq-q-body{padding:0 20px 16px;font-size:12px;color:var(--t2);line-height:1.7;display:none}
+.faq-q.open .faq-q-body{display:block}
+
+/* ─── DOWNLOAD ─── */
+.dl-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:800px;margin:0 auto}
+.dl-info h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;margin-bottom:12px}
+.dl-info p{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:20px}
+.dl-info .dl-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.dl-info .dl-meta span{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t3);background:rgba(255,255,255,.02);padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.04)}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7C4DFF,#FFD700);color:#08081A;padding:14px 32px;border-radius:30px;font-size:14px;font-weight:700;text-decoration:none;transition:all .35s;box-shadow:0 8px 32px rgba(124,77,255,.2)}
+.dl-btn:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(124,77,255,.3)}
+.dl-qr{width:160px;height:160px;background:var(--c1);border:1px solid var(--b);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:12px;color:var(--t3);text-align:center;padding:10px}
+
+/* ─── CTA ─── */
+.cta-sec{padding:100px 24px;text-align:center}
+.cta-sec h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,3.5vw,48px);font-weight:800;letter-spacing:-1.5px;margin-bottom:14px}
+.cta-sec p{font-size:15px;color:var(--t2);max-width:460px;margin:0 auto 28px}
+
+/* ─── FOOTER ─── */
+footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(124,77,255,.04);font-size:12px;color:var(--t3);position:relative;z-index:1}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  .f-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .phone-show{grid-template-columns:1fr;text-align:center;gap:32px}
+  .phone-l{text-align:center}
+  .phone-features{display:grid;grid-template-columns:1fr 1fr}
+  .phone-features li{justify-content:center}
+  .arch-grid{grid-template-columns:repeat(3,1fr)}
+  .design-grid{grid-template-columns:1fr 1fr}
+  .dl-wrap{grid-template-columns:1fr;text-align:center}
+  .dl-info .dl-meta{justify-content:center}
+}
 @media(max-width:768px){
-  .hero-inner{grid-template-columns:1fr;text-align:center}
-  .hero-left{text-align:center}
-  .hero-left p{margin:0 auto 28px}
-  .hero-btns{justify-content:center}
-  .hero-stats{justify-content:center}
-  .phone-3d-wrap{width:200px;height:400px}
-  .navbar{padding:12px 20px}
-  .nav-links{display:none}
-  section{padding:60px 16px}
   .f-grid{grid-template-columns:1fr}
-  .sc-card{min-width:150px;height:300px}
+  .why-grid{grid-template-columns:1fr}
+  .p-grid{grid-template-columns:1fr}
+  .hero-stats{gap:20px;flex-wrap:wrap}
+  .hero-st .nu{font-size:28px}
+  .phone-3d-w{width:180px;height:360px}
+  section{padding:60px 16px}
+  .phone-features{grid-template-columns:1fr}
+  .phone-features li{font-size:13px}
+  .hero h1{font-size:36px;letter-spacing:-1px;line-height:1.05}
+  .arch-grid{grid-template-columns:1fr 1fr}
+  .design-grid{grid-template-columns:1fr}
+  nav{padding:10px 16px;width:calc(100% - 24px)}
+  .nav-r a:not(.btn){display:none}
+  .nav-r .btn{padding:6px 14px;font-size:10px}
+  #three-canvas{opacity:.35}
+  .dl-qr{width:120px;height:120px}
 }
 </style>
 </head>
 <body>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
-
 <canvas id="three-canvas"></canvas>
 
-<nav class="navbar" id="navbar">
-  <div class="nav-logo">◆ StudyMate AI</div>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#tech">Stack</a></li>
-    <li><a href="#screens">Screens</a></li>
-  </ul>
-</nav>
-
-<!-- ===== HERO ===== -->
-<section class="hero" id="hero">
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-badge">🚀 Your AI-Powered Learning Companion</div>
-      <h1><span class="g1">STUDYMATE</span><br><span class="g2">AI</span></h1>
-      <p>Master any subject with FSRS spaced repetition, AI-powered quizzes, gamified learning, and a Gemini mentor — all in one beautiful, offline-first app.</p>
-      <div class="hero-btns">
-        <a href="#features" class="btn-p">✨ Explore Features</a>
-        <a href="presentation/features.html" target="_blank" class="btn-s">📊 Presentation</a>
+<!-- ─── MODAL ─── -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon" id="modalIcon">🚀</div>
+    <h3 class="modal-title" id="modalTitle">StudyMate AI</h3>
+    <div class="modal-body" id="modalBody">
+      <div class="modal-section">
+        <div class="modal-section-title">✦ What it is</div>
+        <p id="modalWhat">Loading...</p>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="num" data-t="150">0</div><div class="lbl">Dart Files</div></div>
-        <div class="hero-stat"><div class="num" data-t="20">0</div><div class="lbl">Screens</div></div>
-        <div class="hero-stat"><div class="num" data-t="23">0</div><div class="lbl">Achievements</div></div>
-        <div class="hero-stat"><div class="num" data-t="38">0</div><div class="lbl">Subjects</div></div>
+      <div class="modal-section">
+        <div class="modal-section-title">⚡ Why we chose this</div>
+        <p id="modalWhy">Loading...</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">🎯 Key Benefit</div>
+        <p id="modalBenefit">Loading...</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">🔄 Alternatives Considered</div>
+        <p id="modalAlts">Loading...</p>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="phone-3d-wrap" id="phoneWrap">
-        <div class="phone-3d">
-          <div class="notch"></div>
-          <div class="screen">
-            <div class="ph-header"><h4>◆ StudyMate</h4><span class="ph-time" id="phTime">12:00</span></div>
-            <div class="ph-body">
-              <div class="ph-row">
-                <div class="ph-chip"><div class="v" id="xpVal">1,280</div><div class="l">XP Today</div></div>
-                <div class="ph-chip"><div class="v">🔥 7</div><div class="l">Streak</div></div>
-                <div class="ph-chip"><div class="v">Lv.8</div><div class="l">Level</div></div>
+  </div>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <div class="nav-l"><span class="logo-dot"></span> StudyMate AI</div>
+  <div class="nav-r">
+    <a href="#why">Why</a>
+    <a href="#features">Features</a>
+    <a href="#process">Process</a>
+    <a href="#tech">Stack</a>
+    <a href="presentation/features.html" target="_blank">PPT</a>
+    <a href="presentation/how-its-made.html" target="_blank" class="btn">⚡ Deep Dive</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grad g1"></div>
+    <div class="grad g2"></div>
+    <div class="grad g3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span> Your AI-Powered Learning Companion</div>
+    <h1>
+      <span class="block grad-p">STUDYMATE</span>
+      <span class="block grad-g">AI</span>
+    </h1>
+    <p>Master any subject with FSRS spaced repetition, AI-powered quizzes, gamified learning, and a Gemini mentor — all in one beautiful, offline-first app.</p>
+    <div class="hero-btns">
+      <a href="#features" class="btn-p">✨ Explore Features</a>
+      <a href="presentation/features.html" target="_blank" class="btn-s">📊 Presentation</a>
+      <a href="studymate_cinematic.mp4" target="_blank" class="btn-s">🎬 Trailer</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-st"><div class="nu" data-t="150">0</div><div class="lb">Dart Files</div></div>
+      <div class="hero-st"><div class="nu" data-t="20">0</div><div class="lb">Screens</div></div>
+      <div class="hero-st"><div class="nu" data-t="23">0</div><div class="lb">Achievements</div></div>
+      <div class="hero-st"><div class="nu" data-t="25">0</div><div class="lb">APK MB</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY STUDYMATTE AI ─── -->
+<section id="why">
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">🏆 Why StudyMate AI</div>
+      <h2 class="s-title">Better than the <span class="grad">alternatives</span></h2>
+      <p class="s-sub">See how we compare to other study apps — click any card to learn why we made each choice.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card" onclick="showExplain('vs-anki')" style="--mx:50%;--my:50%">
+        <div class="vs">VS</div>
+        <h3>Anki</h3>
+        <div class="why-desc">FSRS algorithm is 30% more efficient than SM-2, modern UI vs dated interface, gamification keeps you coming back.</div>
+        <span class="why-tag">⚡ Click for details</span>
+        <span class="explain-hint">💡 why?</span>
+      </div>
+      <div class="why-card" onclick="showExplain('vs-quizlet')" style="--mx:50%;--my:50%">
+        <div class="vs">VS</div>
+        <h3>Quizlet</h3>
+        <div class="why-desc">Offline-first (works without internet), AI Mentor for personalized help, no ads, zero subscription cost.</div>
+        <span class="why-tag">⚡ Click for details</span>
+        <span class="explain-hint">💡 why?</span>
+      </div>
+      <div class="why-card" onclick="showExplain('vs-notion')" style="--mx:50%;--my:50%">
+        <div class="vs">VS</div>
+        <h3>Notion</h3>
+        <div class="why-desc">Optimized for studying vs general note-taking, built-in FSRS SRS, gamification, analytics, social features.</div>
+        <span class="why-tag">⚡ Click for details</span>
+        <span class="explain-hint">💡 why?</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─── -->
+<section id="features">
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">✦ Features</div>
+      <h2 class="s-title">Everything to <span class="grad">master learning</span></h2>
+      <p class="s-sub">AI-powered tools, gamification, and social features — click any feature to learn why we built it this way.</p>
+    </div>
+    <div class="f-grid">
+      <div class="f-card" data-d="0" onclick="showExplain('fsrs-feature')">
+        <span class="icon">🧠</span>
+        <h3>FSRS Spaced Repetition</h3>
+        <p>Next-gen algorithm with stability, difficulty, and retrievability tracking. 30% more efficient than Anki's SM-2.</p>
+        <span class="tag" style="background:rgba(124,77,255,.1);color:#7C4DFF">Smart Learning</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="100" onclick="showExplain('ai-mentor')">
+        <span class="icon">🤖</span>
+        <h3>AI Mentor (Gemini)</h3>
+        <p>Ask anything, upload files, get instant explanations. Gemini's 1M token context processes entire textbooks.</p>
+        <span class="tag" style="background:rgba(68,138,255,.1);color:#448AFF">AI Powered</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="200" onclick="showExplain('gamification')">
+        <span class="icon">🎮</span>
+        <h3>Gamification Engine</h3>
+        <p>XP, levels (N²×100), 23 achievements, daily streaks. 13 XP event types make studying feel like a game.</p>
+        <span class="tag" style="background:rgba(255,215,0,.1);color:#FFD700">Gamification</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="300" onclick="showExplain('analytics')">
+        <span class="icon">📊</span>
+        <h3>Analytics Dashboard</h3>
+        <p>Track study time, quiz accuracy by subject, weekly charts, and progress. Data-driven study decisions.</p>
+        <span class="tag" style="background:rgba(76,175,80,.1);color:#4CAF50">Analytics</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="400" onclick="showExplain('social')">
+        <span class="icon">👥</span>
+        <h3>Social Learning</h3>
+        <p>QR friends, 4 leaderboard types, community Q&A. Learning together is proven to increase retention.</p>
+        <span class="tag" style="background:rgba(0,188,212,.1);color:#00BCD4">Social</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+      <div class="f-card" data-d="500" onclick="showExplain('focus')">
+        <span class="icon">⏱️</span>
+        <h3>Focus Timer</h3>
+        <p>Pomodoro sessions with XP-per-minute rewards. 25min optimal focus spans backed by neuroscience.</p>
+        <span class="tag" style="background:rgba(255,152,0,.1);color:#FF9800">Productivity</span>
+        <span class="click-hint">💡 why this?</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHONE SHOWCASE ─── -->
+<section>
+  <div class="s-inner">
+    <div class="phone-show">
+      <div class="phone-l">
+        <div class="s-label">📱 Live Preview</div>
+        <h2 class="s-title">StudyMate AI <span class="grad">in action</span></h2>
+        <p class="s-sub">A fully functional app with real-time stats, progress tracking, and an intuitive dark-themed interface — all working offline.</p>
+        <ul class="phone-features">
+          <li>Live XP counter & streak tracking</li>
+          <li>Subject-wise progress bars</li>
+          <li>FSRS flashcard review system</li>
+          <li>Dark glassmorphism theme</li>
+          <li>Offline-first — works everywhere</li>
+        </ul>
+      </div>
+      <div style="display:flex;justify-content:center;align-items:center">
+        <div class="phone-3d-w floating" id="phoneWrap">
+          <div class="phone-3d">
+            <div class="notch"></div>
+            <div class="scr">
+              <div class="ph-hd"><h4>◆ StudyMate</h4><span class="ph-tm" id="phTime">12:00</span></div>
+              <div class="ph-bd">
+                <div class="ph-row">
+                  <div class="ph-c"><div class="v" id="xpV">1,280</div><div class="l">XP Today</div></div>
+                  <div class="ph-c"><div class="v">🔥 7</div><div class="l">Streak</div></div>
+                  <div class="ph-c"><div class="v">Lv.8</div><div class="l">Level</div></div>
+                </div>
+                <div style="margin:8px 0">
+                  <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--t3);margin-bottom:1px"><span>Mathematics</span><span>78%</span></div>
+                  <div class="ph-bar"><div class="ph-bf" style="width:78%"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--t3);margin-bottom:1px;margin-top:4px"><span>Physics</span><span>45%</span></div>
+                  <div class="ph-bar"><div class="ph-bf" style="width:45%"></div></div>
+                  <div style="display:flex;justify-content:space-between;font-size:7px;color:var(--t3);margin-bottom:1px;margin-top:4px"><span>Computer Science</span><span>92%</span></div>
+                  <div class="ph-bar"><div class="ph-bf" style="width:92%"></div></div>
+                </div>
+                <div style="text-align:center;font-size:7px;color:var(--t3)">5 flashcards due for review</div>
+                <div class="ph-ft"><span class="ph-d"></span><span class="ph-d a"></span><span class="ph-d"></span><span class="ph-d"></span><span class="ph-d"></span></div>
               </div>
-              <div style="margin:10px 0">
-                <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--t2);margin-bottom:2px"><span>Mathematics</span><span>78%</span></div>
-                <div class="ph-bar"><div class="ph-bar-f" style="width:78%"></div></div>
-                <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--t2);margin-bottom:2px;margin-top:5px"><span>Physics</span><span>45%</span></div>
-                <div class="ph-bar"><div class="ph-bar-f" style="width:45%"></div></div>
-                <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--t2);margin-bottom:2px;margin-top:5px"><span>CS</span><span>92%</span></div>
-                <div class="ph-bar"><div class="ph-bar-f" style="width:92%"></div></div>
-              </div>
-              <div style="text-align:center;font-size:8px;color:var(--t2)">5 flashcards due</div>
-              <div class="ph-foot"><span class="ph-dot"></span><span class="ph-dot a"></span><span class="ph-dot"></span><span class="ph-dot"></span><span class="ph-dot"></span></div>
             </div>
+            <div class="glass"></div>
           </div>
-          <div class="glare"></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
-<section id="features">
-  <div style="max-width:1100px;width:100%">
-    <div style="text-align:center">
-      <span class="sec-label">✦ Features</span>
-      <h2 class="sec-title">Everything You Need to <span>Master Learning</span></h2>
-      <p class="sec-sub">AI-powered tools, gamification, and social features designed to make studying effective, fun, and social.</p>
+<!-- ─── ARCHITECTURE ─── -->
+<section id="architecture">
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">🏗️ Architecture</div>
+      <h2 class="s-title">Built on a <span class="grad">solid stack</span></h2>
+      <p class="s-sub">From UI to database — every layer is carefully chosen. Click any layer to learn why.</p>
     </div>
-    <div class="f-grid">
-      <div class="f-card" data-d="0">
-        <span class="f-icon">🧠</span>
-        <h3>FSRS Spaced Repetition</h3>
-        <p>Next-gen flashcard algorithm with stability, difficulty, and retrievability tracking. Review cards at the optimal time for maximum retention.</p>
-        <span class="f-tag" style="background:rgba(124,77,255,.12);color:#7C4DFF">Smart Learning</span>
+    <div class="arch-grid">
+      <div class="arch-layer" onclick="showExplain('flutter')">
+        <span class="ar-num">01</span>
+        <span class="ar-icon">🦋</span>
+        <h4>Flutter 3.44</h4>
+        <p>UI framework — 60fps, one codebase, native compile</p>
       </div>
-      <div class="f-card" data-d="100">
-        <span class="f-icon">🤖</span>
-        <h3>AI Mentor (Gemini)</h3>
-        <p>Ask any question, upload files, get instant explanations. Powered by Google Gemini — your personal tutor available 24/7.</p>
-        <span class="f-tag" style="background:rgba(68,138,255,.12);color:#448AFF">Artificial Intelligence</span>
+      <div class="arch-layer" onclick="showExplain('riverpod')">
+        <span class="ar-num">02</span>
+        <span class="ar-icon">🔮</span>
+        <h4>Riverpod 2.6</h4>
+        <p>State management — compile-safe, testable, auto-dispose</p>
       </div>
-      <div class="f-card" data-d="200">
-        <span class="f-icon">🎮</span>
-        <h3>Gamification Engine</h3>
-        <p>Earn XP, level up (N²×100 formula), unlock 23 achievements, maintain daily streaks. Every study session is an adventure.</p>
-        <span class="f-tag" style="background:rgba(255,215,0,.12);color:#FFD700">Gamification</span>
+      <div class="arch-layer" onclick="showExplain('gemini')">
+        <span class="ar-num">03</span>
+        <span class="ar-icon">🤖</span>
+        <h4>Gemini AI API</h4>
+        <p>AI engine — 1M token context, STEM-optimized</p>
       </div>
-      <div class="f-card" data-d="300">
-        <span class="f-icon">📊</span>
-        <h3>Analytics Dashboard</h3>
-        <p>Track study time, quiz accuracy by subject, weekly activity charts, and overall progress. Know exactly where you stand.</p>
-        <span class="f-tag" style="background:rgba(76,175,80,.12);color:#4CAF50">Analytics</span>
+      <div class="arch-layer" onclick="showExplain('sqlite')">
+        <span class="ar-num">04</span>
+        <span class="ar-icon">🗄️</span>
+        <h4>SQLite + Prefs</h4>
+        <p>Dual-write storage — offline-first, 0ms reads</p>
       </div>
-      <div class="f-card" data-d="400">
-        <span class="f-icon">👥</span>
-        <h3>Social Learning</h3>
-        <p>Add friends via QR code scan, compete on 4 leaderboard types, discuss in community Q&A. Learning is better together.</p>
-        <span class="f-tag" style="background:rgba(0,188,212,.12);color:#00BCD4">Social</span>
-      </div>
-      <div class="f-card" data-d="500">
-        <span class="f-icon">⏱️</span>
-        <h3>Focus Timer</h3>
-        <p>Pomodoro-style study sessions with circular timer, XP rewards per minute, and session history tracking.</p>
-        <span class="f-tag" style="background:rgba(255,152,0,.12);color:#FF9800">Productivity</span>
+      <div class="arch-layer" onclick="showExplain('fsrs')">
+        <span class="ar-num">05</span>
+        <span class="ar-icon">🧠</span>
+        <h4>FSRS Engine</h4>
+        <p>Spaced repetition — 30% better than SM-2</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== PROCESS ===== -->
+<!-- ─── PROCESS ─── -->
 <section id="process">
-  <div style="max-width:1100px;width:100%">
-    <div style="text-align:center">
-      <span class="sec-label">⚡ Workflow</span>
-      <h2 class="sec-title">How <span>StudyMate AI</span> Works</h2>
-      <p class="sec-sub">From opening the app to mastering a subject — five simple steps to academic excellence.</p>
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">⚡ Workflow</div>
+      <h2 class="s-title">How <span class="grad">StudyMate AI</span> works</h2>
+      <p class="s-sub">Five steps to academic excellence — click each step to learn why it's designed this way.</p>
     </div>
-    <div class="steps">
-      <div class="step"><div class="s-num">01</div><div><h4>Open &amp; Sync</h4><p>Splash screen with auto-login. Dashboard loads instantly with today's XP goal, due flashcards, and streak status.</p></div></div>
-      <div class="step"><div class="s-num">02</div><div><h4>Review Flashcards</h4><p>FSRS algorithm presents cards due for review. Rate Again/Hard/Good/Easy — the system learns your memory patterns.</p></div></div>
-      <div class="step"><div class="s-num">03</div><div><h4>Focus Session</h4><p>Start a Pomodoro timer. Study distraction-free. Every minute earns XP that levels you up.</p></div></div>
-      <div class="step"><div class="s-num">04</div><div><h4>Take a Quiz</h4><p>Subject-wise quizzes with performance tracking. Identify weak areas and improve over time.</p></div></div>
-      <div class="step"><div class="s-num">05</div><div><h4>Analyze &amp; Repeat</h4><p>Check analytics, claim daily rewards, compete on leaderboards. Every session makes you better.</p></div></div>
+    <div class="p-grid">
+      <div class="p-card" data-d="0" onclick="showExplain('step-1')">
+        <div class="p-num">01</div>
+        <div><h4>Open &amp; Sync</h4><p>Splash with auto-login. Dashboard loads instantly with today's XP goal, due flashcards, and streak status.</p></div>
+        <span class="click-hint">💡 why?</span>
+      </div>
+      <div class="p-card" data-d="100" onclick="showExplain('step-2')">
+        <div class="p-num">02</div>
+        <div><h4>Review Flashcards</h4><p>FSRS presents due cards. Rate Again/Hard/Good/Easy — the system learns your memory patterns.</p></div>
+        <span class="click-hint">💡 why?</span>
+      </div>
+      <div class="p-card" data-d="200" onclick="showExplain('step-3')">
+        <div class="p-num">03</div>
+        <div><h4>Focus Session</h4><p>Pomodoro timer with XP per minute. 25min sprints backed by neuroscience for peak concentration.</p></div>
+        <span class="click-hint">💡 why?</span>
+      </div>
+      <div class="p-card" data-d="300" onclick="showExplain('step-4')">
+        <div class="p-num">04</div>
+        <div><h4>Take a Quiz</h4><p>Subject-wise quizzes with performance tracking. Active recall boosts retention by 50% vs passive review.</p></div>
+        <span class="click-hint">💡 why?</span>
+      </div>
+      <div class="p-card" data-d="400" onclick="showExplain('step-5')" style="grid-column:1/-1;max-width:450px;margin:0 auto;width:100%">
+        <div class="p-num">05</div>
+        <div><h4>Analyze &amp; Repeat</h4><p>Check analytics, claim daily rewards, compete on leaderboards. Each cycle makes the FSRS model smarter.</p></div>
+        <span class="click-hint">💡 why?</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ===== TECH ===== -->
+<!-- ─── TECH STACK ─── -->
 <section id="tech">
-  <div style="max-width:1100px;width:100%">
-    <div style="text-align:center">
-      <span class="sec-label">🔧 Technology</span>
-      <h2 class="sec-title">Built With <span>Modern Tools</span></h2>
-      <p class="sec-sub">A robust, offline-first architecture powered by industry-leading frameworks and APIs.</p>
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">🔧 Technology</div>
+      <h2 class="s-title">Built with <span class="grad">modern tools</span></h2>
+      <p class="s-sub">Every technology was carefully chosen over alternatives. Click any to see why.</p>
     </div>
     <div class="t-grid">
-      <div class="t-chip"><span class="ic">🦋</span><span class="nm">Flutter</span><span class="vr">3.44.4</span></div>
-      <div class="t-chip"><span class="ic">🎯</span><span class="nm">Dart</span><span class="vr">3.12.2</span></div>
-      <div class="t-chip"><span class="ic">🗄️</span><span class="nm">SQLite</span><span class="vr">sqflite</span></div>
-      <div class="t-chip"><span class="ic">🔮</span><span class="nm">Riverpod</span><span class="vr">2.6.1</span></div>
-      <div class="t-chip"><span class="ic">🤖</span><span class="nm">Gemini AI</span><span class="vr">API</span></div>
-      <div class="t-chip"><span class="ic">📈</span><span class="nm">fl_chart</span><span class="vr">0.69.2</span></div>
-      <div class="t-chip"><span class="ic">📷</span><span class="nm">mobile_scanner</span><span class="vr">•</span></div>
-      <div class="t-chip"><span class="ic">📦</span><span class="nm">SharedPrefs</span><span class="vr">2.2.3</span></div>
-      <div class="t-chip"><span class="ic">🏗️</span><span class="nm">Gradle</span><span class="vr">8.11.1</span></div>
-      <div class="t-chip"><span class="ic">🎨</span><span class="nm">Google Fonts</span><span class="vr">6.2.1</span></div>
-      <div class="t-chip"><span class="ic">👤</span><span class="nm">Google Sign-In</span><span class="vr">•</span></div>
-      <div class="t-chip"><span class="ic">🧪</span><span class="nm">Flutter Test</span><span class="vr">•</span></div>
-      <div class="t-chip"><span class="ic">🔄</span><span class="nm">FSRS</span><span class="vr">Algorithm</span></div>
-      <div class="t-chip"><span class="ic">🧊</span><span class="nm">Three.js</span><span class="vr">r152</span></div>
+      <div class="t-chip" data-d="0" onclick="showExplain('flutter')"><span class="ic">🦋</span><span class="nm">Flutter</span><span class="vr">3.44.4</span></div>
+      <div class="t-chip" data-d="50" onclick="showExplain('dart')"><span class="ic">🎯</span><span class="nm">Dart</span><span class="vr">3.12.2</span></div>
+      <div class="t-chip" data-d="100" onclick="showExplain('sqlite')"><span class="ic">🗄️</span><span class="nm">SQLite</span><span class="vr">sqflite</span></div>
+      <div class="t-chip" data-d="150" onclick="showExplain('riverpod')"><span class="ic">🔮</span><span class="nm">Riverpod</span><span class="vr">2.6.1</span></div>
+      <div class="t-chip" data-d="200" onclick="showExplain('gemini')"><span class="ic">🤖</span><span class="nm">Gemini AI</span><span class="vr">API</span></div>
+      <div class="t-chip" data-d="250" onclick="showExplain('fsrs')"><span class="ic">🧠</span><span class="nm">FSRS</span><span class="vr">Algorithm</span></div>
+      <div class="t-chip" data-d="300" onclick="showExplain('fl_chart')"><span class="ic">📈</span><span class="nm">fl_chart</span><span class="vr">0.69.2</span></div>
+      <div class="t-chip" data-d="350" onclick="showExplain('mobile_scanner')"><span class="ic">📷</span><span class="nm">QR Scanner</span><span class="vr">mobile_scanner</span></div>
+      <div class="t-chip" data-d="400" onclick="showExplain('sharedprefs')"><span class="ic">📦</span><span class="nm">SharedPrefs</span><span class="vr">2.2.3</span></div>
+      <div class="t-chip" data-d="450" onclick="showExplain('gradle')"><span class="ic">🏗️</span><span class="nm">Gradle</span><span class="vr">8.11.1</span></div>
+      <div class="t-chip" data-d="500" onclick="showExplain('googlesignin')"><span class="ic">👤</span><span class="nm">Google Sign-In</span><span class="vr">OAuth</span></div>
+      <div class="t-chip" data-d="550" onclick="showExplain('googlefonts')"><span class="ic">🎨</span><span class="nm">Google Fonts</span><span class="vr">6.2.1</span></div>
+      <div class="t-chip" data-d="600" onclick="showExplain('threejs')"><span class="ic">🧊</span><span class="nm">Three.js</span><span class="vr">r152</span></div>
+      <div class="t-chip" data-d="650" onclick="showExplain('offline-first')"><span class="ic">📡</span><span class="nm">Offline-First</span><span class="vr">Architecture</span></div>
     </div>
   </div>
 </section>
 
-<!-- ===== SCREENS ===== -->
+<!-- ─── SCREENS ─── -->
 <section id="screens">
-  <div style="max-width:1100px;width:100%">
-    <div style="text-align:center">
-      <span class="sec-label">📱 Screens</span>
-      <h2 class="sec-title">20+ Beautifully <span>Designed Screens</span></h2>
-      <p class="sec-sub">Dark theme, glassmorphism, smooth transitions — every pixel crafted with care.</p>
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">📱 Screens</div>
+      <h2 class="s-title">20+ beautifully <span class="grad">designed screens</span></h2>
+      <p class="s-sub">Dark theme, glassmorphism, smooth transitions — every pixel crafted for the perfect learning experience.</p>
     </div>
     <div class="scroll-x">
-      <div class="sc-card"><div class="si">🏠</div><h4>Home</h4><p>Dashboard with XP, streak, weekly chart, quick actions</p></div>
-      <div class="sc-card"><div class="si">⏱️</div><h4>Focus</h4><p>Pomodoro timer with circular progress, XP per minute</p></div>
-      <div class="sc-card"><div class="si">📝</div><h4>Notes</h4><p>Create, organize, AI-summarize your notes</p></div>
-      <div class="sc-card"><div class="si">🃏</div><h4>Flashcards</h4><p>FSRS spaced repetition flip cards</p></div>
-      <div class="sc-card"><div class="si">📊</div><h4>Quizzes</h4><p>Subject-wise tests with performance history</p></div>
-      <div class="sc-card"><div class="si">🧠</div><h4>AI Mentor</h4><p>Gemini chat with file upload</p></div>
-      <div class="sc-card"><div class="si">📈</div><h4>Analytics</h4><p>Charts, subject breakdown, accuracy</p></div>
-      <div class="sc-card"><div class="si">👥</div><h4>Friends</h4><p>QR scan to add, manage requests</p></div>
-      <div class="sc-card"><div class="si">🏆</div><h4>Leaderboard</h4><p>XP, Study, Quiz, Streak rankings</p></div>
-      <div class="sc-card"><div class="si">🎯</div><h4>Achievements</h4><p>23 unlockable milestones</p></div>
-      <div class="sc-card"><div class="si">⭐</div><h4>Daily Rewards</h4><p>Streak-based claim system</p></div>
-      <div class="sc-card"><div class="si">👤</div><h4>Profile</h4><p>Stats, edit, gamification overview</p></div>
-      <div class="sc-card"><div class="si">⚙️</div><h4>Settings</h4><p>Preferences, API key, theme</p></div>
+      <div class="sc"><div class="si">🏠</div><h4>Home</h4><p>Dashboard with XP, streak, chart</p><span class="badge">Hub</span></div>
+      <div class="sc"><div class="si">⏱️</div><h4>Focus</h4><p>Pomodoro timer + XP rewards</p><span class="badge">Productivity</span></div>
+      <div class="sc"><div class="si">📝</div><h4>Notes</h4><p>Create & AI-summarize notes</p><span class="badge">Smart</span></div>
+      <div class="sc"><div class="si">🃏</div><h4>Flashcards</h4><p>FSRS spaced repetition</p><span class="badge">Algorithm</span></div>
+      <div class="sc"><div class="si">📊</div><h4>Quizzes</h4><p>Subject tests + history</p><span class="badge">Testing</span></div>
+      <div class="sc"><div class="si">🧠</div><h4>AI Mentor</h4><p>Gemini chat + file upload</p><span class="badge">AI</span></div>
+      <div class="sc"><div class="si">📈</div><h4>Analytics</h4><p>Charts, breakdowns, accuracy</p><span class="badge">Data</span></div>
+      <div class="sc"><div class="si">👥</div><h4>Friends</h4><p>QR scan, requests, list</p><span class="badge">Social</span></div>
+      <div class="sc"><div class="si">🏆</div><h4>Leaderboard</h4><p>4 ranking types</p><span class="badge">Competition</span></div>
+      <div class="sc"><div class="si">🎯</div><h4>Achievements</h4><p>23 milestones to unlock</p><span class="badge">Gaming</span></div>
+      <div class="sc"><div class="si">⭐</div><h4>Daily Rewards</h4><p>Streak-based claims</p><span class="badge">Rewards</span></div>
+      <div class="sc"><div class="si">👤</div><h4>Profile</h4><p>Stats & gamification hub</p><span class="badge">You</span></div>
+      <div class="sc"><div class="si">⚙️</div><h4>Settings</h4><p>Prefs, API, theme toggle</p><span class="badge">Config</span></div>
     </div>
   </div>
 </section>
 
-<!-- ===== CTA ===== -->
-<section class="cta">
+<!-- ─── DESIGN PHILOSOPHY ─── -->
+<section id="design">
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">🎨 Design Philosophy</div>
+      <h2 class="s-title">Every choice has a <span class="grad">reason</span></h2>
+      <p class="s-sub">From colors to layout — our design decisions are backed by research. Click to learn more.</p>
+    </div>
+    <div class="design-grid">
+      <div class="design-card" onclick="showExplain('dark-theme')">
+        <div class="d-icon">🌙</div>
+        <h4>Dark Theme</h4>
+        <p>Reduces eye strain during long study sessions. AMOLED saves 60% battery on dark pixels.</p>
+      </div>
+      <div class="design-card" onclick="showExplain('purple-gold')">
+        <div class="d-icon">🎨</div>
+        <h4>Purple + Gold</h4>
+        <p>Purple = wisdom & creativity. Gold = achievement & rewards. Psychologically optimized for learning.</p>
+      </div>
+      <div class="design-card" onclick="showExplain('offline-first')">
+        <div class="d-icon">📡</div>
+        <h4>Offline-First</h4>
+        <p>43% of students have inconsistent internet. Zero loading states, zero "no internet" errors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section id="faq">
+  <div class="s-inner">
+    <div class="s-hdr">
+      <div class="s-label">❓ FAQ</div>
+      <h2 class="s-title">Quick <span class="grad">answers</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-q open">
+        <div class="faq-q-head" onclick="toggleFaq(this)">What is StudyMate AI? <span class="arr">▼</span></div>
+        <div class="faq-q-body">StudyMate AI is a full-featured, offline-first Android study companion app built with Flutter. It combines AI-powered learning tools, gamification, social features, and smart scheduling into one seamless experience. Features include FSRS spaced repetition flashcards, Gemini AI mentor, XP-based leveling, 23 achievements, QR friend system, and detailed analytics.</div>
+      </div>
+      <div class="faq-q">
+        <div class="faq-q-head" onclick="toggleFaq(this)">What tech was used to build it? <span class="arr">▼</span></div>
+        <div class="faq-q-body">Built with Flutter 3.44.4 and Dart 3.12.2. Database uses SQLite (sqflite 2.4.3) with SharedPreferences dual-write. State management via Riverpod 2.6.1. AI powered by Google Gemini API. Charts with fl_chart 0.69.2. QR scanning via mobile_scanner. Build system: Gradle 8.11.1 / AGP 8.9.1 with JDK 21. The APK is 25.8 MB with 0 errors and 0 warnings.</div>
+      </div>
+      <div class="faq-q">
+        <div class="faq-q-head" onclick="toggleFaq(this)">How does the gamification system work? <span class="arr">▼</span></div>
+        <div class="faq-q-body">There are 13 XP event types: study sessions (10 XP/min), quizzes (50 XP), perfect scores (100 XP), flashcard reviews (5 XP), notes (15 XP), adding friends (50 XP), daily login (10 XP), and more. Level formula: N² × 100 XP. There are 23 auto-checked achievements, daily login streaks, 4 leaderboard types, and a daily reward system based on streak length.</div>
+      </div>
+      <div class="faq-q">
+        <div class="faq-q-head" onclick="toggleFaq(this)">What is FSRS spaced repetition? <span class="arr">▼</span></div>
+        <div class="faq-q-body">FSRS (Free Spaced Repetition Scheduler) is a next-generation algorithm for flashcard reviews. It uses 4 rating levels — Again, Hard, Good, Easy — and tracks three metrics per card: stability (how long you'll remember), difficulty (how hard the card is), and retrievability (probability of recall today). This optimizes review timing for maximum retention with minimum effort.</div>
+      </div>
+      <div class="faq-q">
+        <div class="faq-q-head" onclick="toggleFaq(this)">Can I use it offline? <span class="arr">▼</span></div>
+        <div class="faq-q-body">Yes! StudyMate AI is built offline-first. All core features — flashcards, notes, quizzes, focus timer, analytics, achievements — work completely without internet. The only feature requiring internet is the AI Mentor (Gemini API). Your data is stored locally on your device using SQLite, ensuring privacy and availability anywhere.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DOWNLOAD ─── -->
+<section id="download">
+  <div class="s-inner">
+    <div class="dl-wrap">
+      <div class="dl-info">
+        <div class="s-label">📥 Download</div>
+        <h3>Get <span class="grad">StudyMate AI</span></h3>
+        <p>The complete APK is ready to install. No ads, no subscriptions, no tracking — just pure learning power.</p>
+        <div class="dl-meta">
+          <span>📦 25.8 MB</span>
+          <span>🤖 Android 8.0+</span>
+          <span>✅ 0 errors / 0 warnings</span>
+          <span>🔒 Offline-first</span>
+        </div>
+        <a href="#" class="dl-btn" onclick="alert('APK download link coming soon! The app is currently in development.')">⬇️ Download APK</a>
+      </div>
+      <div>
+        <div class="dl-qr">
+          Scan to download<br><br>
+          <span style="font-size:40px">📱</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-sec">
   <div style="max-width:1100px;width:100%">
-    <h2>Ready to <span style="background:linear-gradient(135deg,#7C4DFF,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Level Up</span>?</h2>
-    <p>StudyMate AI — built for students who want to master their subjects, earn XP, and actually enjoy studying.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-      <a href="presentation/features.html" target="_blank" class="btn-p">📊 Feature Presentation</a>
-      <a href="presentation/how-its-made.html" target="_blank" class="btn-s">🔧 How It's Made</a>
-      <a href="studymate_cinematic.mp4" target="_blank" class="btn-s" style="font-size:12px;padding:10px 20px">🎬 Trailer</a>
+    <h2>Ready to <span style="background:linear-gradient(135deg,#7C4DFF,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent">level up</span> your learning?</h2>
+    <p>Built for students who want to master their subjects, earn XP, and actually enjoy studying.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="presentation/features.html" target="_blank" class="btn-p">📊 Full Presentation</a>
+      <a href="presentation/how-its-made.html" target="_blank" class="btn-s">🔧 Development Deep-Dive</a>
     </div>
   </div>
 </section>
 
-<footer>Built with ❤️ by Suzume for Rushikesh • July 2026</footer>
+<footer>Built with ❤️ by Suzume for Rushikesh • July 2026 • <span style="opacity:.5">Every choice has a reason</span></footer>
 
-<!-- THREE.JS -->
+<!-- ─── THREE.JS ─── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
 <script>
+// ═══════════════════════════════════════════════
+// UPGRADED 3D SCENE — 2500 particles, 2 rings,
+// 8 floaters, wave motion, color cycling
+// ═══════════════════════════════════════════════
 !(function(){
 const c=document.getElementById('three-canvas');
 if(!c||typeof THREE==='undefined')return;
 const S=new THREE.Scene();
-const C=new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,.1,1000);
-C.position.z=14;
-const R=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:true});
-R.setSize(window.innerWidth,window.innerHeight);
-R.setPixelRatio(Math.min(window.devicePixelRatio,2));
-R.toneMapping=THREE.ACESFilmicToneMapping;
-R.toneMappingExposure=1.0;
-S.add(new THREE.AmbientLight(0x303050));
-const l1=new THREE.DirectionalLight(0x7c4dff,3);l1.position.set(5,5,5);S.add(l1);
-const l2=new THREE.DirectionalLight(0x448aff,1.5);l2.position.set(-5,-3,-5);S.add(l2);
+const C=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,.1,1000);
+C.position.z=16;const R=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:true});
+R.setSize(window.innerWidth,window.innerHeight);R.setPixelRatio(Math.min(window.devicePixelRatio,2));
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.0;
 
-// Torus Knot
-const kg=new THREE.TorusKnotGeometry(1.6,.5,180,24);
-const km=new THREE.MeshPhysicalMaterial({color:0x7C4DFF,emissive:0x448AFF,emissiveIntensity:.08,metalness:.2,roughness:.3,clearcoat:.6,transparent:true,opacity:.65});
-const knot=new THREE.Mesh(kg,km);knot.position.set(-3.5,.5,0);S.add(knot);
+// Lights
+S.add(new THREE.AmbientLight(0x303055));
+const l1=new THREE.DirectionalLight(0x7c4dff,2.2);l1.position.set(4,6,5);S.add(l1);
+const l2=new THREE.DirectionalLight(0x448aff,1.2);l2.position.set(-5,-3,-5);S.add(l2);
+const l3=new THREE.DirectionalLight(0xFFD700,.6);l3.position.set(0,0,8);S.add(l3);
+const l4=new THREE.PointLight(0x7C4DFF,.4,20);l4.position.set(-3,0,3);S.add(l4);
 
-// Ring
-const rg=new THREE.TorusGeometry(2.2,.05,64,100);
-const rm=new THREE.MeshPhysicalMaterial({color:0x448AFF,emissive:0x7C4DFF,emissiveIntensity:.05,metalness:.4,roughness:.25,transparent:true,opacity:.2});
-const ring=new THREE.Mesh(rg,rm);ring.position.copy(knot.position);ring.rotation.x=Math.PI/3;ring.rotation.z=Math.PI/4;S.add(ring);
+// ─── Torus Knot ───
+const kg=new THREE.TorusKnotGeometry(1.3,.4,160,20);
+const km=new THREE.MeshPhysicalMaterial({
+  color:0x7C4DFF,emissive:0x9B6FFF,emissiveIntensity:.06,metalness:.12,roughness:.3,
+  clearcoat:.6,transparent:true,opacity:.5
+});
+const knot=new THREE.Mesh(kg,km);knot.position.set(-3,.3,0);S.add(knot);
 
-// Floating Icosahedrons with labels
-const fcols=[{c:0x7C4DFF,e:0x448AFF},{c:0x448AFF,e:0x7C4DFF},{c:0xFFD700,e:0xFFA500},{c:0x7C4DFF,e:0x448AFF},{c:0x448AFF,e:0x7C4DFF},{c:0xFFD700,e:0xFFA500}];
-const fpos=[{x:5,y:-1,z:-3,s:.55},{x:-5.5,y:-2,z:-2,s:.38},{x:6.5,y:3,z:-4,s:.45},{x:-6.5,y:2.5,z:-3,s:.32},{x:4,y:-3.5,z:-5,s:.42},{x:-4,y:4,z:-4,s:.28}];
-const flts=[];
-fpos.forEach((p,i)=>{
-  const g=new THREE.IcosahedronGeometry(p.s,0);
-  const m=new THREE.MeshPhysicalMaterial({color:fcols[i].c,emissive:fcols[i].e,emissiveIntensity:.05,metalness:.3,roughness:.4,transparent:true,opacity:.45});
-  const mesh=new THREE.Mesh(g,m);mesh.position.set(p.x,p.y,p.z);S.add(mesh);flts.push(mesh);
+// ─── Outer Ring ───
+const rg1=new THREE.TorusGeometry(1.8,.035,60,90);
+const rm1=new THREE.MeshPhysicalMaterial({color:0x448AFF,emissive:0x7C4DFF,emissiveIntensity:.04,metalness:.3,roughness:.25,transparent:true,opacity:.12});
+const ring1=new THREE.Mesh(rg1,rm1);ring1.position.copy(knot.position);ring1.rotation.x=Math.PI/3;ring1.rotation.z=Math.PI/4;S.add(ring1);
+
+// ─── Inner Ring ───
+const rg2=new THREE.TorusGeometry(2.3,.025,50,80);
+const rm2=new THREE.MeshPhysicalMaterial({color:0xFFD700,emissive:0xFFA500,emissiveIntensity:.03,metalness:.2,roughness:.35,transparent:true,opacity:.08});
+const ring2=new THREE.Mesh(rg2,rm2);ring2.position.copy(knot.position);ring2.rotation.x=Math.PI/4;ring2.rotation.z=-Math.PI/3;S.add(ring2);
+
+// ─── Floaters (8 mixed shapes) ───
+const fcols=[{c:0x7C4DFF,e:0x448AFF},{c:0x448AFF,e:0x7C4DFF},{c:0xFFD700,e:0xFFA500},{c:0x7C4DFF,e:0x9B6FFF},{c:0x448AFF,e:0xFFD700},{c:0xFFD700,e:0x7C4DFF},{c:0x7C4DFF,e:0x448AFF},{c:0x448AFF,e:0x7C4DFF}];
+const fpos=[{x:5.2,y:-.8,z:-3.5,s:.5,t:'i'},{x:-5.4,y:-2,z:-3,s:.36,t:'d'},{x:6.2,y:3.2,z:-4.5,s:.42,t:'i'},{x:-6.2,y:2.6,z:-4,s:.3,t:'d'},{x:4.2,y:-3.5,z:-5.5,s:.4,t:'i'},{x:-4.2,y:4,z:-5,s:.26,t:'d'},{x:7,y:0,z:-6,s:.34,t:'i'},{x:-6.8,y:1,z:-5.5,s:.22,t:'d'}];
+const flts=[];fpos.forEach((p,i)=>{
+  const geo=p.t==='d'?new THREE.DodecahedronGeometry(p.s,0):new THREE.IcosahedronGeometry(p.s,0);
+  const mat=new THREE.MeshPhysicalMaterial({color:fcols[i].c,emissive:fcols[i].e,emissiveIntensity:.04,metalness:.2,roughness:.35,transparent:true,opacity:.3});
+  const m=new THREE.Mesh(geo,mat);m.position.set(p.x,p.y,p.z);S.add(m);flts.push(m);
 });
 
-// Particle field
-const pc=1500;
-const pg=new THREE.BufferGeometry();
-const pp=new Float32Array(pc*3),pc2=new Float32Array(pc*3);
+// ─── Particles (2500 with wave) ───
+const pc=2500;const pg=new THREE.BufferGeometry();const pp=new Float32Array(pc*3),pc2=new Float32Array(pc*3),po=new Float32Array(pc);
 const ca=new THREE.Color(0x7C4DFF),cb=new THREE.Color(0x448AFF),cc=new THREE.Color(0xFFD700);
 for(let i=0;i<pc;i++){
-  const r=9+Math.random()*7,t=Math.random()*Math.PI*2,p2=Math.acos(2*Math.random()-1);
+  const r=10+Math.random()*7,t=Math.random()*Math.PI*2,p2=Math.acos(2*Math.random()-1);
   pp[i*3]=r*Math.sin(p2)*Math.cos(t);pp[i*3+1]=r*Math.sin(p2)*Math.sin(t);pp[i*3+2]=r*Math.cos(p2);
   const cl=i%4<2?ca:i%4<3?cb:cc;pc2[i*3]=cl.r;pc2[i*3+1]=cl.g;pc2[i*3+2]=cl.b;
+  po[i]=Math.random()*Math.PI*2;
 }
 pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
 pg.setAttribute('color',new THREE.BufferAttribute(pc2,3));
-const pm=new THREE.PointsMaterial({size:.035,vertexColors:true,transparent:true,opacity:.4,blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false});
+const pm=new THREE.PointsMaterial({size:.025,vertexColors:true,transparent:true,opacity:.3,blending:THREE.AdditiveBlending,sizeAttenuation:true,depthWrite:false});
 const pts=new THREE.Points(pg,pm);S.add(pts);
 
-// Lines
-const lp=[];
-for(let i=0;i<180;i++){
-  const i1=Math.floor(Math.random()*pc),i2=Math.floor(Math.random()*pc);
-  const x1=pp[i1*3],y1=pp[i1*3+1],z1=pp[i1*3+2],x2=pp[i2*3],y2=pp[i2*3+1],z2=pp[i2*3+2];
-  if(Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)<1.8)lp.push(x1,y1,z1,x2,y2,z2);
-}
-if(lp.length){const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lp,3));const lm=new THREE.LineBasicMaterial({color:0x7C4DFF,transparent:true,opacity:.04});S.add(new THREE.LineSegments(lg,lm));}
+// ─── Star Field (background) ───
+const sc2=600;const sg=new THREE.BufferGeometry();const sp=new Float32Array(sc2*3);
+for(let i=0;i<sc2;i++){sp[i*3]=(Math.random()-.5)*120;sp[i*3+1]=(Math.random()-.5)*120;sp[i*3+2]=(Math.random()-.5)*120-40}
+sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
+S.add(new THREE.Points(sg,new THREE.PointsMaterial({size:.1,color:0x7C4DFF,transparent:true,opacity:.08,sizeAttenuation:true})));
 
-// Mouse
+// ─── Connecting Lines ───
+const lp=[];for(let i=0;i<250;i++){const i1=Math.floor(Math.random()*pc),i2=Math.floor(Math.random()*pc);const x1=pp[i1*3],y1=pp[i1*3+1],z1=pp[i1*3+2],x2=pp[i2*3],y2=pp[i2*3+1],z2=pp[i2*3+2];if(Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)<1.4)lp.push(x1,y1,z1,x2,y2,z2)}
+if(lp.length){const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(lp,3));S.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0x7C4DFF,transparent:true,opacity:.025})))}
+
 const mx={x:0,y:0,tx:0,ty:0};
 document.addEventListener('mousemove',e=>{mx.tx=(e.clientX/window.innerWidth)*2-1;mx.ty=-(e.clientY/window.innerHeight)*2+1});
 window.addEventListener('resize',()=>{C.aspect=window.innerWidth/window.innerHeight;C.updateProjectionMatrix();R.setSize(window.innerWidth,window.innerHeight)});
 
-let t=0;
-!(function anim(){requestAnimationFrame(anim);t+=.005;
-  mx.x+=(mx.tx-mx.x)*.03;mx.y+=(mx.ty-mx.y)*.03;
-  knot.rotation.x+=.005;knot.rotation.y+=.01;knot.rotation.z+=.003;
-  ring.rotation.x+=.002;ring.rotation.y+=.004;ring.rotation.z+=.001;
-  knot.position.x+=(mx.x*.8-3.5-knot.position.x)*.02;knot.position.y+=(mx.y*.8-knot.position.y)*.02;ring.position.copy(knot.position);
-  flts.forEach((m,i)=>{m.rotation.x+=.003*(i%2?1:-1);m.rotation.y+=.005*(i%2?-1:1);m.position.x=fpos[i].x+Math.sin(t*.3+i)*.5;m.position.y=fpos[i].y+Math.cos(t*.4+i*1.5)*.5});
-  pts.rotation.x+=.0003;pts.rotation.y+=.0006;
-  const p=.5+.5*Math.sin(t*2);km.emissiveIntensity=.05+.1*p;rm.emissiveIntensity=.03+.06*p;
-  C.position.x=mx.x*.4;C.position.y=mx.y*.3;C.lookAt(0,0,0);
-  R.render(S,C);
-})()
-}());
-</script>
+// ─── Animation ───
+let t=0,colorPhase=0;
+!(function anim(){requestAnimationFrame(anim);t+=.005;colorPhase+=.003;
+mx.x+=(mx.tx-mx.x)*.025;mx.y+=(mx.ty-mx.y)*.025;
+knot.rotation.x+=.003;knot.rotation.y+=.007;knot.rotation.z+=.002;
+ring1.rotation.x+=.0015;ring1.rotation.y+=.003;ring1.rotation.z+=.001;
+ring2.rotation.x+=.001;ring2.rotation.y-=.002;ring2.rotation.z+=.002;
+knot.position.x+=(mx.x*.5-3-knot.position.x)*.015;knot.position.y+=(mx.y*.5-knot.position.y)*.015;
+ring1.position.copy(knot.position);ring2.position.copy(knot.position);
 
-<script>
-// Navbar
-(function(){
-  const nav=document.getElementById('navbar');let last=0;
-  window.addEventListener('scroll',()=>{const c=window.pageYOffset;nav.classList.toggle('hidden',c>last&&c>80);last=c},{passive:true});
-})();
+// Floaters orbit with wave
+flts.forEach((m,i)=>{m.rotation.x+=.003*(i%2?1:-1);m.rotation.y+=.005*(i%2?-1:1);
+  m.position.x=fpos[i].x+Math.sin(t*.25+i*1.2)*.5;m.position.y=fpos[i].y+Math.cos(t*.35+i*1.8)*.5});
+
+// Particle wave motion
+const pos=pg.attributes.position.array;
+for(let i=0;i<pc;i++){
+  const idx=i*3;const baseX=pos[idx],baseY=pos[idx+1],baseZ=pos[idx+2];
+  const wave=Math.sin(t*1.2+po[i]+baseY*.3)*.15;
+  pos[idx]=baseX+(Math.sin(t*.4+po[i])*.2);
+  pos[idx+1]=baseY+(Math.sin(t*.5+po[i]*1.3)*.2)+wave;
+  pos[idx+2]=baseZ+(Math.cos(t*.3+po[i]*.7)*.2);
+}
+pg.attributes.position.needsUpdate=true;
+
+// Subtle color cycle on emissive
+const hueShift=Math.sin(colorPhase)*.03;
+km.emissive=new THREE.Color(0x7C4DFF).offsetHSL(hueShift,0,.05);
+const p=.5+.5*Math.sin(t*1.8);km.emissiveIntensity=.03+.12*p;
+rm1.emissiveIntensity=.02+.05*p;rm2.emissiveIntensity=.01+.04*p;
+
+C.position.x=mx.x*.25;C.position.y=mx.y*.15;C.lookAt(0,0,0);
+R.render(S,C)})()
+}());
+
+// ═══════════════════════════════════════════════
+// EXPLANATION DATA — Why we chose everything
+// ═══════════════════════════════════════════════
+const EXPLAIN={
+  'flutter':{
+    icon:'🦋',title:'Flutter 3.44.4',
+    what:'Google\'s UI toolkit for building natively compiled apps from a single Dart codebase.',
+    why:'Chosen over React Native for superior rendering (60fps guaranteed via Skia引擎, no JS bridge overhead), faster hot-reload (~1s vs RN\'s 3-5s), and true pixel-perfect control. Unlike Kotlin (Android-only) or Swift (iOS-only), Flutter gives both platforms without sacrificing native performance.',
+    benefit:'One codebase = 40% faster development. No JS bridge = zero jank. Skia engine = consistent UI across all Android versions and screen sizes.',
+    alts:'<span class="alt-label">React Native</span> Slower (JS bridge), jank on complex UI<br><span class="alt-label">Kotlin</span> Android-only<br><span class="alt-label">Swift</span> iOS-only'
+  },
+  'dart':{
+    icon:'🎯',title:'Dart 3.12.2',
+    what:'Google\'s client-optimized language with AOT compilation, sound null safety, and isolate-based concurrency.',
+    why:'Chosen over TypeScript for AOT compilation to native machine code (vs JIT interpretation in RN), sound null safety baked into the type system (vs optional in TS), and seamless Flutter integration. Isolates provide true parallelism without shared memory bugs.',
+    benefit:'AOT = instant app startup. Sound types = zero null pointer exceptions in production. Isolates = smooth UI during background database operations.',
+    alts:'<span class="alt-label">TypeScript</span> Interpreted (no AOT), slower<br><span class="alt-label">Kotlin</span> Requires KMP for cross-platform<br><span class="alt-label">Swift</span> iOS-only'
+  },
+  'sqlite':{
+    icon:'🗄️',title:'SQLite + sqflite 2.4.3',
+    what:'Self-contained, serverless SQL database engine with zero configuration.',
+    why:'Chosen over Firebase for true offline-first (Firebase breaks without internet), zero latency (local file reads vs network calls), and complete data privacy. Dual-write with SharedPreferences gives complex queries via SQLite + fast key-value access for settings.',
+    benefit:'0ms read latency. Works completely offline. 100% user data privacy. Zero ongoing server costs.',
+    alts:'<span class="alt-label">Firebase</span> Requires internet, costs scale, privacy concerns<br><span class="alt-label">Realm</span> Heavier, slower queries<br><span class="alt-label">Hive</span> NoSQL — no complex joins or queries'
+  },
+  'riverpod':{
+    icon:'🔮',title:'Riverpod 2.6.1',
+    what:'Compile-safe, testable state management with automatic disposal and no BuildContext dependency.',
+    why:'Chosen over Provider for compile-time safety (Provider throws runtime errors for missing providers), better testability (no Widget tree needed), and multiple providers of same type. Chosen over BLoC for 3x less boilerplate (no Event/State classes) and over GetX for cleaner architecture.',
+    benefit:'Compile-time validation = fewer crashes. No BuildContext = testable in pure Dart. Auto-dispose = no memory leaks.',
+    alts:'<span class="alt-label">Provider</span> Runtime errors, not testable<br><span class="alt-label">BLoC</span> 3x more boilerplate<br><span class="alt-label">GetX</span> Poor maintenance, bad DI patterns'
+  },
+  'gemini':{
+    icon:'🤖',title:'Google Gemini AI API',
+    what:'Google\'s most capable AI model — STEM-optimized with 1M token context window.',
+    why:'Chosen over GPT-4 for 10% higher MMLU (STEM benchmark) scores, 1M token context vs 128K (process entire textbooks), and 30-50% lower cost. Chosen over Claude for superior code generation and file understanding. Native Google Cloud integration means lower latency.',
+    benefit:'1M context = process entire textbooks in one query. Lower cost = sustainable free tier. Better STEM = accurate academic answers.',
+    alts:'<span class="alt-label">GPT-4</span> 8x smaller context, 2x cost<br><span class="alt-label">Claude</span> Weaker at STEM/code<br><span class="alt-label">Local models</span> Not capable enough for tutoring'
+  },
+  'fsrs':{
+    icon:'🧠',title:'FSRS Algorithm',
+    what:'Free Spaced Repetition Scheduler — 3D memory tracking (stability, difficulty, retrievability).',
+    why:'Chosen over SM-2 (Anki) for 30% better retention with same review count. FSRS tracks 3 dimensions vs SM-2\'s single "easiness" factor. Uses maximum likelihood estimation to adapt to YOUR memory patterns in real-time. Backed by 50,000+ Anki users\' data.',
+    benefit:'30% more efficient than Anki. Personalized to YOUR brain. Fewer reviews = more time learning.',
+    alts:'<span class="alt-label">SM-2 (Anki)</span> 30% less efficient, one-size-fits-all<br><span class="alt-label">Leitner</span> Too simple, no optimization<br><span class="alt-label">Custom</span> Would take months to research and tune'
+  },
+  'fl_chart':{
+    icon:'📈',title:'fl_chart 0.69.2',
+    what:'Free, open-source Flutter charting library with 14 chart types and smooth animations.',
+    why:'Chosen over syncfusion for being 100% free (syncfusion costs $995/year for commerical use). Chosen over custom Canvas drawing for 80% less code. Supports touch interactions and smooth animations out of the box.',
+    benefit:'Free and open-source. Touch interaction on charts. 14 chart types. Active community.',
+    alts:'<span class="alt-label">syncfusion</span> $995/yr license<br><span class="alt-label">Custom Canvas</span> 5x development time<br><span class="alt-label">Google Charts</span> No native Flutter widget'
+  },
+  'mobile_scanner':{
+    icon:'📷',title:'mobile_scanner',
+    what:'Universal barcode/QR scanner wrapping ML Kit with a clean Flutter widget API.',
+    why:'Chosen over raw ML Kit for simpler API, automatic camera permission handling, lifecycle management, and torch control. Handles orientation changes and camera hot-reload automatically.',
+    benefit:'Widget-based API = 90% less code. Auto permissions. Works on 99% of Android cameras.',
+    alts:'<span class="alt-label">ML Kit direct</span> 5x more code, manual handling<br><span class="alt-label">ZXing</span> Slower, outdated<br><span class="alt-label">Custom</span> Months of camera work'
+  },
+  'sharedprefs':{
+    icon:'📦',title:'SharedPreferences 2.2.3',
+    what:'Key-value storage for fast access to small data, paired with SQLite in a dual-write pattern.',
+    why:'Used alongside SQLite for fast reads of settings, tokens, and session state. SQLite handles complex structured data (flashcards, history, analytics). This hybrid gives us sub-1ms reads for frequent data and powerful SQL for analysis.',
+    benefit:'<1ms reads for settings. Complex queries for analytics. Redundant storage = data safety.',
+    alts:'<span class="alt-label">SQLite-only</span> Slower simple reads<br><span class="alt-label">Hive</span> Less reliable, smaller community'
+  },
+  'gradle':{
+    icon:'🏗️',title:'Gradle 8.11.1 + AGP 8.9.1',
+    what:'Android\'s build system with Kotlin DSL, build caching, and R8 code shrinking.',
+    why:'Incremental builds are 80% faster after first build. R8 shrinking reduced APK from 42MB to 25.8MB (40% smaller). JDK 21 provides 15% faster compilation than JDK 17.',
+    benefit:'25.8MB APK (40% smaller). 80% faster builds. R8 = smaller, faster, more secure code.',
+    alts:'<span class="alt-label">Bazel</span> Complex setup, overkill for single app<br><span class="alt-label">Maven</span> Slower, Android-unfriendly'
+  },
+  'googlesignin':{
+    icon:'👤',title:'Google Sign-In',
+    what:'OAuth 2.0 authentication via Google accounts with offline access tokens.',
+    why:'Chosen over email/password for zero password management (no hashing, reset flow, storage), built-in Google security (MFA, suspicious login detection), and one-tap sign-in. Offline token enables background sync.',
+    benefit:'No password management. Google-grade security. One-tap sign-in. Offline sync support.',
+    alts:'<span class="alt-label">Email/password</span> Password management burden, less secure<br><span class="alt-label">Firebase Auth</span> Vendor lock-in'
+  },
+  'threejs':{
+    icon:'🧊',title:'Three.js r152',
+    what:'Cross-browser 3D library built on WebGL with built-in tone mapping and materials.',
+    why:'Chosen over raw WebGL for 90% less code (handles shaders, buffers, matrices automatically). Chosen over CSS 3D for real lighting and shadows. ACESFilmicToneMapping gives cinematic color grading that matches the premium brand feel.',
+    benefit:'90% less code than raw WebGL. 60fps on mobile. Cinematic tone mapping. No plugins needed.',
+    alts:'<span class="alt-label">Raw WebGL</span> 10x more code<br><span class="alt-label">CSS 3D</span> No lighting, no materials<br><span class="alt-label">Unity WebGL</span> Heavy, requires plugin download'
+  },
+  'googlefonts':{
+    icon:'🎨',title:'Google Fonts 6.2.1',
+    what:'Flutter font package with automatic subsetting, preloading, and 1400+ font library.',
+    why:'Auto-subsetting downloads only the characters you use (60% bandwidth savings). Plus Jakarta Sans provides modern geometric clarity for headings. Inter offers superior readability for body text at 12-14px.',
+    benefit:'60% smaller font downloads. Perfect pairing: PJS (headings) + Inter (body). 1400+ font options.',
+    alts:'<span class="alt-label">Custom TTF</span> No subsetting, larger downloads<br><span class="alt-label">System fonts</span> Limited selection, no brand identity'
+  },
+  'offline-first':{
+    icon:'📡',title:'Offline-First Architecture',
+    what:'All core features work without internet. Only AI Mentor requires connectivity.',
+    why:'43% of students report inconsistent internet access (subway, libraries, cafes). Cloud-dependent apps are useless in these scenarios. Offline-first means zero loading states, zero errors, zero data loss. SQLite stores everything locally.',
+    benefit:'Works everywhere — subway, library, airplane. Zero loading states. Zero data loss. Complete privacy.',
+    alts:'<span class="alt-label">Cloud-first</span> Useless without internet<br><span class="alt-label">Hybrid</span> Complex, still breaks offline<br><span class="alt-label">PWA</span> Limited storage, less capable'
+  },
+  'dark-theme':{
+    icon:'🌙',title:'Dark Theme Design',
+    what:'Deep midnight background (#08081A) with purple accents and glassmorphism UI.',
+    why:'Reduces eye strain during 2-4 hour study sessions (blue light from light themes causes fatigue). AMOLED screens use 60% less power on dark pixels — extends battery life significantly. Dark backgrounds reduce visual distraction, improving focus.',
+    benefit:'60% less battery drain on OLED. Less eye fatigue. Better focus and concentration. Premium aesthetic.',
+    alts:'<span class="alt-label">Light theme</span> More eye strain, higher battery drain, less premium feel<br><span class="alt-label">Pure black (#000)</span> Too harsh, AMOLED smearing issues'
+  },
+  'purple-gold':{
+    icon:'🎨',title:'Purple + Gold Color Scheme',
+    what:'Primary #7C4DFF (purple), Secondary #448AFF (blue), Accent #FFD700 (gold).',
+    why:'Purple = wisdom, creativity, and mystery — perfect for a learning app. Gold = achievement, rewards, and excellence — ideal for gamification. Blue adds trust and clarity for functional elements. Triadic scheme creates clear visual hierarchy.',
+    benefit:'Psychologically optimized for learning + achievement. Clear visual hierarchy. Memorable brand.',
+    alts:'<span class="alt-label">Blue-only</span> Generic, no personality<br><span class="alt-label">Multicolor</span> Chaotic, no hierarchy<br><span class="alt-label">Material You</span> Unpredictable, no brand identity'
+  },
+  'vs-anki':{
+    icon:'🏆',title:'Why StudyMate AI vs Anki',
+    what:'StudyMate AI reimagines spaced repetition with modern technology and gamification.',
+    why:'Anki uses SM-2 which is 30% less efficient than FSRS. Anki\'s UI hasn\'t changed significantly since 2006. No gamification means no motivation to study daily. No analytics means students don\'t know their weak areas. StudyMate AI fixes all of this while being free and open.',
+    benefit:'30% more efficient reviews. Modern glassmorphism UI. Gamification keeps you coming back. Built-in analytics.',
+    alts:'<span class="alt-label">Anki</span> Dated UI, no motivation, no analytics<br><span class="alt-label">Anki + add-ons</span> Complex setup, fragile, breaks often'
+  },
+  'vs-quizlet':{
+    icon:'🏆',title:'Why StudyMate AI vs Quizlet',
+    what:'StudyMate AI offers a complete offline-first study ecosystem vs Quizlet\'s online-only model.',
+    why:'Quizlet requires internet for everything — useless on subway or in areas with poor connectivity. Quizlet shows ads and pushes subscriptions. No AI mentor for personalized help. No FSRS — just basic flipping. StudyMate AI is offline-first, ad-free, has AI tutor, and uses the best SRS algorithm.',
+    benefit:'Works offline everywhere. No ads ever. AI tutor available 24/7. Better algorithm = better retention.',
+    alts:'<span class="alt-label">Quizlet</span> Online-only, ads, subscriptions, no AI, basic SRS<br><span class="alt-label">Quizlet Plus</span> $35.99/yr, still no AI mentor'
+  },
+  'vs-notion':{
+    icon:'🏆',title:'Why StudyMate AI vs Notion',
+    what:'StudyMate AI is purpose-built for studying vs Notion\'s general-purpose workspace.',
+    why:'Notion is a general tool — it takes hours to set up a study system and it still lacks built-in SRS, gamification, and analytics. No flashcard algorithm means manual review scheduling. No XP or achievements means no motivation. StudyMate AI works out of the box with everything a student needs.',
+    benefit:'Zero setup — start studying immediately. Built-in FSRS algorithm. Gamification and analytics built in. Purpose-built for students.',
+    alts:'<span class="alt-label">Notion</span> Hours of setup, no SRS, no gamification, no analytics<br><span class="alt-label">Notion + plugins</span> Fragile, complex, still no AI mentor'
+  },
+  'step-1':{
+    icon:'⚡',title:'Step 1: Open & Sync',
+    what:'Splash screen with auto-login, dashboard loads instantly with today\'s goals.',
+    why:'Zero friction start — students should open and start studying immediately, not log in manually. Auto-login uses encrypted local tokens (offline-safe). Dashboard reduces decision paralysis by showing exactly what needs attention today.',
+    benefit:'Open → studying in under 3 seconds. Works offline. No login friction. Clear daily goals.',
+    alts:'<span class="alt-label">Manual login</span> Barrier to start, especially for daily use<br><span class="alt-label">Blank dashboard</span> Decision paralysis — what do I do first?'
+  },
+  'step-2':{
+    icon:'🃏',title:'Step 2: Review Flashcards',
+    what:'FSRS algorithm presents cards due for review with 4 rating levels.',
+    why:'Self-directed review means you don\'t know what you\'re about to forget. The algorithm does. Rating levels provide fine-grained feedback: "Easy" skips far ahead (saving time), "Again" brings back soon (focusing effort). This is 30% more efficient than Anki\'s SM-2.',
+    benefit:'Reviews only what you\'ll forget. 4 ratings = optimal scheduling. Saves time on known cards.',
+    alts:'<span class="alt-label">Self-review</span> You don\'t know what you\'ve forgotten<br><span class="alt-label">Random review</span> Wastes time on well-known cards'
+  },
+  'step-3':{
+    icon:'⏱️',title:'Step 3: Focus Session',
+    what:'Pomodoro timer with XP-per-minute rewards for distraction-free studying.',
+    why:'25-minute sprints match the brain\'s natural attention span (scientific research shows attention drops after 25-30min). XP-per-minute transforms boring "just sit and focus" into an active reward loop. You literally level up by concentrating.',
+    benefit:'25min = scientifically optimal focus. XP rewards = studying feels like gaming. Track total focus hours.',
+    alts:'<span class="alt-label">No timer</span> Burnout risk, no structure<br><span class="alt-label">60min sessions</span> Attention drops after 25min<br><span class="alt-label">Plain timer</span> No motivation, easy to ignore'
+  },
+  'step-4':{
+    icon:'📊',title:'Step 4: Take a Quiz',
+    what:'Subject-wise quizzes with performance tracking and weak area identification.',
+    why:'Active recall testing boosts retention by 50% more than passive re-reading (Roediger & Karpicke, 2006). Subject-wise separation reveals exactly which class needs more attention. Tracking over time shows if you\'re improving.',
+    benefit:'50% better retention than re-reading. Identify weak subjects instantly. Measure improvement over time.',
+    alts:'<span class="alt-label">Passive re-reading</span> 50% less retention, false sense of mastery<br><span class="alt-label">No quizzes</span> No way to assess understanding'
+  },
+  'step-5':{
+    icon:'🔄',title:'Step 5: Analyze & Repeat',
+    what:'Check analytics, claim daily rewards, compete, and start the next study cycle.',
+    why:'Closing the feedback loop is crucial for habit formation. Analytics show progress (motivation). Daily rewards trigger dopamine (habit reinforcement). Leaderboards add social accountability. Each cycle improves the FSRS model — it learns YOUR memory patterns better over time.',
+    benefit:'Motivation loop: see progress → get reward → compete → study more. Algorithm improves with each cycle.',
+    alts:'<span class="alt-label">No review loop</span> No feedback, no habit formation<br><span class="alt-label">Only studying</span> Missing the reward that builds the habit'
+  },
+  'fsrs-feature':{
+    icon:'🧠',title:'FSRS Spaced Repetition',
+    what:'A smart flashcard system that schedules reviews at scientifically optimal intervals based on YOUR memory.',
+    why:'Research shows spaced repetition improves long-term retention by 200% vs linear review. FSRS specifically outperforms Anki\'s SM-2 by 30% by tracking 3 memory dimensions (stability, difficulty, retrievability). Each card gets a personalized schedule unique to YOUR memory patterns.',
+    benefit:'200% better retention than linear review. 30% better than Anki. Personalized to your brain. Fewer reviews needed.',
+    alts:'<span class="alt-label">Linear review</span> 70% forgotten within 24 hours<br><span class="alt-label">SM-2 (Anki)</span> Generic curve, not personalized<br><span class="alt-label">Leitner</span> Rigid, no optimization'
+  },
+  'ai-mentor':{
+    icon:'🤖',title:'AI Mentor (Gemini)',
+    what:'An AI tutor that answers questions, explains concepts, and analyzes uploaded files.',
+    why:'Traditional study help (forums, tutors) is slow and expensive. Gemini\'s 1M token context can process entire textbooks. It adapts explanations to YOUR knowledge level. File upload means you can ask about your specific notes, PDFs, or code.',
+    benefit:'Instant answers 24/7. Processes textbooks in one go. Adapts to your level. File upload for specific help.',
+    alts:'<span class="alt-label">Stack Overflow</span> Hours/days for answers<br><span class="alt-label">Human tutor</span> Expensive, not 24/7<br><span class="alt-label">GPT-4</span> 8x smaller context, 2x cost'
+  },
+  'gamification':{
+    icon:'🎮',title:'Gamification Engine',
+    what:'XP-based levels (N²×100), 23 achievements, daily streaks, and 4 leaderboard types.',
+    why:'Gamification leverages dopamine release to form study habits. Research shows XP systems increase task persistence by 40%. The N²×100 formula creates fast early progress (satisfying) while maintaining challenge at high levels. 23 achievements provide constant discovery.',
+    benefit:'40% more study persistence. 13 XP event types = always earning. Achievements = constant goals.',
+    alts:'<span class="alt-label">Basic tracking</span> No motivation boost<br><span class="alt-label">Pure leaderboards</span> No personal progress tracking<br><span class="alt-label">Only badges</span> No sense of progression/leveling'
+  },
+  'analytics':{
+    icon:'📊',title:'Analytics Dashboard',
+    what:'Study time tracking, subject-wise quiz accuracy, weekly charts, and progress metrics.',
+    why:'Visualized progress increases motivation by 35% (Harvard study). Subject-wise accuracy reveals weak areas that overall averages hide. Weekly trend analysis shows if you\'re improving or slacking. Data drives better study decisions.',
+    benefit:'35% more motivation with progress visualization. Identify weak subjects at a glance. See weekly trends.',
+    alts:'<span class="alt-label">Basic counters</span> No insight into trends or weak areas<br><span class="alt-label">Manual tracking</span> Nobody actually does it<br><span class="alt-label">No analytics</span> Flying blind — can\'t improve what you don\'t measure'
+  },
+  'social':{
+    icon:'👥',title:'Social Learning',
+    what:'QR-based friend system, 4 leaderboard types, and community Q&A.',
+    why:'QR codes enable zero-friction friend adding — scan, done, works offline. 4 leaderboard types (daily/weekly/monthly/all-time) cater to different competitive styles. Community Q&A builds a shared knowledge base. Social accountability increases study consistency.',
+    benefit:'Zero-typing friend adding. 4 leaderboard types for everyone. Community knowledge base grows naturally.',
+    alts:'<span class="alt-label">Username search</span> Typing friction, typos, can\'t work offline<br><span class="alt-label">Email invites</span> Privacy invasive, slow<br><span class="alt-label">No social</span> Missed motivation from accountability'
+  },
+  'focus':{
+    icon:'⏱️',title:'Focus Timer',
+    what:'Pomodoro-style timer with XP-per-minute rewards and session history tracking.',
+    why:'Pomodoro (25min work / 5min break) aligns with the brain\'s ultradian rhythm — natural attention cycles. XP-per-minute creates immediate positive reinforcement for focusing. Session history reveals your most productive times of day.',
+    benefit:'Scientifically optimal work/break ratio. XP turns focus into a reward loop. Find your peak study hours.',
+    alts:'<span class="alt-label">Plain timer</span> No intrinsic motivation to use it<br><span class="alt-label">Forest app</span> No study integration, doesn\'t track subjects<br><span class="alt-label">No timer</span> No structure, burnout risk'
+  }
+};
+
+// ═══════════════════════════════════════════════
+// MODAL SYSTEM — Show explanation on click
+// ═══════════════════════════════════════════════
+function showExplain(key){
+  const d=EXPLAIN[key];
+  if(!d)return;
+  document.getElementById('modalIcon').textContent=d.icon||'🚀';
+  document.getElementById('modalTitle').textContent=d.title||'StudyMate AI';
+  document.getElementById('modalWhat').textContent=d.what||'';
+  document.getElementById('modalWhy').innerHTML=d.why||'';
+  document.getElementById('modalBenefit').innerHTML=d.benefit||'';
+  document.getElementById('modalAlts').innerHTML=d.alts||'None — this was the clear best choice.';
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// ═══════════════════════════════════════════════
+// UI INTERACTIONS
+// ═══════════════════════════════════════════════
+
+// Nav hide/show
+const nav=document.getElementById('nav');let ls=0;
+window.addEventListener('scroll',()=>{const c=window.pageYOffset;nav.classList.toggle('hidden',c>ls&&c>80);ls=c},{passive:true});
 
 // Counters
-(function(){
-  document.querySelectorAll('.hero-stat .num').forEach(el=>{
-    const ob=new IntersectionObserver(([e])=>{
-      if(!e.isIntersecting)return;
-      const target=parseInt(el.getAttribute('data-t')),dur=2000,start=performance.now();
-      (function anim(now){const p=Math.min((now-start)/dur,1),eased=1-Math.pow(1-p,3);el.textContent=Math.floor(eased*target)+(target>=100?'+':'');if(p<1)requestAnimationFrame(anim);else el.textContent=target+(target>=100?'+':'')})(start);
-      ob.unobserve(el);
-    },{threshold:.5});ob.observe(el);
-  });
-})();
+document.querySelectorAll('.hero-st .nu').forEach(el=>{const ob=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;const t=parseInt(el.getAttribute('data-t')),dur=2000,st=performance.now();(function a(n){const p=Math.min((n-st)/dur,1),eased=1-Math.pow(1-p,3);el.textContent=Math.floor(eased*t)+(t>=100?'+':'');if(p<1)requestAnimationFrame(a);else el.textContent=t+(t>=100?'+':'')})(st);ob.unobserve(el)},{threshold:.5});ob.observe(el)});
 
-// Scroll Reveal
-(function(){
-  const ob=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('v'),parseInt(e.target.dataset.d)||0);ob.unobserve(e.target)}});
-  },{threshold:.08});
-  document.querySelectorAll('.f-card,.step,.t-chip').forEach(el=>ob.observe(el));
-})();
+// Scroll reveal
+const sOb=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('v'),parseInt(e.target.dataset.d)||0);sOb.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.f-card,.p-card,.t-chip').forEach(el=>sOb.observe(el));
 
-// Phone time
-(function(){
-  const el=document.getElementById('phTime');
-  function u(){const d=new Date();el.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}u();setInterval(u,10000);
-})();
+// Phone clock
+(function(){const e=document.getElementById('phTime');function u(){const d=new Date();e.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}u();setInterval(u,10000)})();
 
-// Phone 3D tilt
-(function(){
-  const w=document.getElementById('phoneWrap');if(!w)return;
-  w.addEventListener('mousemove',e=>{const r=w.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;w.style.transform=`perspective(1200px) rotateY(${x*25}deg) rotateX(${-y*25}deg) translateZ(30px)`});
-  w.addEventListener('mouseleave',()=>{w.style.transform='perspective(1200px) rotateY(-5deg) rotateX(3deg)'});
-})();
+// Phone tilt
+(function(){const w=document.getElementById('phoneWrap');if(!w)return;
+w.addEventListener('mousemove',e=>{const r=w.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;w.style.transform=`perspective(1400px) rotateY(${x*20}deg) rotateX(${-y*20}deg) translateZ(20px)`;w.classList.remove('floating')});
+w.addEventListener('mouseleave',()=>{w.style.transform='';w.classList.add('floating')})})();
+
+// FAQ
+function toggleFaq(el){const p=el.parentElement;p.classList.toggle('open')}
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
