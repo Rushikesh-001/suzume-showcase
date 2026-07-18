@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. SCROLL REVEAL
   // ============================================
   function initScrollReveal() {
-    const els = document.querySelectorAll('.reveal');
+    const els = document.querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-blur');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -257,18 +257,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================
-  // 8. SMOOTH SCROLL
+  // 8. SMOOTH SCROLL WITH TRANSITION
   // ============================================
   function initSmoothScroll() {
+    // Create transition overlay if not exists
+    let overlay = document.querySelector('.page-transition');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'page-transition';
+      overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--accent-gradient, linear-gradient(135deg, #6d3aff, #3b82f6));
+        z-index: 99999; pointer-events: none;
+        transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      `;
+      document.body.appendChild(overlay);
+    }
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.querySelector(anchor.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          document.querySelector('.nav-links')?.classList.remove('open');
-          document.querySelector('.hamburger')?.classList.remove('active');
+        const href = anchor.getAttribute('href');
+        const target = document.querySelector(href);
+        if (!target) return;
+        
+        // Use View Transitions API if available
+        if (document.startViewTransition) {
+          document.startViewTransition(() => {
+            target.scrollIntoView({ behavior: 'instant', block: 'start' });
+          });
+        } else {
+          // Fallback: smooth scroll with overlay flash
+          overlay.style.transform = 'translateY(0)';
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            overlay.style.transform = 'translateY(-100%)';
+          }, 300);
         }
+        
+        document.querySelector('.nav-links')?.classList.remove('open');
+        document.querySelector('.hamburger')?.classList.remove('active');
       });
     });
   }

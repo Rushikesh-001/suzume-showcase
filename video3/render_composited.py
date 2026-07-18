@@ -1,10 +1,9 @@
 """
-Cinematic Suzume Reel v2 - DEMO SCREENSHOT COMPOSITED RENDER
-Uses moviepy composite system with real demo screenshots as footage.
-Much more interesting than the text-only version.
+Cinematic Suzume Reel v3 - AVENGERS-STYLE TRAILER
+Dramatic pacing, letterbox bars, epic text reveals.
 """
 import os, sys, numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from moviepy import (
     VideoClip, ImageClip, AudioClip,
     CompositeVideoClip, concatenate_videoclips,
@@ -15,15 +14,14 @@ OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
 SCREENSHOTS_DIR = os.path.join(OUTPUT_DIR, "screenshots")
 WIDTH, HEIGHT = 1920, 1080
 FPS = 30
+LETTERBOX = 80  # black bar height top/bottom for 2.35:1 cinematic look
 
-# Fonts
 FONT_SEMIBOLD = "C:/Windows/Fonts/seguisb.ttf"
 FONT_BOLD = "C:/Windows/Fonts/segoeuib.ttf"
-FONT_REG = "C:/Windows/Fonts/segoeui.ttf"
-FONT = FONT_SEMIBOLD if os.path.exists(FONT_SEMIBOLD) else FONT_REG
+FONT_LIGHT = "C:/Windows/Fonts/segoeuil.ttf"
+FONT = FONT_SEMIBOLD if os.path.exists(FONT_SEMIBOLD) else FONT_LIGHT
 
 def make_bg(colors, direction="radial", w=WIDTH, h=HEIGHT):
-    """Create gradient background with numpy (fast)."""
     y, x = np.mgrid[0:h, 0:w]
     if direction == "radial":
         cx, cy = w/2, h/2
@@ -35,7 +33,6 @@ def make_bg(colors, direction="radial", w=WIDTH, h=HEIGHT):
     else:
         t = np.zeros((h, w))
     t = np.clip(t, 0, 1)
-    
     result = np.zeros((h, w, 3))
     n = len(colors)
     for i in range(n-1):
@@ -54,29 +51,35 @@ def radial_glow(w, h, cx, cy, radius, color, intensity=0.3):
     glow = np.exp(-dist / (radius/3)) * intensity
     return np.clip(glow[:,:,np.newaxis] * np.array(color, dtype=np.float32), 0, 255).astype(np.uint8)
 
-# ============ PRE-RENDER BACKGROUNDS ============
 print("Pre-rendering backgrounds...")
-
-# Opening scene - dark cinematic
 opening_bg = make_bg([(5,5,20), (15,10,35), (8,5,25)], "radial")
 glow = radial_glow(WIDTH, HEIGHT, WIDTH//2, HEIGHT//2, 400, (80,40,150), 0.25)
 opening_bg = np.clip(opening_bg.astype(np.float32) * 0.75 + glow * 0.25, 0, 255).astype(np.uint8)
 Image.fromarray(opening_bg).save(os.path.join(OUTPUT_DIR, "_bg_opening.png"))
 print("  Opening bg OK")
 
-# Finale scene - warm celebratory
 finale_bg = make_bg([(15,10,25), (25,15,40), (10,8,20)], "radial")
 glow = radial_glow(WIDTH, HEIGHT, WIDTH//2, HEIGHT//2, 300, (200,150,50), 0.4)
 finale_bg = np.clip(finale_bg.astype(np.float32) * 0.6 + glow * 0.4, 0, 255).astype(np.uint8)
 Image.fromarray(finale_bg).save(os.path.join(OUTPUT_DIR, "_bg_finale.png"))
 print("  Finale bg OK")
 
+# Cinematic letterbox bars
+def make_letterbox():
+    """Create 21:9 cinematic black bars."""
+    bar = ColorClip(size=(WIDTH, LETTERBOX), color=(0,0,0))
+    top = bar.with_position((0, 0))
+    bottom = bar.with_position((0, HEIGHT - LETTERBOX))
+    return [top, bottom]
+
+letterbox_clips = make_letterbox()
+
 # ============ TEXT RENDERER ============
 _text_cache = {}
 
 def render_text(text, font_size=48, color=(245,245,255), shadow_alpha=180,
-                max_width=1600, pos="center", font_path=None):
-    key = (text, font_size, color, shadow_alpha, max_width, pos, font_path)
+                max_width=1600, pos="center", font_path=None, glow_color=None):
+    key = (text, font_size, color, shadow_alpha, max_width, pos, font_path, glow_color)
     if key in _text_cache:
         return _text_cache[key]
     
@@ -102,36 +105,54 @@ def render_text(text, font_size=48, color=(245,245,255), shadow_alpha=180,
             cur = test
     if cur: lines.append(cur)
     
-    line_h = max((font.getbbox(l)[3]-font.getbbox(l)[1]) for l in lines) if lines else 0
+    try:
+        # Fix for fonts that return 0 bbox
+        bboxes = []
+        for l in lines:
+            bb = font.getbbox(l)
+            bboxes.append(bb[3]-bb[1] if bb else font_size)
+        line_h = max(bboxes) if bboxes else font_size
+    except:
+        line_h = font_size
     spacing = int(line_h * 0.3)
     total_h = len(lines)*line_h + (len(lines)-1)*spacing + 40
-    max_w = max((font.getbbox(l)[2]-font.getbbox(l)[0]) for l in lines) if lines else 0
-    cw = min(max_w+80, max_width)
-    ch = total_h + 20
+    try:
+        max_w = max((font.getbbox(l)[2]-font.getbbox(l)[0]) for l in lines) if lines else 0
+    except:
+        max_w = max_width
+    cw = max(min(max_w+120, max_width), 100)
+    ch = max(total_h + 40, 60)
     
     pil = Image.new("RGBA", (cw, ch), (0,0,0,0))
     draw = ImageDraw.Draw(pil)
     
     for i, line in enumerate(lines):
-        bbox = font.getbbox(line)
-        lw = bbox[2]-bbox[0]
-        x = (cw-lw)//2 if pos == "center" else (20 if pos == "left" else cw-lw-20)
-        y = 10 + i*(line_h+spacing)
+        try:
+            bbox = font.getbbox(line)
+            lw = bbox[2]-bbox[0]
+        except:
+            lw = len(line) * font_size * 0.6
+        x = (cw-lw)//2 if pos == "center" else (30 if pos == "left" else cw-lw-30)
+        y = 20 + i*(line_h+spacing)
+        # Outer glow
+        if glow_color:
+            for ox, oy in [(-3,-3),(3,-3),(-3,3),(3,3),(0,-4),(0,4),(-4,0),(4,0)]:
+                draw.text((x+ox, y+oy), line, font=font, fill=(*glow_color, 60))
+        # Shadow
         if shadow_alpha > 0:
-            draw.text((x+2, y+2), line, font=font, fill=(0,0,0,shadow_alpha))
+            draw.text((x+3, y+3), line, font=font, fill=(0,0,0,shadow_alpha))
         draw.text((x, y), line, font=font, fill=(*color, 255))
     
     result = np.array(pil)
     _text_cache[key] = result
     return result
 
-
 def make_text_clip(text, font_size, color, start, duration, 
                     position=("center", "center"), fade_in=0.5,
-                    shadow=True, font_path=None, offset_y=0):
+                    shadow=True, font_path=None, offset_y=0, glow_color=None):
     txt = render_text(text, font_size, color, 
                       shadow_alpha=180 if shadow else 0,
-                      font_path=font_path)
+                      font_path=font_path, glow_color=glow_color)
     tw, th = txt.shape[1], txt.shape[0]
     
     if position[0] == "center":
@@ -152,262 +173,225 @@ def make_text_clip(text, font_size, color, start, duration,
         clip = clip.with_effects([vfx.FadeIn(fade_in)])
     return clip
 
-
-def load_screenshot(name, start, duration, scale=1.0, fade_in=0.5, position=("center","center")):
-    """Load a screenshot and prepare it as a video clip."""
+def load_screenshot(name, start, duration, fade_in=0.5):
     path = os.path.join(SCREENSHOTS_DIR, f"{name}.png")
     if not os.path.exists(path):
         print(f"  WARNING: Screenshot not found: {name}")
         return None
     clip = ImageClip(path).with_start(start).with_duration(duration)
-    if scale != 1.0:
-        new_w = int(WIDTH * scale)
-        new_h = int(HEIGHT * scale)
-        clip = clip.resized((new_w, new_h))
-    if position[0] == "center":
-        clip = clip.with_position(("center", "center"))
-    elif position == "fill":
-        clip = clip.resized((WIDTH, HEIGHT)).with_position((0, 0))
     if fade_in > 0:
         clip = clip.with_effects([vfx.FadeIn(fade_in)])
     return clip
 
-
 def make_overlay_clip(start, duration, color=(0,0,0), opacity=0.4):
-    """Create a semi-transparent overlay for text readability on screenshots."""
     overlay = ColorClip(size=(WIDTH, HEIGHT), color=color).with_opacity(opacity)
     overlay = overlay.with_start(start).with_duration(duration)
     return overlay
 
-
-# ============ GET TTS DURATIONS ============
+# ============ GET TTS ============
 print("Loading TTS files...")
-tts_durations = {}
-tts_clips = {}
 tts_files = [
     (1.5, "tts_01.wav"),
-    (10.0, "tts_02.wav"),
-    (20.0, "tts_03.wav"),
-    (32.0, "tts_04.wav"),
-    (47.0, "tts_05.wav"),
-    (57.0, "tts_06.wav"),
-    (67.0, "tts_07.wav"),
+    (11.5, "tts_02.wav"),
+    (20.5, "tts_03.wav"),
+    (31.5, "tts_04.wav"),
+    (44.0, "tts_05.wav"),
+    (54.5, "tts_06.wav"),
+    (66.5, "tts_07.wav"),
 ]
-
-for st, fname in tts_files:
-    path = os.path.join(OUTPUT_DIR, fname)
-    if os.path.exists(path):
-        try:
-            ac = AudioFileClip(path)
-            dur = ac.duration
-            tts_durations[fname] = dur
-            tts_clips[fname] = (ac, st)
-            print(f"  {fname}: {dur:.1f}s (starts at {st}s)")
-        except Exception as e:
-            print(f"  ERROR loading {fname}: {e}")
 
 # ============ BUILD COMPOSITE ============
-print("\nBuilding composite scenes...")
+print("\nBuilding cinematic composite...")
 all_clips = []
 
-# === SCENE 1: Opening (0-10s) - Dark cinematic intro ===
-bg1 = ImageClip(os.path.join(OUTPUT_DIR, "_bg_opening.png")).with_duration(10)
+# --- SCENE 1: EPIC OPENING (0-11.5s) ---
+# Black screen first
+black1 = ColorClip(size=(WIDTH, HEIGHT), color=(0,0,0)).with_duration(2.0)
+all_clips.append(black1)
+
+bg1 = ImageClip(os.path.join(OUTPUT_DIR, "_bg_opening.png")).with_start(2.0).with_duration(10.0)
 all_clips.append(bg1)
 
-# Animated subtitle - "In a world where building software..."
-subtitle_scene1 = make_text_clip("S U Z U M E", 80, (255,195,80), 0.5, 9.5,
-                                  position=("center", "center"), fade_in=2.0, offset_y=-60,
-                                  font_path=FONT_BOLD)
-all_clips.append(subtitle_scene1)
+# Cinematic chapter label
+chapter1 = make_text_clip("01  ///  ORIGIN", 18, (180,180,210), 1.0, 8.0,
+                           position=("center", 160), fade_in=0.5)
+all_clips.append(chapter1)
+
+# Main title - big dramatic reveal
+main_title = make_text_clip("SUZUME", 120, (255,195,80), 2.5, 10.0,
+                             position=("center", "center"), fade_in=2.0, offset_y=-60,
+                             font_path=FONT_BOLD, glow_color=(200,150,50))
+all_clips.append(main_title)
 
 # Tagline
-tagline = make_text_clip("Seven AI Agents. One Supreme Orchestrator.", 28, (180,180,210), 3.5, 6.5,
-                          position=("center", "center"), fade_in=1.5, offset_y=60)
-all_clips.append(tagline)
+tagline1 = make_text_clip("SEVEN AGENTS. ONE ORCHESTRATOR.", 26, (200,200,230), 5.0, 6.0,
+                           position=("center", "center"), fade_in=1.5, offset_y=80)
+all_clips.append(tagline1)
 
-# Bottom bar
-bar_y = HEIGHT - 120
-bottom_bar = make_text_clip("From concept to deployment -- production-ready, every time.", 20, (140,140,170), 5.0, 5.0,
-                             position=("center", bar_y), fade_in=1.0)
-all_clips.append(bottom_bar)
+# Bottom cinematic subtitle
+sub1 = make_text_clip("Production-ready code, every time.", 20, (140,140,170), 7.0, 3.5,
+                       position=("center", HEIGHT - LETTERBOX - 60), fade_in=1.0)
+all_clips.append(sub1)
 
+# Black transition out
+black_out1 = ColorClip(size=(WIDTH, HEIGHT), color=(0,0,0)).with_start(11.5).with_duration(1.0)
+all_clips.append(black_out1)
 
-# === SCENE 2: What is Suzume? (10-20s) - Official hero screenshot ===
-dur2 = 10.0
-ss = load_screenshot("official_hero", 10, dur2, scale=0.95, fade_in=0.8)
+# --- SCENE 2: SUPREME AI (12-20.5s) ---
+bg2_start = 12.0
+ss = load_screenshot("official_hero", bg2_start, 8.5, fade_in=0.3)
 if ss:
     all_clips.append(ss)
-
-# Dark overlay for text readability
-ol2 = make_overlay_clip(10, dur2, opacity=0.5)
+ol2 = make_overlay_clip(bg2_start, 8.5, opacity=0.55)
 all_clips.append(ol2)
 
-# Text overlay
-what_texts = [
-    ("Suzume is a Supreme AI Companion", 42, (255,195,80), 10.5),
-    ("Master Software Architect", 34, (180,180,220), 13.5),
-    ("Full-Stack Engineer with Unlimited Scope", 34, (180,180,220), 16.0),
+chapter2 = make_text_clip("02  ///  WHAT IS SUZUME", 18, (180,180,210), bg2_start + 0.3, 7.0,
+                           position=("center", 160), fade_in=0.5)
+all_clips.append(chapter2)
+
+# Dramatic text reveals one by one
+dramatic_texts = [
+    ("Supreme AI Companion", 52, (255,195,80), bg2_start + 0.5),
+    ("Master Software Architect", 40, (200,200,230), bg2_start + 3.0),
+    ("System Automation Force", 40, (200,200,230), bg2_start + 5.5),
 ]
-for text, fs, color, st in what_texts:
-    clip = make_text_clip(text, fs, color, st, 2.5,
-                          position=("center", 200), fade_in=1.0)
+for text, fs, color, st in dramatic_texts:
+    clip = make_text_clip(text, fs, color, st, 3.0,
+                          position=("center", 340), fade_in=0.8)
     all_clips.append(clip)
 
-
-# === SCENE 3: Capabilities (20-32s) - Capabilities screenshot ===
-dur3 = 12.0
-ss = load_screenshot("section_capabilities", 20, dur3, scale=0.95, fade_in=0.8)
+# --- SCENE 3: CAPABILITIES (20.5-31.5s) ---
+bg3_start = 20.5
+ss = load_screenshot("section_capabilities", bg3_start, 11.0, fade_in=0.3)
 if ss:
     all_clips.append(ss)
-
-ol3 = make_overlay_clip(20, dur3, opacity=0.45)
+ol3 = make_overlay_clip(bg3_start, 11.0, opacity=0.5)
 all_clips.append(ol3)
 
-cap_title = make_text_clip("What Suzume Builds", 44, (255,195,80), 20.5, 11.5,
-                            position=("center", 140), fade_in=1.0)
-all_clips.append(cap_title)
+chapter3 = make_text_clip("03  ///  CAPABILITIES", 18, (180,180,210), bg3_start + 0.3, 9.0,
+                           position=("center", 160), fade_in=0.5)
+all_clips.append(chapter3)
 
-cap_items = [
-    ("Web Apps: React, Next.js, Node.js, Express", 20, (200,200,220), 22.0),
-    ("3D Experiences: Three.js, WebGL, Unity", 20, (200,200,220), 24.0),
-    ("AI Pipelines: Python, ML, Data Processing", 20, (200,200,220), 26.0),
-    ("System Automation: PowerShell, OS, CI/CD", 20, (200,200,220), 28.0),
+cap_extra = [
+    ("Full Stack Web: React, Next.js, Node.js", 30, (255,195,80), bg3_start + 0.8),
+    ("3D Experiences: Three.js, WebGL, Unity", 28, (200,200,230), bg3_start + 2.8),
+    ("AI Pipelines: Python, ML, Data Processing", 28, (200,200,230), bg3_start + 4.8),
+    ("System Automation: PowerShell, OS, CI/CD", 28, (200,200,230), bg3_start + 6.8),
+    ("Every layer of the stack.", 32, (180,180,220), bg3_start + 8.8),
 ]
-for text, fs, color, st in cap_items:
-    clip = make_text_clip(text, fs, color, st, 3.0,
-                          position=("center", 260), fade_in=0.8)
+for text, fs, color, st in cap_extra:
+    clip = make_text_clip(text, fs, color, st, 2.5,
+                          position=("center", 310), fade_in=0.6)
     all_clips.append(clip)
 
-
-# === SCENE 4: Demo Showcase (32-47s) - Show actual working demos ===
-# Sub-scene 4a: Snake game
-dur4a = 3.5
-ss = load_screenshot("snake_game", 32, dur4a, scale=0.92, fade_in=0.5)
-if ss:
-    all_clips.append(ss)
-ol4a = make_overlay_clip(32, dur4a, opacity=0.35)
-all_clips.append(ol4a)
-lbl4a = make_text_clip("Snake Game -- Canvas API, Touch Controls, High Scores", 26, (255,195,80), 32.3, 3.2,
-                        position=("center", 880), fade_in=0.5)
-all_clips.append(lbl4a)
-
-# Sub-scene 4b: 3D Demo
-dur4b = 3.5
-ss = load_screenshot("threed_demo", 35.5, dur4b, scale=0.92, fade_in=0.5)
-if ss:
-    all_clips.append(ss)
-ol4b = make_overlay_clip(35.5, dur4b, opacity=0.35)
-all_clips.append(ol4b)
-lbl4b = make_text_clip("3D Experience -- Three.js, WebGL, 7 Scenes", 26, (100,220,255), 35.8, 3.2,
-                        position=("center", 880), fade_in=0.5)
-all_clips.append(lbl4b)
-
-# Sub-scene 4c: SaaS site
-dur4c = 3.5
-ss = load_screenshot("saas_site", 39, dur4c, scale=0.92, fade_in=0.5)
-if ss:
-    all_clips.append(ss)
-ol4c = make_overlay_clip(39, dur4c, opacity=0.35)
-all_clips.append(ol4c)
-lbl4c = make_text_clip("SaaS Landing Page -- Particles, Glassmorphism, 3D Tilt", 26, (200,155,60), 39.3, 3.2,
-                        position=("center", 880), fade_in=0.5)
-all_clips.append(lbl4c)
-
-# Sub-scene 4d: Process screenshot as "How It Works" backdrop
-dur4d = 4.5
-ss = load_screenshot("section_process", 42.5, dur4d, scale=0.95, fade_in=0.5)
-if ss:
-    all_clips.append(ss)
-ol4d = make_overlay_clip(42.5, dur4d, opacity=0.5)
-all_clips.append(ol4d)
-lbl4d_title = make_text_clip("5 Working Demos -- All Built Autonomously", 36, (255,195,80), 42.8, 4.2,
-                              position=("center", 200), fade_in=0.5)
-all_clips.append(lbl4d_title)
-lbl4d_items = [
-    "Pixel Canvas -- Undo, Redo, PNG Export",
-    "Markdown Editor -- Live Preview, Toolbar",
+# --- SCENE 4: DEMO SHOWCASE (31.5-44s) ---
+# Fast cuts of demos
+demos = [
+    ("snake_game", 31.5, "SNAKE GAME", "Canvas, Touch, High Scores"),
+    ("threed_demo", 34.5, "3D EXPERIENCE", "Three.js, 7 Scenes, WebGL"),
+    ("saas_site", 37.5, "SAAS LANDING", "Particles, Glassmorphism"),
 ]
-for i, txt in enumerate(lbl4d_items):
-    clip = make_text_clip(txt, 24, (200,200,220), 43.5 + i*1.2, 2.5,
-                          position=("center", 320 + i*60), fade_in=0.5)
-    all_clips.append(clip)
+for img, st, title, desc in demos:
+    ss = load_screenshot(img, st, 3.0, fade_in=0.2)
+    if ss:
+        all_clips.append(ss)
+    ol = make_overlay_clip(st, 3.0, opacity=0.45)
+    all_clips.append(ol)
+    
+    t_clip = make_text_clip(title, 36, (255,195,80), st + 0.2, 2.5,
+                             position=("center", 300), fade_in=0.4)
+    all_clips.append(t_clip)
+    d_clip = make_text_clip(desc, 22, (200,200,230), st + 0.5, 2.0,
+                             position=("center", 360), fade_in=0.4)
+    all_clips.append(d_clip)
 
-
-# === SCENE 5: Workflow (47-57s) - Process section ===
-dur5 = 10.0
-ss = load_screenshot("section_process", 47, dur5, scale=0.95, fade_in=0.8)
+# "All built autonomously" tag
+bg4_start = 40.5
+ss = load_screenshot("section_demos", bg4_start, 3.5, fade_in=0.3)
 if ss:
     all_clips.append(ss)
-ol5 = make_overlay_clip(47, dur5, opacity=0.5)
+ol4 = make_overlay_clip(bg4_start, 3.5, opacity=0.5)
+all_clips.append(ol4)
+auto_tag = make_text_clip("5 WORKING DEMOS  ///  ALL BUILT AUTONOMOUSLY", 28, (255,195,80), bg4_start + 0.3, 2.5,
+                           position=("center", "center"), fade_in=0.5)
+all_clips.append(auto_tag)
+
+# --- SCENE 5: WORKFLOW (44-54.5s) ---
+bg5_start = 44.0
+ss = load_screenshot("section_process", bg5_start, 10.5, fade_in=0.3)
+if ss:
+    all_clips.append(ss)
+ol5 = make_overlay_clip(bg5_start, 10.5, opacity=0.5)
 all_clips.append(ol5)
 
-flow_title = make_text_clip("How Suzume Works", 42, (255,195,80), 47.5, 9.5,
-                             position=("center", 100), fade_in=1.0)
-all_clips.append(flow_title)
+chapter5 = make_text_clip("04  ///  HOW IT WORKS", 18, (180,180,210), bg5_start + 0.3, 8.0,
+                           position=("center", 160), fade_in=0.5)
+all_clips.append(chapter5)
 
-flow_steps = [
-    ("1. You give a task in natural language", 48.0),
-    ("2. I analyze and design the architecture", 50.0),
-    ("3. Seven agents work in parallel", 52.0),
-    ("4. Every file is tested and verified", 54.0),
-    ("5. Delivered complete and deployed live", 56.0),
+steps = [
+    ("YOU GIVE A TASK", bg5_start + 0.8),
+    ("I DESIGN THE ARCHITECTURE", bg5_start + 2.5),
+    ("7 AGENTS WORK IN PARALLEL", bg5_start + 4.5),
+    ("EVERY FILE IS TESTED", bg5_start + 6.5),
+    ("DELIVERED COMPLETE + DEPLOYED", bg5_start + 8.5),
 ]
-for text, st in flow_steps:
-    clip = make_text_clip(text, 26, (210,210,230), st, 2.5,
-                          position=("center", 200), fade_in=0.8)
+for text, st in steps:
+    clip = make_text_clip(text, 30, (255,195,80), st, 2.0,
+                          position=("center", 310), fade_in=0.5)
     all_clips.append(clip)
 
-
-# === SCENE 6: Agent Team (57-67s) - Team showcase ===
-dur6 = 10.0
-# Use the process screenshot which has the agent chips
-ss = load_screenshot("official_process", 57, dur6, scale=0.95, fade_in=0.8)
-if not ss:
-    ss = load_screenshot("section_process", 57, dur6, scale=0.95, fade_in=0.8)
+# --- SCENE 6: AGENT TEAM (54.5-66.5s) ---
+bg6_start = 54.5
+ss = load_screenshot("section_process", bg6_start, 12.0, fade_in=0.3)
 if ss:
     all_clips.append(ss)
-ol6 = make_overlay_clip(57, dur6, opacity=0.45)
+ol6 = make_overlay_clip(bg6_start, 12.0, opacity=0.5)
 all_clips.append(ol6)
 
-team_title = make_text_clip("The 7 Specialist Agents", 42, (255,195,80), 57.5, 9.5,
-                             position=("center", 100), fade_in=1.0)
-all_clips.append(team_title)
+chapter6 = make_text_clip("05  ///  THE TEAM", 18, (180,180,210), bg6_start + 0.3, 10.0,
+                           position=("center", 120), fade_in=0.5)
+all_clips.append(chapter6)
 
-agents_list = [
-    ("worker-js", "Frontend, Node APIs, npm", 58.0),
-    ("worker-python", "Backend, Data, ML Pipelines", 59.2),
-    ("worker-unity", "3D Games, HDRP, Physics", 60.4),
-    ("worker-sys", "PowerShell, OS, Automation", 61.6),
-    ("worker-web", "CSS, UI, Responsive Design", 62.8),
-    ("builder", "Compilation, CI/CD, Builds", 64.0),
-    ("reviewer", "Code Audit, Security, Quality", 65.2),
+agents_data = [
+    ("worker-js", "Frontend  |  Node.js  |  APIs", bg6_start + 0.8),
+    ("worker-python", "Backend  |  Data  |  ML", bg6_start + 2.3),
+    ("worker-unity", "3D Games  |  HDRP  |  Physics", bg6_start + 3.8),
+    ("worker-sys", "PowerShell  |  OS  |  Automation", bg6_start + 5.3),
+    ("worker-web", "CSS  |  UI  |  Design", bg6_start + 6.8),
+    ("builder", "Compilation  |  CI/CD  |  Builds", bg6_start + 8.3),
+    ("reviewer", "Code Audit  |  Security  |  QA", bg6_start + 9.8),
 ]
-for name, desc, st in agents_list:
-    clip = make_text_clip(f"{name} -- {desc}", 24, (200,200,230), st, 2.5,
-                          position=("center", 210), fade_in=0.6)
+for i, (name, desc, st) in enumerate(agents_data):
+    clip = make_text_clip(f"{name}  {desc}", 26, (200,200,230), st, 2.0,
+                          position=("center", 230 + (i % 4) * 50), fade_in=0.4)
     all_clips.append(clip)
 
-
-# === SCENE 7: Finale (67-75s) - Closing ===
-dur7 = 8.0
-bg7 = ImageClip(os.path.join(OUTPUT_DIR, "_bg_finale.png")).with_start(67).with_duration(dur7)
+# --- SCENE 7: FINALE (66.5-80s) ---
+bg7_start = 66.5
+bg7 = ImageClip(os.path.join(OUTPUT_DIR, "_bg_finale.png")).with_start(bg7_start).with_duration(13.5)
 all_clips.append(bg7)
 
-final_title = make_text_clip("S U Z U M E", 76, (255,195,80), 67.5, 7.5,
-                              position=("center", "center"), fade_in=1.5, offset_y=-100,
-                              font_path=FONT_BOLD)
+# Cinematic ending
+final_title = make_text_clip("SUZUME", 130, (255,195,80), bg7_start + 0.5, 10.0,
+                              position=("center", "center"), fade_in=2.0, offset_y=-80,
+                              font_path=FONT_BOLD, glow_color=(200,150,50))
 all_clips.append(final_title)
 
-final_sub = make_text_clip("Supreme AI Companion • Master Architect • Automation Force", 26, (180,180,210), 69.0, 6.0,
-                           position=("center", "center"), fade_in=1.0, offset_y=40)
-all_clips.append(final_sub)
+final_tag = make_text_clip("Supreme AI  .  Master Architect  .  Automation Force", 26, (200,200,230), bg7_start + 3.0, 7.0,
+                           position=("center", "center"), fade_in=1.0, offset_y=60)
+all_clips.append(final_tag)
 
-final_cta = make_text_clip("Your vision, delivered with quality.", 22, (160,155,180), 70.5, 4.5,
-                           position=("center", "center"), fade_in=1.0, offset_y=120)
+final_cta = make_text_clip("Your vision, delivered with quality.", 22, (160,155,180), bg7_start + 5.0, 5.0,
+                           position=("center", "center"), fade_in=1.0, offset_y=140)
 all_clips.append(final_cta)
 
+# Add letterbox to ALL clips by including them at the end (they render on top)
+for lb in letterbox_clips:
+    # Extend letterbox to full duration
+    lb = lb.with_duration(80)
+    all_clips.append(lb)
 
-# ============ COMPOSITE VIDEO ============
+# ============ COMPOSITE ============
 print(f"\nCompositing {len(all_clips)} clips...")
 final = CompositeVideoClip(all_clips, size=(WIDTH, HEIGHT))
 
@@ -415,21 +399,20 @@ final = CompositeVideoClip(all_clips, size=(WIDTH, HEIGHT))
 print("Loading audio...")
 audio_clips = []
 
-# BGM
 bgm_path = os.path.join(OUTPUT_DIR, "bgm_cinematic.wav")
 if os.path.exists(bgm_path):
-    bgm = AudioFileClip(bgm_path).with_volume_scaled(0.55)
+    bgm = AudioFileClip(bgm_path).with_volume_scaled(0.65)
     audio_clips.append(bgm)
 
-# TTS - expanded schedule matching the 7 scenes
+# TTS - non-overlapping
 tts_schedule = [
-    (1.5, "tts_01.wav"),   # Opening: "In a world..." (0-10s)
-    (10.0, "tts_02.wav"),  # About: "Suzume is..." (10-20s)
-    (20.0, "tts_03.wav"),  # Capabilities: "Full stack..." (20-32s)
-    (32.0, "tts_04.wav"),  # Demos: "Five working demos..." (32-47s)
-    (47.0, "tts_05.wav"),  # Process: "Every project..." (47-57s)
-    (57.0, "tts_06.wav"),  # Team: "My team includes..." (57-67s)
-    (67.0, "tts_07.wav"),  # Finale: "Your vision..." (67-75s)
+    (1.5, "tts_01.wav"),
+    (11.5, "tts_02.wav"),
+    (20.5, "tts_03.wav"),
+    (31.5, "tts_04.wav"),
+    (44.0, "tts_05.wav"),
+    (54.5, "tts_06.wav"),
+    (66.5, "tts_07.wav"),
 ]
 for st, fname in tts_schedule:
     path = os.path.join(OUTPUT_DIR, fname)
@@ -445,15 +428,14 @@ if audio_clips:
 
 # ============ RENDER ============
 out_path = os.path.join(OUTPUT_DIR, "suzume_cinematic.mp4")
-print(f"\nRendering to: {out_path}")
-print("(1080p, 75 seconds)")
+print(f"\nRendering cinematic trailer to: {out_path}")
 
 final.write_videofile(
     out_path,
     codec="libx264",
     audio_codec="aac",
     fps=FPS,
-    bitrate="12000k",
+    bitrate="14000k",
     audio_bitrate="320k",
     preset="medium",
     ffmpeg_params=["-pix_fmt", "yuv420p", "-profile:v", "high", "-movflags", "+faststart"],

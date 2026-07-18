@@ -1,7 +1,5 @@
 """
-Generate premium TTS voiceover using edge-tts.
-Microsoft Jenny (en-US-JennyNeural) - natural, warm female voice.
-7 segments covering: opening, about, capabilities, demos, process, team, finale
+Ultra-compact TTS segments. Each under 10 seconds. No overlap.
 """
 import asyncio
 import edge_tts
@@ -11,31 +9,31 @@ OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 segments = [
     {
-        "text": "In a world where building software means managing complexity, Suzume breaks through. Orchestrating seven AI agents to construct complete applications, from databases to deployment. No shortcuts. No placeholders. Just production ready code.",
+        "text": "Suzume directs seven AI agents to build complete applications. From databases to deployment. Production ready, every time.",
         "filename": "tts_01.wav"
     },
     {
-        "text": "Suzume is a supreme AI companion. A master software architect and system automation force. I build web applications, 3D experiences, automation systems, and AI pipelines from natural language descriptions. Seven specialist agents work under my orchestration, each handling their domain of expertise.",
+        "text": "A supreme AI companion and master architect. Building web apps, 3D experiences, and automation from natural language.",
         "filename": "tts_02.wav"
     },
     {
-        "text": "Full stack web apps with React and Next.js. 3D interactive experiences with Three.js and WebGL. Game development with Unity. System automation with PowerShell. AI pipelines with Python and machine learning. I cover every layer of the stack from concept to deployment.",
+        "text": "Full stack web with React. 3D with Three.js. Games with Unity. AI with Python. Every layer of the stack.",
         "filename": "tts_03.wav"
     },
     {
-        "text": "Five working demos show what I can build. A responsive Snake game with touch controls and high score tracking. An interactive 3D demo with seven scenes and orbital camera controls. A premium SaaS landing page with particle systems and glassmorphism design. A pixel art creator with undo, redo and PNG export. A live markdown editor with syntax toolbar and instant preview.",
+        "text": "Five demos built autonomously. A snake game. A 3D experience. A SaaS page. A pixel editor. A markdown tool.",
         "filename": "tts_04.wav"
     },
     {
-        "text": "Every project follows the same workflow. You give a task in natural language. I analyze and design the architecture. Seven agents work in parallel. Every file is tested. Every bug is fixed autonomously. The result is delivered complete, deployed, and working. No human intervention needed.",
+        "text": "You give a task. I design the architecture. Seven agents work in parallel. Each file tested. Deployed live.",
         "filename": "tts_05.wav"
     },
     {
-        "text": "My team includes seven specialists. Worker JS for frontend and Node APIs. Worker Python for backend and data processing. Worker Unity for 3D games and HDRP rendering. Worker Sys for system automation. Worker Web for CSS and UI design. Builder for compilation and dependency management. Reviewer for code quality and security audits.",
+        "text": "Seven agents. JS for frontend. Python for backend. Unity for games. Sys for automation. Web for design.",
         "filename": "tts_06.wav"
     },
     {
-        "text": "Your vision, built with precision. Your project, delivered with quality. Your ideas, brought to life. This is Suzume. Supreme AI companion. Master software architect. System automation force. Welcome to what is possible.",
+        "text": "Your vision, built with precision. Your project, delivered with quality. Suzume. Supreme AI.",
         "filename": "tts_07.wav"
     }
 ]
@@ -43,16 +41,15 @@ segments = [
 async def generate_all():
     for seg in segments:
         out_path = os.path.join(OUTPUT_DIR, seg["filename"])
-        print(f"Generating: {seg['filename']}...")
         communicate = edge_tts.Communicate(
             seg["text"],
             "en-US-JennyNeural",
-            rate="-8%",
-            volume="+20%",
-            pitch="-3Hz"
+            rate="+5%",
+            volume="+15%"
         )
         await communicate.save(out_path)
-        print(f"  Saved ({os.path.getsize(out_path)//1024}KB)")
+        size_kb = os.path.getsize(out_path) // 1024
+        print(f"{seg['filename']}: {size_kb}KB")
 
 if __name__ == "__main__":
     asyncio.run(generate_all())

@@ -8,7 +8,7 @@ import os
 import math
 
 SAMPLE_RATE = 48000
-DURATION = 75  # seconds
+DURATION = 80  # seconds
 
 def save_wav(filename, data, sample_rate=SAMPLE_RATE):
     """Save numpy array as WAV file."""
