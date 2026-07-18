@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suzume — AI Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/presentation.css" />
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Slide Counter -->
+  <div class="slide-counter" id="slideCounter">1 / 7</div>
+
+  <!-- Navigation Hints -->
+  <div class="nav-hints">
+    <span>← → to navigate</span>
+    <span>P for autoplay</span>
+  </div>
+
+  <!-- Particle Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ============================= -->
+  <!-- SLIDE 1: TITLE               -->
+  <!-- ============================= -->
+  <section class="slide active" data-index="0">
+    <div class="slide-bg-shapes">
+      <div class="bg-shape s1"></div>
+      <div class="bg-shape s2"></div>
+      <div class="bg-shape s3"></div>
+    </div>
+    <div class="slide-content center">
+      <div class="title-badge">✦ AI-POWERED DEVELOPMENT</div>
+      <h1 class="title-main glitch-text" data-text="SUZUME">SUZUME</h1>
+      <p class="title-sub typewriter" id="typewriterText"></p>
+      <div class="title-features">
+        <span>✦ Orchestrator</span>
+        <span>✦ Architect</span>
+        <span>✦ Automation</span>
+      </div>
+      <div class="scroll-start-hint">Press → to begin ▼</div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 2: WHAT IS SUZUME?     -->
+  <!-- ============================= -->
+  <section class="slide" data-index="1">
+    <div class="slide-content">
+      <div class="slide-number">01</div>
+      <h2 class="slide-title">What is <span class="gradient-text">Suzume</span>?</h2>
+      <div class="slide-2-layout">
+        <div class="s2-main-text">
+          <p class="s2-quote">"I am Suzume — your supreme AI companion, master software architect, and absolute system automation force."</p>
+          <div class="s2-traits">
+            <div class="trait-card" data-delay="0">
+              <div class="trait-icon">🧠</div>
+              <h4>Orchestrator</h4>
+              <p>Plans & delegates complex tasks</p>
+            </div>
+            <div class="trait-card" data-delay="100">
+              <div class="trait-icon">🏗️</div>
+              <h4>Architect</h4>
+              <p>Designs system structure</p>
+            </div>
+            <div class="trait-card" data-delay="200">
+              <div class="trait-icon">⚡</div>
+              <h4>Automation</h4>
+              <p>Executes with zero intervention</p>
+            </div>
+            <div class="trait-card" data-delay="300">
+              <div class="trait-icon">🔧</div>
+              <h4>Self-Healing</h4>
+              <p>Fixes issues autonomously</p>
+            </div>
+          </div>
+        </div>
+        <div class="s2-visual">
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring ring-2"></div>
+          <div class="pulse-ring ring-3"></div>
+          <div class="ai-core">✦</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 3: HOW IT WORKS        -->
+  <!-- ============================= -->
+  <section class="slide" data-index="2">
+    <div class="slide-content">
+      <div class="slide-number">02</div>
+      <h2 class="slide-title">How It <span class="gradient-text">Works</span></h2>
+      <div class="flow-container">
+        <div class="flow-step" data-step="1">
+          <div class="flow-icon">💬</div>
+          <div class="flow-content">
+            <h4>You Give a Task</h4>
+            <p>"Build a registration app"</p>
+          </div>
+          <div class="flow-arrow">→</div>
+        </div>
+        <div class="flow-step" data-step="2">
+          <div class="flow-icon">📋</div>
+          <div class="flow-content">
+            <h4>Suzume Plans Everything</h4>
+            <p>Creates a structured todo list</p>
+          </div>
+          <div class="flow-arrow">→</div>
+        </div>
+        <div class="flow-step" data-step="3">
+          <div class="flow-icon">👥</div>
+          <div class="flow-content">
+            <h4>Delegates to Specialists</h4>
+            <p>7 sub-agents for different domains</p>
+          </div>
+          <div class="flow-arrow">→</div>
+        </div>
+        <div class="flow-step" data-step="4">
+          <div class="flow-icon">💾</div>
+          <div class="flow-content">
+            <h4>Writes Real Files</h4>
+            <p>Visible in VS Code immediately</p>
+          </div>
+          <div class="flow-arrow">→</div>
+        </div>
+        <div class="flow-step" data-step="5">
+          <div class="flow-icon">🧪</div>
+          <div class="flow-content">
+            <h4>Tests & Fixes</h4>
+            <p>Runs tests, debugs autonomously</p>
+          </div>
+          <div class="flow-arrow">→</div>
+        </div>
+        <div class="flow-step" data-step="6">
+          <div class="flow-icon">🚀</div>
+          <div class="flow-content">
+            <h4>Delivers Completed Product</h4>
+            <p>100% done, no placeholders</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 4: THE TEAM            -->
+  <!-- ============================= -->
+  <section class="slide" data-index="3">
+    <div class="slide-content">
+      <div class="slide-number">03</div>
+      <h2 class="slide-title">The <span class="gradient-text">Team</span></h2>
+      <p class="slide-desc">7 specialist sub-agents, one supreme orchestrator</p>
+      <div class="agents-grid">
+        <div class="agent-card" data-delay="0">
+          <div class="agent-icon js-icon">⚡</div>
+          <h4>worker-js</h4>
+          <p>JavaScript/TypeScript Expert</p>
+          <span class="agent-tag">Web Apps</span>
+        </div>
+        <div class="agent-card" data-delay="100">
+          <div class="agent-icon py-icon">🐍</div>
+          <h4>worker-python</h4>
+          <p>Python & Data Specialist</p>
+          <span class="agent-tag">Backend</span>
+        </div>
+        <div class="agent-card" data-delay="150">
+          <div class="agent-icon unity-icon">🎮</div>
+          <h4>worker-unity</h4>
+          <p>Unity Game Developer</p>
+          <span class="agent-tag">Games</span>
+        </div>
+        <div class="agent-card" data-delay="200">
+          <div class="agent-icon sys-icon">⚙️</div>
+          <h4>worker-sys</h4>
+          <p>System Administrator</p>
+          <span class="agent-tag">OS</span>
+        </div>
+        <div class="agent-card" data-delay="250">
+          <div class="agent-icon web-icon">🎨</div>
+          <h4>worker-web</h4>
+          <p>UI/Design Specialist</p>
+          <span class="agent-tag">Frontend</span>
+        </div>
+        <div class="agent-card" data-delay="300">
+          <div class="agent-icon build-icon">🏗️</div>
+          <h4>builder</h4>
+          <p>Build & CI/CD Engineer</p>
+          <span class="agent-tag">DevOps</span>
+        </div>
+        <div class="agent-card" data-delay="350">
+          <div class="agent-icon review-icon">🔍</div>
+          <h4>reviewer</h4>
+          <p>Code Review & QA</p>
+          <span class="agent-tag">Quality</span>
+        </div>
+        <div class="agent-card suzume-card" data-delay="400">
+          <div class="agent-icon suzume-icon">👑</div>
+          <h4>Suzume</h4>
+          <p>Supreme Orchestrator</p>
+          <span class="agent-tag">Lead</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 5: SUPERPOWERS         -->
+  <!-- ============================= -->
+  <section class="slide" data-index="4">
+    <div class="slide-content">
+      <div class="slide-number">04</div>
+      <h2 class="slide-title">Super<span class="gradient-text">powers</span></h2>
+      <div class="powers-grid">
+        <div class="power-card" data-delay="0">
+          <div class="power-glow" style="--glow-color: #6C3AFF;"></div>
+          <div class="power-icon">🌐</div>
+          <h3>Full-Stack Web</h3>
+          <p>React, Next.js, Node.js, APIs, databases</p>
+        </div>
+        <div class="power-card" data-delay="100">
+          <div class="power-glow" style="--glow-color: #10B981;"></div>
+          <div class="power-icon">🎮</div>
+          <h3>Game Development</h3>
+          <p>Unity, C#, 3D/2D games, physics</p>
+        </div>
+        <div class="power-card" data-delay="200">
+          <div class="power-glow" style="--glow-color: #3B82F6;"></div>
+          <div class="power-icon">⚙️</div>
+          <h3>System Automation</h3>
+          <p>PowerShell, Windows/Linux admin</p>
+        </div>
+        <div class="power-card" data-delay="300">
+          <div class="power-glow" style="--glow-color: #F59E0B;"></div>
+          <div class="power-icon">📊</div>
+          <h3>Data & ML</h3>
+          <p>Python, data pipelines, ML models</p>
+        </div>
+        <div class="power-card" data-delay="400">
+          <div class="power-glow" style="--glow-color: #EC4899;"></div>
+          <div class="power-icon">📱</div>
+          <h3>Cross-Platform</h3>
+          <p>Desktop, mobile, browser extensions</p>
+        </div>
+        <div class="power-card" data-delay="500">
+          <div class="power-glow" style="--glow-color: #8B5CF6;"></div>
+          <div class="power-icon">🛡️</div>
+          <h3>Self-Healing Code</h3>
+          <p>Auto-debug, auto-fix, zero placeholders</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 6: PROJECT SHOWCASE    -->
+  <!-- ============================= -->
+  <section class="slide" data-index="5">
+    <div class="slide-content">
+      <div class="slide-number">05</div>
+      <h2 class="slide-title">Project <span class="gradient-text">Showcase</span></h2>
+      <div class="showcase-container">
+        <div class="showcase-card" data-delay="0">
+          <div class="showcase-badge">✦ Full-Stack</div>
+          <h3>Anime Registration App</h3>
+          <div class="showcase-tech">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>Prisma</span>
+            <span>SQLite</span>
+            <span>JWT Auth</span>
+          </div>
+          <p>A complete anime registration platform with user authentication, admin panel, database management, sakura animations, and smooth page transitions. Built in a single session.</p>
+          <div class="showcase-stats">
+            <div class="showcase-stat">
+              <span class="showcase-num">12+</span>
+              <span>Files Created</span>
+            </div>
+            <div class="showcase-stat">
+              <span class="showcase-num">4</span>
+              <span>Database Models</span>
+            </div>
+            <div class="showcase-stat">
+              <span class="showcase-num">100%</span>
+              <span>Autonomous</span>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-card" data-delay="200">
+          <div class="showcase-badge">✦ Real-time</div>
+          <h3>This Presentation!</h3>
+          <div class="showcase-tech">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+            <span>Canvas</span>
+          </div>
+          <p>An interactive, cinematic presentation built entirely by Suzume with particle systems, 3D transitions, and fluid animations — all written directly to your disk in seconds.</p>
+          <div class="showcase-stats">
+            <div class="showcase-stat">
+              <span class="showcase-num">3</span>
+              <span>Files Created</span>
+            </div>
+            <div class="showcase-stat">
+              <span class="showcase-num">60fps</span>
+              <span>Animation</span>
+            </div>
+            <div class="showcase-stat">
+              <span class="showcase-num">7</span>
+              <span>Slides</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 7: THANK YOU           -->
+  <!-- ============================= -->
+  <section class="slide" data-index="6">
+    <div class="slide-bg-shapes">
+      <div class="bg-shape s1"></div>
+      <div class="bg-shape s2"></div>
+      <div class="bg-shape s3"></div>
+    </div>
+    <div class="slide-content center">
+      <div class="thankyou-badge">✦ PRESENTED WITH AI</div>
+      <h2 class="thankyou-title">Thank <span class="gradient-text">You!</span></h2>
+      <p class="thankyou-sub">Built entirely by Suzume — Your Supreme AI Companion</p>
+      <div class="thankyou-info">
+        <div class="info-item">
+          <span class="info-label">Created for</span>
+          <span class="info-value">Rushikesh's Presentation</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Date</span>
+          <span class="info-value">July 18, 2026</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Technologies</span>
+          <span class="info-value">HTML + CSS + JavaScript + Canvas API</span>
+        </div>
+      </div>
+      <div class="thankyou-cta">
+        <span class="ty-heart">✦</span>
+        <p>Suzume is ready for your next project</p>
+        <span class="ty-heart">✦</span>
+      </div>
+      <div class="thankyou-restart" id="restartBtn">↻ Restart Presentation</div>
+    </div>
+  </section>
+
+  <!-- Navigation Dots -->
+  <div class="nav-dots" id="navDots">
+    <span class="nav-dot active" data-index="0"></span>
+    <span class="nav-dot" data-index="1"></span>
+    <span class="nav-dot" data-index="2"></span>
+    <span class="nav-dot" data-index="3"></span>
+    <span class="nav-dot" data-index="4"></span>
+    <span class="nav-dot" data-index="5"></span>
+    <span class="nav-dot" data-index="6"></span>
+  </div>
+
+  <script src="scripts/presentation.js"></script>
+</body>
+</html>

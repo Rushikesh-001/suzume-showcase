@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaCloud — Build the Future</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <!-- Canvas for particle background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">NovaCloud</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#" class="nav-cta">Get Started</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🚀 Now in Public Beta</div>
+      <h1 class="hero-title">
+        <span class="gradient-text">Build the Future.</span><br />
+        <span class="hero-title-sub">Ship Faster.</span>
+      </h1>
+      <p class="hero-subtitle">
+        The all-in-one cloud platform that supercharges your development workflow.
+        Deploy, scale, and monitor with zero configuration.
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary pulse">Get Started Free</a>
+        <a href="#" class="btn btn-secondary">Watch Demo →</a>
+      </div>
+      <div class="hero-stats-mini">
+        <div class="stat-mini"><span class="stat-mini-num">10K+</span> Developers</div>
+        <div class="stat-mini"><span class="stat-mini-num">99.9%</span> Uptime</div>
+        <div class="stat-mini"><span class="stat-mini-num">1M+</span> Deployments</div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <div class="mouse"></div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-header reveal">
+      <span class="section-tag">Features</span>
+      <h2 class="section-title">Everything You Need to <span class="gradient-text">Scale</span></h2>
+      <p class="section-desc">Powerful tools that work together seamlessly to accelerate your development.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal" data-delay="0">
+        <div class="feature-icon" style="--icon-color: #6C3AFF;">☁️</div>
+        <h3>Cloud Sync</h3>
+        <p>Real-time synchronization across all your devices with zero-latency updates.</p>
+      </div>
+      <div class="feature-card reveal" data-delay="100">
+        <div class="feature-icon" style="--icon-color: #3B82F6;">🤖</div>
+        <h3>AI Analytics</h3>
+        <p>Smart insights powered by machine learning to optimize your applications.</p>
+      </div>
+      <div class="feature-card reveal" data-delay="200">
+        <div class="feature-icon" style="--icon-color: #10B981;">👥</div>
+        <h3>Real-time Collab</h3>
+        <p>Work together with your team in real-time with built-in version control.</p>
+      </div>
+      <div class="feature-card reveal" data-delay="300">
+        <div class="feature-icon" style="--icon-color: #F59E0B;">🛡️</div>
+        <h3>99.9% Uptime</h3>
+        <p>Enterprise-grade reliability with automatic failover and disaster recovery.</p>
+      </div>
+      <div class="feature-card reveal" data-delay="400">
+        <div class="feature-icon" style="--icon-color: #EC4899;">📊</div>
+        <h3>Smart Dashboard</h3>
+        <p>Beautiful, customizable dashboards with real-time metrics and alerts.</p>
+      </div>
+      <div class="feature-card reveal" data-delay="500">
+        <div class="feature-icon" style="--icon-color: #8B5CF6;">🔌</div>
+        <h3>API Access</h3>
+        <p>RESTful and GraphQL APIs with automatic documentation and SDK generation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="10000">0</span>
+        <span class="stat-suffix">+</span>
+        <span class="stat-label">Happy Users</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="999">0</span>
+        <span class="stat-suffix">%</span>
+        <span class="stat-label">Uptime Guarantee</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="1000000">0</span>
+        <span class="stat-suffix">+</span>
+        <span class="stat-label">Requests Served</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="150">0</span>
+        <span class="stat-suffix">+</span>
+        <span class="stat-label">Countries</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing" id="pricing">
+    <div class="section-header reveal">
+      <span class="section-tag">Pricing</span>
+      <h2 class="section-title">Simple, Transparent <span class="gradient-text">Pricing</span></h2>
+      <p class="section-desc">Choose the plan that fits your needs. No hidden fees.</p>
+      <div class="pricing-toggle">
+        <span class="toggle-label" id="monthlyLabel">Monthly</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="pricingToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label" id="yearlyLabel">Yearly <span class="save-badge">Save 20%</span></span>
+      </div>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal" data-delay="0">
+        <div class="pricing-header">
+          <h3>Starter</h3>
+          <div class="pricing-price">
+            <span class="price" data-monthly="$19" data-yearly="$15">$19</span>
+            <span class="period">/month</span>
+          </div>
+          <p>Perfect for getting started</p>
+        </div>
+        <ul class="pricing-features">
+          <li>✓ 5 Projects</li>
+          <li>✓ 10GB Storage</li>
+          <li>✓ Basic Analytics</li>
+          <li>✓ Email Support</li>
+          <li>✓ 1 Team Member</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Get Started</a>
+      </div>
+      <div class="pricing-card featured reveal" data-delay="100">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-header">
+          <h3>Pro</h3>
+          <div class="pricing-price">
+            <span class="price" data-monthly="$49" data-yearly="$39">$49</span>
+            <span class="period">/month</span>
+          </div>
+          <p>For growing teams</p>
+        </div>
+        <ul class="pricing-features">
+          <li>✓ Unlimited Projects</li>
+          <li>✓ 100GB Storage</li>
+          <li>✓ Advanced Analytics</li>
+          <li>✓ Priority Support</li>
+          <li>✓ 10 Team Members</li>
+          <li>✓ Custom Domains</li>
+          <li>✓ API Access</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Get Started</a>
+      </div>
+      <div class="pricing-card reveal" data-delay="200">
+        <div class="pricing-header">
+          <h3>Enterprise</h3>
+          <div class="pricing-price">
+            <span class="price" data-monthly="$99" data-yearly="$79">$99</span>
+            <span class="period">/month</span>
+          </div>
+          <p>For large organizations</p>
+        </div>
+        <ul class="pricing-features">
+          <li>✓ Everything in Pro</li>
+          <li>✓ Unlimited Storage</li>
+          <li>✓ AI-Powered Insights</li>
+          <li>✓ 24/7 Dedicated Support</li>
+          <li>✓ Unlimited Team Members</li>
+          <li>✓ Custom Integrations</li>
+          <li>✓ SLA Guarantee</li>
+          <li>✓ On-Premise Option</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Contact Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-header reveal">
+      <span class="section-tag">Testimonials</span>
+      <h2 class="section-title">Loved by <span class="gradient-text">Developers</span></h2>
+      <p class="section-desc">Hear what our users have to say about NovaCloud.</p>
+    </div>
+    <div class="testimonial-carousel reveal">
+      <div class="testimonial-track" id="testimonialTrack">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"NovaCloud completely transformed our deployment pipeline. We went from hours to seconds. Absolutely revolutionary."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: #6C3AFF;">S</div>
+            <div>
+              <strong>Sarah Chen</strong>
+              <span>CTO, TechFlow Inc.</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"The AI analytics alone paid for itself in the first week. We found bottlenecks we didn't even know existed."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: #10B981;">M</div>
+            <div>
+              <strong>Marcus Johnson</strong>
+              <span>Lead Developer, DataSync</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"We migrated our entire infrastructure to NovaCloud in a weekend. The real-time collaboration features are a game changer."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: #F59E0B;">P</div>
+            <div>
+              <strong>Priya Patel</strong>
+              <span>Engineering Manager, WebScale</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-dots" id="testimonialDots">
+        <span class="dot active" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="contact">
+    <div class="cta-content reveal">
+      <h2 class="cta-title">Ready to <span class="gradient-text">Accelerate?</span></h2>
+      <p class="cta-text">Join 10,000+ developers already building with NovaCloud. Start free, scale as you grow.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-primary btn-large pulse">Start Free Trial →</a>
+        <a href="#" class="btn btn-secondary btn-large">Talk to Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">NovaCloud</span>
+        <p>Build the future. Ship faster.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+          <a href="#">Integrations</a>
+          <a href="#">Changelog</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">API Reference</a>
+          <a href="#">Community</a>
+          <a href="#">Status</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 NovaCloud. All rights reserved. Made with ✨ by Suzume.</p>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>
