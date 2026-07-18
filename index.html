@@ -7,6 +7,52 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="showcase.css" />
+
+
+/* HOME BUTTON */
+.home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(10,10,30,0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,195,80,0.3);
+    border-radius: 25px;
+    color: #ffc350;
+    text-decoration: none;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.home-btn:hover {
+    background: rgba(255,195,80,0.15);
+    border-color: #ffc350;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255,195,80,0.2);
+}
+.home-btn svg {
+    width: 18px;
+    height: 18px;
+}
+@media (max-width: 768px) {
+    .home-btn {
+        top: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .home-btn span {
+        display: none;
+    }
+}
+
 </head>
 <body>
 
@@ -724,5 +770,13 @@
   </section>
 
   <script src="showcase.js"></script>
+<!-- HOME BUTTON -->
+<a href="." class="home-btn" title="Back to Suzume Showcase">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+  <span>Home</span>
+</a>
 </body>
 </html>

@@ -664,13 +664,15 @@ section {
   grid-column: 1 / -1;
 }
 
-/* ─── Video Player ─── */
+/* ─── Video Player (Cinematic) ─── */
 .video-container {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
   background: #000;
   aspect-ratio: 16 / 9;
+  box-shadow: 0 0 40px rgba(255, 195, 80, 0.08), 0 20px 60px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 195, 80, 0.1);
 }
 
 .video-container video {
@@ -683,19 +685,20 @@ section {
 .video-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(10,5,30,0.4) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
   cursor: pointer;
-  transition: all 0.4s ease;
+  transition: all 0.5s ease;
   z-index: 2;
+  backdrop-filter: blur(2px);
 }
 
 .video-overlay:hover {
-  background: rgba(0, 0, 0, 0.35);
+  background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(10,5,30,0.2) 100%);
 }
 
 .video-container.playing .video-overlay {
@@ -704,60 +707,122 @@ section {
 }
 
 .play-icon {
-  width: 80px; height: 80px;
+  width: 90px; height: 90px;
   border-radius: 50%;
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #ffc350, #e8942a);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #fff;
-  box-shadow: 0 4px 30px rgba(124, 58, 237, 0.4);
-  transition: transform 0.3s ease;
+  box-shadow: 0 0 40px rgba(255, 195, 80, 0.4), 0 8px 32px rgba(0,0,0,0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+.play-icon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 195, 80, 0.3);
+  animation: playPulse 2s ease-in-out infinite;
+}
+@keyframes playPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.5; }
 }
 
 .video-overlay:hover .play-icon {
-  transform: scale(1.1);
+  transform: scale(1.08);
+  box-shadow: 0 0 60px rgba(255, 195, 80, 0.5);
 }
 
 .play-text {
-  color: rgba(255,255,255,0.8);
-  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  font-size: 1rem;
   font-weight: 500;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.play-sub {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 /* ─── Video Controls Bar ─── */
 .video-controls {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 44px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  height: 48px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8) 40%);
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 16px;
+  padding: 0 16px 4px;
   z-index: 3;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transform: translateY(5px);
+  transition: all 0.3s ease;
 }
 
 .video-container:hover .video-controls,
 .video-container.playing .video-controls {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .vc-play {
   background: none;
   border: none;
-  color: #fff;
-  font-size: 1rem;
+  color: #ffc350;
+  font-size: 1.1rem;
   cursor: pointer;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: color 0.2s;
+  border-radius: 50%;
+}
+.vc-play:hover {
+  color: #ffdb8a;
+  background: rgba(255,255,255,0.1);
+}
+
+.vc-progress {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.2s;
+}
+.vc-progress:hover {
+  height: 6px;
+}
+
+.vc-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffc350, #ff8a50);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.vc-time {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.8rem;
+  font-family: monospace;
+  min-width: 90px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .vc-progress {

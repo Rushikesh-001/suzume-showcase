@@ -386,6 +386,25 @@ document.addEventListener('DOMContentLoaded', () => {
         timeDisplay.textContent = '0:00 / ' + formatTime(video.duration);
       }
       if (progressFill) progressFill.style.width = '0%';
+      // Show overlay with replay option after 1s
+      setTimeout(() => {
+        if (overlay) {
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'auto';
+          const playIcon = overlay.querySelector('.play-icon');
+          if (playIcon) playIcon.textContent = '↻';
+          const playText = overlay.querySelector('.play-text');
+          if (playText) playText.textContent = 'Replay';
+        }
+      }, 800);
+    });
+    
+    // Reset overlay icon on play
+    video.addEventListener('play', () => {
+      const playIcon = overlay ? overlay.querySelector('.play-icon') : null;
+      if (playIcon) playIcon.textContent = '▶';
+      const playText = overlay ? overlay.querySelector('.play-text') : null;
+      if (playText) playText.textContent = 'Watch Cinematic Reel';
     });
 
     // Load metadata for duration display
