@@ -336,45 +336,55 @@
         </svg>
         Download APK
       </a>
-      <div class="file-info">Android APK (Debug) ~ 185 MB</div>
+      <div class="file-info">Android arm64-v8a APK (Debug) ~ 99 MB · <a href="admin.html" style="color:#667eea;">Admin Dashboard ↗</a></div>
     </section>
 
     <!-- Live Status -->
     <div class="status-bar">
       <div class="status-dot"></div>
-      <span>APK ready for download — Build v2.1.0 (Custom Backend, No Firebase req)</span>
+      <span>Build v2.1.0 — 99MB arm64 APK | Admin dashboard live on GitHub Pages</span>
     </div>
 
     <!-- Admin Access -->
     <section class="instructions" style="margin-top: 40px;">
       <h2>🔐 Admin Dashboard Access</h2>
-      <p style="color: rgba(255,255,255,0.6); margin-bottom: 20px;">Monitor all registered users, track activity, and manage the app.</p>
+      <p style="color: rgba(255,255,255,0.6); margin-bottom: 20px;">Monitor all registered users, track activity, and manage the app — from anywhere.</p>
       
-      <!-- NEW: Online Admin Link -->
-      <a href="admin.html" target="_blank" class="download-btn" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;background:linear-gradient(135deg,#667eea,#764ba2);padding:14px 28px;border-radius:12px;color:#fff;text-decoration:none;font-weight:600;">
-        <span>🌐</span> Try Admin Dashboard Online (Demo Mode)
-      </a>
-      <p style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:20px;">Works on any device — no backend needed. Connect to your live server for real data, or browse in demo mode.</p>
+      <!-- Admin Dashboard Button -->
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
+        <a href="admin.html" target="_blank" class="download-btn" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#667eea,#764ba2);padding:14px 28px;border-radius:12px;color:#fff;text-decoration:none;font-weight:600;">
+          <span>📊</span> Open Admin Dashboard
+        </a>
+        <a href="https://github.com/Rushikesh-001/studymate-backend" target="_blank" class="download-btn" style="display:inline-flex;align-items:center;gap:8px;background:#1a1a2e;padding:14px 28px;border-radius:12px;color:#a78bfa;text-decoration:none;font-weight:600;border:1px solid #2a2a4a;">
+          <span>☁️</span> Deploy Backend to Cloud
+        </a>
+      </div>
+      <p style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:20px;">
+        Admin dashboard on GitHub Pages — connect to your running backend to see REAL data (users, photos, stats). 
+        No fake data, ever. For permanent 24/7 cloud access, deploy the backend to Render/Railway via the GitHub repo.
+      </p>
 
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-content">
-          <h4>Start the Backend Server</h4>
+          <h4>Start the Backend Server (Local)</h4>
           <p>Open PowerShell in the project folder and run: <code style="background: #1a1a2e; padding: 2px 8px; border-radius: 4px;">.\start_all.ps1</code></p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-content">
-          <h4>Open Admin Dashboard</h4>
-          <p>Go to <strong>http://localhost:8765/admin</strong> on your computer. Or use <code style="background: #1a1a2e; padding: 2px 8px; border-radius: 4px;">YOUR_IP:8765/admin</code> on your phone (same WiFi).</p>
+          <h4>Connect Admin Dashboard</h4>
+          <p>Open <a href="admin.html" style="color:#667eea;">admin.html</a> → enter your PC's IP:port → login with <strong>admin / admin123</strong> → see real data!</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-content">
-          <h4>Login & Monitor</h4>
-          <p>Use <strong>username: admin</strong> / <strong>password: admin123</strong>. See all users, stats, and activity in real-time.</p>
+          <h4>Deploy to Cloud (24/7 Access)</h4>
+          <p>Fork the <a href="https://github.com/Rushikesh-001/studymate-backend" style="color:#667eea;">backend repo</a> and deploy to 
+          <a href="https://render.com/deploy?repo=https://github.com/Rushikesh-001/studymate-backend" style="color:#667eea;">Render</a> or 
+          <a href="https://railway.app/template/studymate-backend" style="color:#667eea;">Railway</a> — free tier, always on.</p>
         </div>
       </div>
     </section>
