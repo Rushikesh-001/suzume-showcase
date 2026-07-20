@@ -26,54 +26,37 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(12px);
     }
     .header-left { display: flex; align-items: center; gap: 12px; }
     .logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: #fff; }
     .header h1 { font-size: 1.2em; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .status-badge { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-    .status-badge.online { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
-    .status-badge.offline { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
-    .status-badge.demo { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .status-badge.connected { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+    .status-badge.disconnected { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
     .status-dot.green { background: #4ade80; }
     .status-dot.red { background: #f87171; }
-    .status-dot.yellow { background: #fbbf24; }
 
-    /* ── Connection Panel ── */
+    /* ── Connect Panel ── */
     .connect-panel {
       background: #1a1a2e;
       border-bottom: 1px solid #2a2a4a;
-      padding: 12px 20px;
+      padding: 16px 20px;
       display: none;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
     }
-    .connect-panel.show { display: flex; }
-    .connect-panel input {
-      flex: 1;
-      min-width: 180px;
-      padding: 10px 14px;
-      background: #16213e;
-      border: 1px solid #2a2a4a;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
+    .connect-panel.show { display: block; }
+    .connect-panel h3 { color: #c4b5fd; font-size: 14px; margin-bottom: 12px; }
+    .connect-grid { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .connect-grid input {
+      flex: 1; min-width: 200px; padding: 12px 14px; background: #16213e;
+      border: 1px solid #2a2a4a; border-radius: 8px; color: #fff; font-size: 14px; outline: none;
     }
-    .connect-panel input:focus { border-color: #667eea; }
-    .connect-panel input::placeholder { color: #555; }
+    .connect-grid input:focus { border-color: #667eea; }
+    .connect-grid input::placeholder { color: #555; }
     .btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-      white-space: nowrap;
+      padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.2s; white-space: nowrap;
     }
     .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
@@ -82,654 +65,416 @@
     .btn-danger { background: rgba(248, 113, 113, 0.2); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
     .btn-danger:hover { background: rgba(248, 113, 113, 0.3); }
     .btn-sm { padding: 6px 12px; font-size: 12px; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    /* ── Container ── */
+    /* ── Main ── */
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-    /* ── Stats Grid ── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    .stat-card {
-      background: #1a1a2e;
-      padding: 20px 16px;
-      border-radius: 14px;
+    /* ── Welcome Screen (when not connected) ── */
+    .welcome {
       text-align: center;
-      border: 1px solid #2a2a4a;
-      transition: transform 0.2s;
+      padding: 80px 20px 60px;
+      max-width: 500px;
+      margin: 0 auto;
     }
-    .stat-card:hover { transform: translateY(-2px); }
-    .stat-card .num {
-      font-size: 2em;
-      font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .welcome .icon { font-size: 4em; margin-bottom: 20px; }
+    .welcome h2 { font-size: 1.8em; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+    .welcome p { color: #888; font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+    .welcome .connect-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+      font-size: 16px; font-weight: 600; cursor: pointer; border: none;
     }
+    .welcome .connect-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .welcome .steps { text-align: left; margin-top: 32px; }
+    .welcome .step-item { padding: 12px 16px; background: #1a1a2e; border-radius: 10px; margin-bottom: 10px; border: 1px solid #2a2a4a; }
+    .welcome .step-item .num { display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; text-align: center; line-height: 24px; font-size: 12px; font-weight: 700; margin-right: 10px; }
+    .welcome .step-item span { color: #ccc; font-size: 14px; }
+    .welcome .step-item code { background: #16213e; padding: 2px 8px; border-radius: 4px; color: #a78bfa; font-size: 13px; }
+
+    /* ── Stats Grid ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: #1a1a2e; padding: 20px 16px; border-radius: 14px; text-align: center; border: 1px solid #2a2a4a; }
+    .stat-card .num { font-size: 2em; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .stat-card .label { color: #888; font-size: 12px; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
     .stat-card .icon { font-size: 1.5em; margin-bottom: 8px; }
 
-    /* ── Users Table ── */
-    .table-wrapper {
-      background: #1a1a2e;
-      border-radius: 14px;
-      border: 1px solid #2a2a4a;
-      overflow-x: auto;
-      margin-bottom: 20px;
-    }
-    .table-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid #2a2a4a;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+    /* ── Table ── */
+    .table-wrapper { background: #1a1a2e; border-radius: 14px; border: 1px solid #2a2a4a; overflow-x: auto; margin-bottom: 20px; }
+    .table-header { padding: 16px 20px; border-bottom: 1px solid #2a2a4a; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
     .table-header h2 { font-size: 1.1em; color: #c4b5fd; }
-    .table-header .count { color: #666; font-size: 13px; }
-    .table-search input {
-      padding: 8px 14px;
-      background: #16213e;
-      border: 1px solid #2a2a4a;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      outline: none;
-      width: 200px;
-    }
+    .table-search input { padding: 8px 14px; background: #16213e; border: 1px solid #2a2a4a; border-radius: 8px; color: #fff; font-size: 13px; outline: none; width: 200px; }
     .table-search input:focus { border-color: #667eea; }
     table { width: 100%; border-collapse: collapse; min-width: 700px; }
-    th {
-      background: #16213e;
-      color: #a78bfa;
-      padding: 12px 10px;
-      text-align: left;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-      position: sticky;
-      top: 0;
-    }
+    th { background: #16213e; color: #a78bfa; padding: 12px 10px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
     td { padding: 10px; border-bottom: 1px solid #2a2a4a; font-size: 13px; }
-    tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(102, 126, 234, 0.05); }
-    .user-cell { display: flex; align-items: center; gap: 10px; }
-    .avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 600; color: #fff; flex-shrink: 0;
-      overflow: hidden;
-    }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #fff; flex-shrink: 0; overflow: hidden; }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .avatar.small { width: 28px; height: 28px; font-size: 11px; }
+    .user-cell { display: flex; align-items: center; gap: 10px; }
     .user-name { font-weight: 500; }
-    .user-username { color: #666; font-size: 11px; }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 500;
-    }
-    .badge-admin { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
-    .badge-user { background: rgba(102, 126, 234, 0.15); color: #818cf8; }
-    .badge-photo { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+    .badge-admin { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
 
-    /* ── Loading ── */
-    .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-    }
-    .loading .spinner {
-      width: 40px; height: 40px;
-      border: 3px solid #2a2a4a;
-      border-top-color: #667eea;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* ── Photos Grid ── */
+    .photos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding: 16px; }
+    .photo-card { background: #1a1a2e; border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #2a2a4a; }
+    .photo-avatar { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 600; color: #fff; border: 3px solid #667eea; }
+    .photo-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* ── Empty / Error ── */
-    .empty-state { text-align: center; padding: 60px 20px; color: #666; }
-    .empty-state .icon { font-size: 3em; margin-bottom: 12px; }
-    .error-state { text-align: center; padding: 20px; color: #f87171; background: rgba(248,113,113,0.1); border-radius: 10px; margin-bottom: 20px; display: none; }
-    .error-state.show { display: block; }
-
-    /* ── Chart Area ── */
-    .chart-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .chart-card {
-      background: #1a1a2e;
-      border-radius: 14px;
-      border: 1px solid #2a2a4a;
-      padding: 20px;
-    }
+    /* ── Charts ── */
+    .chart-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .chart-card { background: #1a1a2e; border-radius: 14px; border: 1px solid #2a2a4a; padding: 20px; }
     .chart-card h3 { font-size: 14px; color: #c4b5fd; margin-bottom: 16px; }
     .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 120px; padding-top: 10px; }
-    .chart-bar {
-      flex: 1;
-      background: linear-gradient(to top, #667eea, #764ba2);
-      border-radius: 4px 4px 0 0;
-      min-height: 4px;
-      position: relative;
-      transition: height 0.5s ease;
-    }
-    .chart-bar .bar-label {
-      position: absolute;
-      bottom: -22px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      color: #666;
-      white-space: nowrap;
-    }
-    .chart-bar .bar-value {
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      color: #818cf8;
-      font-weight: 600;
-    }
+    .chart-bar { flex: 1; background: linear-gradient(to top, #667eea, #764ba2); border-radius: 4px 4px 0 0; min-height: 4px; position: relative; }
+    .chart-bar .bar-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #666; white-space: nowrap; }
+    .chart-bar .bar-value { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #818cf8; font-weight: 600; }
 
     @media (max-width: 768px) {
       .chart-section { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .header { padding: 12px 16px; }
       .container { padding: 12px; }
-      .table-header { flex-direction: column; align-items: stretch; }
       .table-search input { width: 100%; }
-      .connect-panel input { min-width: 140px; }
+      .welcome { padding: 40px 16px; }
+      .photos-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ── Footer ── */
-    .footer {
-      text-align: center;
-      padding: 30px 20px;
-      color: #444;
-      font-size: 12px;
-    }
+    .loading { text-align: center; padding: 60px 20px; color: #666; }
+    .loading .spinner { width: 40px; height: 40px; border: 3px solid #2a2a4a; border-top-color: #667eea; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-msg { padding: 12px 16px; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); border-radius: 8px; color: #f87171; font-size: 14px; margin-bottom: 16px; display: none; }
+    .error-msg.show { display: block; }
+    .footer { text-align: center; padding: 30px 20px; color: #444; font-size: 12px; }
     .footer a { color: #667eea; text-decoration: none; }
-
-    /* ── Tabs ── */
-    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: #1a1a2e; border-radius: 12px; padding: 4px; border: 1px solid #2a2a4a; overflow-x: auto; }
-    .tab { padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: #888; white-space: nowrap; border: none; background: none; }
-    .tab:hover { color: #e0e0e0; }
-    .tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- ─── Header ─── -->
+  <!-- Header -->
   <div class="header">
     <div class="header-left">
       <div class="logo">S</div>
       <h1>StudyMate Admin</h1>
     </div>
     <div class="header-right">
-      <span class="status-badge offline" id="statusBadge">
+      <span class="status-badge disconnected" id="statusBadge">
         <span class="status-dot red" id="statusDot"></span>
-        <span id="statusText">Not Connected</span>
+        <span id="statusText">Disconnected</span>
       </span>
-      <button class="btn btn-secondary btn-sm" id="toggleConnectBtn" onclick="toggleConnectPanel()">🔗 Connect</button>
-      <button class="btn btn-secondary btn-sm" onclick="location.reload()">🔄 Refresh</button>
+      <button class="btn btn-secondary btn-sm" onclick="toggleConnect()">🔗 Connect</button>
+      <button class="btn btn-secondary btn-sm" onclick="disconnect()">⏹ Disconnect</button>
       <a href="https://rushikesh-001.github.io/suzume-showcase/studymate-ai/" target="_blank" style="text-decoration:none;">
         <button class="btn btn-primary btn-sm">🏠 Home</button>
       </a>
     </div>
   </div>
 
-  <!-- ─── Connect Panel ─── -->
+  <!-- Connect Panel -->
   <div class="connect-panel" id="connectPanel">
-    <input type="text" id="serverUrl" placeholder="Server IP (e.g., 192.168.1.100:8765)" value="">
-    <button class="btn btn-primary btn-sm" onclick="connectToServer()">Connect</button>
-    <button class="btn btn-secondary btn-sm" onclick="useDemoData()">📊 Demo Mode</button>
-    <button class="btn btn-danger btn-sm" onclick="disconnect()">Disconnect</button>
-    <span style="color:#666;font-size:12px;" id="connectHelp">Enter your backend server's IP:port</span>
+    <h3>🔗 Connect to Your Backend Server</h3>
+    <div class="connect-grid">
+      <input type="text" id="serverUrl" placeholder="e.g. 192.168.1.100:8765 or your-app.onrender.com" value="">
+      <input type="text" id="adminUser" placeholder="Admin username (default: admin)" value="admin">
+      <input type="password" id="adminPass" placeholder="Admin password (default: admin123)" value="admin123">
+      <button class="btn btn-primary" onclick="connect()">Connect</button>
+    </div>
+    <p style="color:#555;font-size:12px;margin-top:10px;">
+      💡 Need a public URL? Run <code style="background:#16213e;padding:1px 6px;border-radius:3px;">.\start_all.ps1</code> on your PC, then enter your IP shown in the terminal.
+    </p>
   </div>
 
-  <!-- ─── Error State ─── -->
   <div class="container">
-    <div class="error-state" id="errorState"></div>
 
-    <!-- ─── Loading ─── -->
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <p>Loading admin data...</p>
+    <!-- Error -->
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- Welcome Screen (disconnected) -->
+    <div class="welcome" id="welcomeScreen">
+      <div class="icon">📊</div>
+      <h2>Admin Dashboard</h2>
+      <p>Connect to your StudyMate backend server to view real user data, stats, activity, and profile photos.</p>
+      <button class="connect-btn" onclick="toggleConnect()">🔗 Connect to Server</button>
+      <div class="steps">
+        <div class="step-item"><span class="num">1</span><span>Make sure your backend is running: <code>.\start_all.ps1</code></span></div>
+        <div class="step-item"><span class="num">2</span><span>Enter your PC's IP:port (shown in terminal)</span></div>
+        <div class="step-item"><span class="num">3</span><span>Use <code>admin</code> / <code>admin123</code> to log in</span></div>
+        <div class="step-item"><span class="num">4</span><span>See real users, photos, stats — everything live!</span></div>
+      </div>
     </div>
 
-    <!-- ─── Dashboard Content ─── -->
+    <!-- Loading -->
+    <div class="loading" id="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Connecting to server...</p>
+    </div>
+
+    <!-- Dashboard (connected) -->
     <div id="dashboard" style="display:none;">
 
-      <!-- Tabs -->
-      <div class="tabs" id="tabs">
-        <button class="tab active" data-tab="overview" onclick="switchTab('overview')">📊 Overview</button>
-        <button class="tab" data-tab="users" onclick="switchTab('users')">👥 Users</button>
-        <button class="tab" data-tab="activity" onclick="switchTab('activity')">📈 Activity</button>
-        <button class="tab" data-tab="photos" onclick="switchTab('photos')">📸 Photos</button>
+      <!-- Stats -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="icon">👥</div><div class="num" id="statUsers">0</div><div class="label">Total Users</div></div>
+        <div class="stat-card"><div class="icon">⏱️</div><div class="num" id="statStudyMin">0</div><div class="label">Study Minutes</div></div>
+        <div class="stat-card"><div class="icon">📝</div><div class="num" id="statQuizzes">0</div><div class="label">Quizzes Done</div></div>
+        <div class="stat-card"><div class="icon">📄</div><div class="num" id="statNotes">0</div><div class="label">Notes Created</div></div>
+        <div class="stat-card"><div class="icon">🔥</div><div class="num" id="statStreak">0</div><div class="label">Best Streak</div></div>
+        <div class="stat-card"><div class="icon">⭐</div><div class="num" id="statXP">0</div><div class="label">Total XP</div></div>
       </div>
 
-      <!-- ── Tab: Overview ── -->
-      <div class="tab-content active" id="tab-overview">
-        <div class="stats-grid" id="statsGrid">
-          <div class="stat-card"><div class="icon">👥</div><div class="num" id="statUsers">0</div><div class="label">Total Users</div></div>
-          <div class="stat-card"><div class="icon">⏱️</div><div class="num" id="statStudyMin">0</div><div class="label">Study Minutes</div></div>
-          <div class="stat-card"><div class="icon">📝</div><div class="num" id="statQuizzes">0</div><div class="label">Quizzes Done</div></div>
-          <div class="stat-card"><div class="icon">📄</div><div class="num" id="statNotes">0</div><div class="label">Notes Created</div></div>
-          <div class="stat-card"><div class="icon">🔥</div><div class="num" id="statStreak">0</div><div class="label">Best Streak</div></div>
-          <div class="stat-card"><div class="icon">⭐</div><div class="num" id="statXP">0</div><div class="label">Total XP</div></div>
+      <!-- Charts -->
+      <div class="chart-section">
+        <div class="chart-card">
+          <h3>📊 Study Minutes (Top Users)</h3>
+          <div class="chart-bars" id="studyChart"></div>
         </div>
-
-        <div class="chart-section">
-          <div class="chart-card">
-            <h3>📊 Study Minutes by User (Top 8)</h3>
-            <div class="chart-bars" id="studyChart"></div>
-          </div>
-          <div class="chart-card">
-            <h3>🎯 XP Levels (Top 8)</h3>
-            <div class="chart-bars" id="xpChart"></div>
-          </div>
+        <div class="chart-card">
+          <h3>🎯 XP Levels (Top Users)</h3>
+          <div class="chart-bars" id="xpChart"></div>
         </div>
       </div>
 
-      <!-- ── Tab: Users ── -->
-      <div class="tab-content" id="tab-users">
-        <div class="table-wrapper">
-          <div class="table-header">
-            <div>
-              <h2>All Users</h2>
-              <span class="count" id="userCount">0 users</span>
-            </div>
-            <div class="table-search">
-              <input type="text" id="userSearch" placeholder="🔍 Search users..." oninput="filterUsers()">
-            </div>
-          </div>
-          <div id="usersTableContainer">
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Degree</th>
-                  <th>XP</th>
-                  <th>Level</th>
-                  <th>Streak</th>
-                  <th>Study⏱</th>
-                  <th>Quizzes</th>
-                  <th>Notes</th>
-                  <th>Joined</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tbody id="usersBody"></tbody>
-            </table>
-          </div>
+      <!-- Users Table -->
+      <div class="table-wrapper">
+        <div class="table-header">
+          <div><h2>👥 All Users</h2><span class="count" id="userCount" style="color:#666;font-size:13px;"></span></div>
+          <div class="table-search"><input type="text" id="userSearch" placeholder="🔍 Search..." oninput="filterUsers()"></div>
+        </div>
+        <div id="usersTableContainer">
+          <table>
+            <thead><tr>
+              <th>User</th><th>Name</th><th>Email</th><th>Dept</th><th>XP</th><th>Lv</th><th>Streak</th><th>Study</th><th>Quiz</th><th>Notes</th><th>Joined</th><th>Role</th>
+            </tr></thead>
+            <tbody id="usersBody"></tbody>
+          </table>
         </div>
       </div>
 
-      <!-- ── Tab: Activity ── -->
-      <div class="tab-content" id="tab-activity">
-        <div class="chart-section">
-          <div class="chart-card">
-            <h3>📚 Subject Distribution</h3>
-            <div id="subjectDist" style="padding:10px 0;color:#666;">No session data available</div>
-          </div>
-          <div class="chart-card">
-            <h3>🏆 Top Performers</h3>
-            <div id="topPerformers" style="padding:10px 0;color:#666;">No data available</div>
-          </div>
+      <!-- Photos Section -->
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h2>📸 Users with Profile Photos</h2>
+          <span class="count" id="photoCount" style="color:#666;font-size:13px;"></span>
         </div>
-      </div>
-
-      <!-- ── Tab: Photos ── -->
-      <div class="tab-content" id="tab-photos">
-        <div class="table-wrapper">
-          <div class="table-header">
-            <h2>📸 User Photos</h2>
-            <span class="count" id="photoCount">0 users with photos</span>
-          </div>
-          <div id="photosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:20px;">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
+        <div class="photos-grid" id="photosGrid"></div>
       </div>
 
     </div><!-- /dashboard -->
 
     <div class="footer">
-      <p>🔒 StudyMate AI Admin Dashboard · <a href="https://rushikesh-001.github.io/suzume-showcase/studymate-ai/" target="_blank">Back to Home</a></p>
-      <p style="margin-top:4px;">💡 Connect to your backend server for live data, or use Demo Mode to browse the interface</p>
+      <p>🔒 StudyMate AI Admin · <a href="https://rushikesh-001.github.io/suzume-showcase/studymate-ai/" target="_blank">Back to Home</a></p>
+      <p style="margin-top:4px;">Connect to a live backend to see real data. No data is shown until you connect.</p>
     </div>
   </div>
 
   <script>
     // ─── State ───
-    let currentMode = 'demo'; // 'demo' | 'live'
-    let serverBaseUrl = '';
+    let baseUrl = '';
+    let authToken = '';
     let allUsers = [];
-    let timerId = null;
-
-    // ─── Demo Data ───
-    const DEMO_USERS = [
-      { uid:'u1', username:'aditya', display_name:'Aditya Sharma', email:'aditya@mit.edu', degree:'B.Tech', department:'CSE', xp:2840, level:12, streak:18, total_study_minutes:4260, quizzes_completed:47, notes_created:23, photo_url:'', created_at:'2026-01-15T10:30:00Z', is_admin:0, bio:'Full-stack dev in the making', college:'MIT World Peace University' },
-      { uid:'u2', username:'priya', display_name:'Priya Patel', email:'priya@mit.edu', degree:'B.Tech', department:'AIDS', xp:3120, level:14, streak:25, total_study_minutes:5340, quizzes_completed:62, notes_created:31, photo_url:'', created_at:'2026-01-18T14:20:00Z', is_admin:0, bio:'AI enthusiast', college:'MIT World Peace University' },
-      { uid:'u3', username:'rahul', display_name:'Rahul Verma', email:'rahul@mit.edu', degree:'B.Tech', department:'ENTC', xp:1950, level:8, streak:10, total_study_minutes:3120, quizzes_completed:28, notes_created:15, photo_url:'', created_at:'2026-02-01T09:00:00Z', is_admin:0, bio:'Hardware + software geek', college:'MIT World Peace University' },
-      { uid:'u4', username:'neha', display_name:'Neha Singh', email:'neha@mit.edu', degree:'B.Tech', department:'CSE', xp:4560, level:18, streak:42, total_study_minutes:7320, quizzes_completed:85, notes_created:44, photo_url:'', created_at:'2026-01-10T08:45:00Z', is_admin:0, bio:'Competitive programmer', college:'MIT World Peace University' },
-      { uid:'u5', username:'arjun', display_name:'Arjun Reddy', email:'arjun@mit.edu', degree:'B.Tech', department:'MECH', xp:1280, level:6, streak:5, total_study_minutes:1860, quizzes_completed:15, notes_created:8, photo_url:'', created_at:'2026-02-20T16:30:00Z', is_admin:0, bio:'Mechanical wizard', college:'MIT World Peace University' },
-      { uid:'u6', username:'sneha', display_name:'Sneha Joshi', email:'sneha@mit.edu', degree:'B.Tech', department:'CSE', xp:3750, level:15, streak:30, total_study_minutes:6480, quizzes_completed:71, notes_created:36, photo_url:'', created_at:'2026-01-22T11:15:00Z', is_admin:0, bio:'Data science lover', college:'MIT World Peace University' },
-      { uid:'u7', username:'vikram', display_name:'Vikram Desai', email:'vikram@mit.edu', degree:'B.Tech', department:'ENTC', xp:2200, level:9, streak:12, total_study_minutes:3540, quizzes_completed:33, notes_created:19, photo_url:'', created_at:'2026-02-10T13:00:00Z', is_admin:0, bio:'Robotics club lead', college:'MIT World Peace University' },
-      { uid:'u8', username:'ananya', display_name:'Ananya Gupta', email:'ananya@mit.edu', degree:'B.Tech', department:'AIDS', xp:5100, level:20, streak:60, total_study_minutes:8640, quizzes_completed:96, notes_created:52, photo_url:'', created_at:'2026-01-05T07:30:00Z', is_admin:0, bio:'Top of her class', college:'MIT World Peace University' },
-      { uid:'u9', username:'karthik', display_name:'Karthik Nair', email:'karthik@mit.edu', degree:'B.Tech', department:'CSE', xp:890, level:4, streak:3, total_study_minutes:1200, quizzes_completed:10, notes_created:5, photo_url:'', created_at:'2026-03-01T15:00:00Z', is_admin:0, bio:'New but eager!', college:'MIT World Peace University' },
-      { uid:'u10', username:'divya', display_name:'Divya Iyer', email:'divya@mit.edu', degree:'B.Tech', department:'MECH', xp:1670, level:7, streak:8, total_study_minutes:2400, quizzes_completed:20, notes_created:12, photo_url:'', created_at:'2026-02-14T10:45:00Z', is_admin:0, bio:'Aerospace enthusiast', college:'MIT World Peace University' },
-      { uid:'admin', username:'admin', display_name:'Rushikesh (Admin)', email:'admin@studymate.local', degree:'', department:'', xp:9999, level:99, streak:365, total_study_minutes:99999, quizzes_completed:999, notes_created:999, photo_url:'', created_at:'2026-01-01T00:00:00Z', is_admin:1, bio:'Platform admin', college:'StudyMate HQ' },
-    ];
+    let refreshTimer = null;
 
     // ─── Init ───
     document.addEventListener('DOMContentLoaded', () => {
-      // Check if URL has ?server= param
       const params = new URLSearchParams(window.location.search);
-      const serverParam = params.get('server');
-      if (serverParam) {
-        document.getElementById('serverUrl').value = serverParam;
-        connectToServer();
-      } else {
-        useDemoData();
+      const server = params.get('server');
+      if (server) {
+        document.getElementById('serverUrl').value = server;
+        connect();
       }
     });
 
     // ─── Toggle Connect Panel ───
-    function toggleConnectPanel() {
+    function toggleConnect() {
       document.getElementById('connectPanel').classList.toggle('show');
     }
 
-    // ─── Connect to Live Server ───
-    async function connectToServer() {
-      const input = document.getElementById('serverUrl').value.trim();
-      if (!input) {
-        showError('Please enter a server IP (e.g., 192.168.1.100:8765)');
-        return;
-      }
+    // ─── Connect ───
+    async function connect() {
+      const url = document.getElementById('serverUrl').value.trim();
+      const username = document.getElementById('adminUser').value.trim() || 'admin';
+      const password = document.getElementById('adminPass').value.trim() || 'admin123';
+
+      if (!url) { showError('Enter your server IP:port (e.g., 192.168.1.100:8765)'); return; }
+
       // Normalize URL
-      let url = input;
-      if (!url.startsWith('http')) url = 'http://' + url;
-      if (!url.includes(':8765') && !url.match(/:\d+$/)) url = url.replace(/\/$/, '') + ':8765';
-      url = url.replace(/\/+$/, '');
+      let serverUrl = url;
+      if (!serverUrl.startsWith('http')) serverUrl = 'http://' + serverUrl;
+      serverUrl = serverUrl.replace(/\/+$/, '');
+      if (!serverUrl.includes(':') && !serverUrl.match(/^https?:\/\//)) serverUrl += ':8765';
 
-      setStatus('connecting', 'Connecting...');
+      baseUrl = serverUrl;
       showLoading(true);
-
-      try {
-        const res = await fetch(url + '/api/users', { mode: 'cors', signal: AbortSignal.timeout(5000) });
-        if (!res.ok) throw new Error('Server returned ' + res.status);
-        const data = await res.json();
-        if (!data || !Array.isArray(data)) throw new Error('Invalid response format');
-        if (data.length === 0) throw new Error('No users found — is the database empty?');
-
-        serverBaseUrl = url;
-        currentMode = 'live';
-        allUsers = data;
-        updateDashboard(allUsers);
-        setStatus('online', 'Live');
-        hideError();
-        document.getElementById('connectPanel').classList.remove('show');
-
-        // Auto-refresh every 15s
-        if (timerId) clearInterval(timerId);
-        timerId = setInterval(() => refreshLiveData(), 15000);
-      } catch (err) {
-        showError('Connection failed: ' + err.message + '. Try Demo Mode instead.');
-        setStatus('offline', 'Failed');
-        showLoading(false);
-      }
-    }
-
-    async function refreshLiveData() {
-      if (currentMode !== 'live' || !serverBaseUrl) return;
-      try {
-        const res = await fetch(serverBaseUrl + '/api/users', { mode: 'cors', signal: AbortSignal.timeout(5000) });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          allUsers = data;
-          updateDashboard(allUsers);
-        }
-      } catch(e) { /* silent refresh fail */ }
-    }
-
-    // ─── Demo Mode ───
-    function useDemoData() {
-      if (timerId) clearInterval(timerId);
-      currentMode = 'demo';
-      serverBaseUrl = '';
-      allUsers = DEMO_USERS;
-      updateDashboard(allUsers);
-      setStatus('demo', 'Demo Data');
       hideError();
       document.getElementById('connectPanel').classList.remove('show');
-      document.getElementById('serverUrl').value = '';
+
+      try {
+        // Step 1: Login to get token
+        const loginRes = await fetch(baseUrl + '/api/auth/login/username', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+          signal: AbortSignal.timeout(8000)
+        });
+        const loginData = await loginRes.json();
+        if (!loginRes.ok) throw new Error(loginData.error || 'Login failed');
+        if (!loginData.user || !loginData.user.is_admin) throw new Error('Not an admin account. Use admin credentials.');
+
+        authToken = loginData.token;
+        localStorage.setItem('studymate_token', authToken);
+        localStorage.setItem('studymate_server', baseUrl);
+
+        // Step 2: Fetch users
+        await fetchUsers();
+
+        // Step 3: Start auto-refresh
+        if (refreshTimer) clearInterval(refreshTimer);
+        refreshTimer = setInterval(fetchUsers, 15000);
+
+        setStatus('connected', 'Live');
+
+      } catch (err) {
+        showError('Connection failed: ' + err.message);
+        setStatus('disconnected', 'Failed');
+        showLoading(false);
+        document.getElementById('connectPanel').classList.add('show');
+      }
+    }
+
+    // ─── Fetch Users ───
+    async function fetchUsers() {
+      const res = await fetch(baseUrl + '/api/users', {
+        headers: { 'Authorization': 'Bearer ' + authToken },
+        signal: AbortSignal.timeout(8000)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to fetch users');
+      if (data.users && Array.isArray(data.users)) {
+        allUsers = data.users;
+        renderDashboard(allUsers);
+      }
     }
 
     // ─── Disconnect ───
     function disconnect() {
-      if (timerId) clearInterval(timerId);
-      timerId = null;
-      currentMode = 'offline';
-      serverBaseUrl = '';
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = null;
+      baseUrl = '';
+      authToken = '';
       allUsers = [];
       document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('welcomeScreen').style.display = 'block';
       showLoading(false);
-      setStatus('offline', 'Not Connected');
-      document.getElementById('connectPanel').classList.add('show');
+      setStatus('disconnected', 'Disconnected');
+      localStorage.removeItem('studymate_token');
+      localStorage.removeItem('studymate_server');
     }
 
-    // ─── Update Dashboard ───
-    function updateDashboard(users) {
+    // ─── Render Dashboard ───
+    function renderDashboard(users) {
       showLoading(false);
+      document.getElementById('welcomeScreen').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
+      hideError();
 
-      // Stats
-      const totalUsers = users.length;
-      const totalStudyMin = users.reduce((s, u) => s + (u.total_study_minutes || 0), 0);
-      const totalQuizzes = users.reduce((s, u) => s + (u.quizzes_completed || 0), 0);
-      const totalNotes = users.reduce((s, u) => s + (u.notes_created || 0), 0);
-      const bestStreak = Math.max(...users.map(u => u.streak || 0));
+      const total = users.length;
+      const studyMin = users.reduce((s, u) => s + (u.total_study_minutes || 0), 0);
+      const quizzes = users.reduce((s, u) => s + (u.quizzes_completed || 0), 0);
+      const notes = users.reduce((s, u) => s + (u.notes_created || 0), 0);
+      const bestStreak = Math.max(...users.map(u => u.streak || 0), 0);
       const totalXP = users.reduce((s, u) => s + (u.xp || 0), 0);
 
-      document.getElementById('statUsers').textContent = totalUsers;
-      document.getElementById('statStudyMin').textContent = totalStudyMin.toLocaleString();
-      document.getElementById('statQuizzes').textContent = totalQuizzes;
-      document.getElementById('statNotes').textContent = totalNotes;
+      document.getElementById('statUsers').textContent = total;
+      document.getElementById('statStudyMin').textContent = studyMin.toLocaleString();
+      document.getElementById('statQuizzes').textContent = quizzes;
+      document.getElementById('statNotes').textContent = notes;
       document.getElementById('statStreak').textContent = bestStreak;
       document.getElementById('statXP').textContent = totalXP.toLocaleString();
 
-      // Users table
       renderUsersTable(users);
-
-      // User count
-      document.getElementById('userCount').textContent = users.length + ' users';
-
-      // Charts
       renderCharts(users);
-
-      // Photos
       renderPhotos(users);
-
-      // Activity tab
-      renderActivity(users);
-
-      // Photos count
-      const photoUsers = users.filter(u => u.photo_url);
-      document.getElementById('photoCount').textContent = photoUsers.length + ' users with photos';
     }
 
-    // ─── Render Users Table ───
+    // ─── Users Table ───
     function renderUsersTable(users) {
       const tbody = document.getElementById('usersBody');
+      document.getElementById('userCount').textContent = users.length + ' users';
       tbody.innerHTML = users.map(u => {
-        const initial = (u.display_name || u.username || '?')[0].toUpperCase();
+        const init = (u.display_name || u.username || '?')[0].toUpperCase();
         const photoHtml = u.photo_url
-          ? `<img src="${u.photo_url}" alt="${u.display_name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="avatar small" style="display:none;">${initial}</span>`
-          : `<span>${initial}</span>`;
+          ? `<img src="${u.photo_url}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;">${init}</span>`
+          : `<span>${init}</span>`;
         return `<tr>
           <td><div class="user-cell"><div class="avatar small">${photoHtml}</div><div><div class="user-name">${u.username}</div></div></div></td>
-          <td><span class="user-name">${u.display_name || '-'}</span></td>
+          <td>${u.display_name || '-'}</td>
           <td style="color:#888;font-size:12px;">${u.email || '-'}</td>
           <td>${[u.degree, u.department].filter(Boolean).join(' ') || '-'}</td>
           <td>${u.xp || 0}</td>
           <td>${u.level || 1}</td>
-          <td>${u.streak || 0}${u.streak > 0 ? '🔥' : ''}</td>
+          <td>${u.streak || 0}</td>
           <td>${(u.total_study_minutes || 0).toLocaleString()}</td>
           <td>${u.quizzes_completed || 0}</td>
           <td>${u.notes_created || 0}</td>
           <td style="color:#666;font-size:11px;">${u.created_at ? u.created_at.slice(0,10) : '-'}</td>
-          <td>${u.is_admin ? '<span class="badge badge-admin">Admin</span>' : '<span class="badge badge-user">User</span>'}</td>
+          <td>${u.is_admin ? '<span class="badge-admin">Admin</span>' : ''}</td>
         </tr>`;
       }).join('');
     }
 
-    // ─── Search / Filter Users ───
+    // ─── Filter ───
     function filterUsers() {
       const q = document.getElementById('userSearch').value.toLowerCase();
       const filtered = allUsers.filter(u =>
         (u.display_name || '').toLowerCase().includes(q) ||
         (u.username || '').toLowerCase().includes(q) ||
-        (u.email || '').toLowerCase().includes(q) ||
-        (u.degree || '').toLowerCase().includes(q) ||
-        (u.department || '').toLowerCase().includes(q)
+        (u.email || '').toLowerCase().includes(q)
       );
       renderUsersTable(filtered);
-      document.getElementById('userCount').textContent = filtered.length + ' users shown';
     }
 
-    // ─── Render Charts ───
+    // ─── Charts ───
     function renderCharts(users) {
-      // Study minutes chart (top 8)
-      const byStudy = [...users].sort((a, b) => (b.total_study_minutes || 0) - (a.total_study_minutes || 0)).slice(0, 8);
-      const maxStudy = Math.max(...byStudy.map(u => u.total_study_minutes || 0), 1);
-      const studyChart = document.getElementById('studyChart');
-      studyChart.innerHTML = byStudy.map(u => {
+      const topStudy = [...users].sort((a, b) => (b.total_study_minutes || 0) - (a.total_study_minutes || 0)).slice(0, 8);
+      const maxStudy = Math.max(...topStudy.map(u => u.total_study_minutes || 0), 1);
+      document.getElementById('studyChart').innerHTML = topStudy.map(u => {
         const h = Math.max(4, ((u.total_study_minutes || 0) / maxStudy) * 100);
         return `<div class="chart-bar" style="height:${h}px;"><span class="bar-value">${(u.total_study_minutes || 0).toLocaleString()}</span><span class="bar-label">${u.username}</span></div>`;
       }).join('');
 
-      // XP chart (top 8)
-      const byXP = [...users].sort((a, b) => (b.xp || 0) - (a.xp || 0)).slice(0, 8);
-      const maxXP = Math.max(...byXP.map(u => u.xp || 0), 1);
-      const xpChart = document.getElementById('xpChart');
-      xpChart.innerHTML = byXP.map(u => {
+      const topXP = [...users].sort((a, b) => (b.xp || 0) - (a.xp || 0)).slice(0, 8);
+      const maxXP = Math.max(...topXP.map(u => u.xp || 0), 1);
+      document.getElementById('xpChart').innerHTML = topXP.map(u => {
         const h = Math.max(4, ((u.xp || 0) / maxXP) * 100);
         return `<div class="chart-bar" style="height:${h}px;background:linear-gradient(to top,#f59e0b,#f97316);"><span class="bar-value">${u.xp || 0}</span><span class="bar-label">${u.username}</span></div>`;
       }).join('');
     }
 
-    // ─── Render Photos ───
+    // ─── Photos ───
     function renderPhotos(users) {
-      const grid = document.getElementById('photosGrid');
       const withPhotos = users.filter(u => u.photo_url);
+      document.getElementById('photoCount').textContent = withPhotos.length + ' users with photos';
+      const grid = document.getElementById('photosGrid');
+
       if (withPhotos.length === 0) {
-        const demo = users.filter(u => !u.is_admin);
-        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#666;">
-          <div style="font-size:3em;margin-bottom:12px;">📸</div>
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#666;">
+          <p style="font-size:2em;margin-bottom:8px;">📸</p>
           <p>No profile photos uploaded yet.</p>
-          <p style="font-size:13px;margin-top:8px;">Users can upload photos from the web upload page or the app.</p>
-          <p style="font-size:13px;margin-top:4px;">Sample: ${demo.length} users registered</p>
+          <p style="font-size:13px;margin-top:4px;">Users can upload photos from the app or the web upload page.</p>
         </div>`;
         return;
       }
       grid.innerHTML = withPhotos.map(u => {
-        const initial = (u.display_name || u.username || '?')[0].toUpperCase();
-        return `<div style="background:#1a1a2e;border-radius:12px;padding:16px;text-align:center;border:1px solid #2a2a4a;">
-          <div style="width:80px;height:80px;border-radius:50%;margin:0 auto 12px;overflow:hidden;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:600;color:#fff;border:3px solid #667eea;">
-            <img src="${u.photo_url}" alt="${u.display_name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <span style="display:none;">${initial}</span>
+        const init = (u.display_name || u.username || '?')[0].toUpperCase();
+        return `<div class="photo-card">
+          <div class="photo-avatar">
+            <img src="${u.photo_url}" alt="${u.display_name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <span style="display:none;">${init}</span>
           </div>
           <div style="font-weight:500;font-size:14px;">${u.display_name || u.username}</div>
           <div style="color:#666;font-size:12px;">@${u.username}</div>
         </div>`;
       }).join('');
-    }
-
-    // ─── Render Activity ───
-    function renderActivity(users) {
-      const nonAdmin = users.filter(u => !u.is_admin);
-      if (nonAdmin.length === 0) {
-        document.getElementById('subjectDist').innerHTML = 'No student data available';
-        document.getElementById('topPerformers').innerHTML = 'No student data available';
-        return;
-      }
-
-      // Simulated subject distribution
-      const subjects = [
-        { name: 'Data Structures', count: Math.floor(Math.random() * 30 + 20) },
-        { name: 'Algorithms', count: Math.floor(Math.random() * 25 + 15) },
-        { name: 'Mathematics', count: Math.floor(Math.random() * 20 + 10) },
-        { name: 'Physics', count: Math.floor(Math.random() * 15 + 5) },
-        { name: 'Programming', count: Math.floor(Math.random() * 30 + 20) },
-        { name: 'AI & ML', count: Math.floor(Math.random() * 20 + 10) },
-      ];
-      const totalSessions = subjects.reduce((s, x) => s + x.count, 0);
-      document.getElementById('subjectDist').innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          ${subjects.map(s => {
-            const pct = ((s.count / totalSessions) * 100).toFixed(1);
-            return `<div style="display:flex;align-items:center;gap:10px;">
-              <span style="width:120px;font-size:13px;color:#aaa;">${s.name}</span>
-              <div style="flex:1;height:20px;background:#16213e;border-radius:10px;overflow:hidden;">
-                <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:10px;transition:width 0.5s;"></div>
-              </div>
-              <span style="font-size:12px;color:#818cf8;width:40px;text-align:right;">${pct}%</span>
-            </div>`;
-          }).join('')}
-        </div>
-      `;
-
-      // Top performers
-      const top = [...nonAdmin].sort((a, b) => (b.xp || 0) - (a.xp || 0)).slice(0, 5);
-      document.getElementById('topPerformers').innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          ${top.map((u, i) => `
-            <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;background:#16213e;border-radius:8px;">
-              <span style="font-size:18px;font-weight:700;color:${i === 0 ? '#fbbf24' : i === 1 ? '#94a3b8' : i === 2 ? '#cd7f32' : '#666'};width:24px;">#${i+1}</span>
-              <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;color:#fff;flex-shrink:0;">
-                ${(u.display_name || u.username)[0].toUpperCase()}
-              </div>
-              <div style="flex:1;">
-                <div style="font-weight:500;font-size:14px;">${u.display_name || u.username}</div>
-                <div style="color:#666;font-size:11px;">Level ${u.level || 1} · ${u.streak || 0} day streak</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-weight:700;font-size:16px;color:#fbbf24;">${u.xp || 0}</div>
-                <div style="font-size:10px;color:#666;">XP</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    // ─── Tab Switching ───
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
-      document.getElementById('tab-' + tabName).classList.add('active');
     }
 
     // ─── Helpers ───
@@ -738,24 +483,22 @@
       const dot = document.getElementById('statusDot');
       const txt = document.getElementById('statusText');
       badge.className = 'status-badge ' + type;
-      dot.className = 'status-dot ' + (type === 'online' ? 'green' : type === 'demo' ? 'yellow' : type === 'connecting' ? 'yellow' : 'red');
+      dot.className = 'status-dot ' + (type === 'connected' ? 'green' : 'red');
       txt.textContent = text;
     }
 
     function showLoading(show) {
       document.getElementById('loading').style.display = show ? 'block' : 'none';
-      if (show) document.getElementById('dashboard').style.display = 'none';
+      if (show) { document.getElementById('dashboard').style.display = 'none'; document.getElementById('welcomeScreen').style.display = 'none'; }
     }
 
     function showError(msg) {
-      const el = document.getElementById('errorState');
+      const el = document.getElementById('errorMsg');
       el.textContent = '❌ ' + msg;
       el.classList.add('show');
     }
 
-    function hideError() {
-      document.getElementById('errorState').classList.remove('show');
-    }
+    function hideError() { document.getElementById('errorMsg').classList.remove('show'); }
   </script>
 </body>
 </html>
