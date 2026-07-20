@@ -16,5 +16,5 @@ video/scene_*.wav
 video/combined_audio.wav
 video/audio_concat.txt
 
-# APK files (too large for repo — hosted via GitHub Releases)
-studymate-ai/*.apk
+# APK files — tracked via LFS or direct commit for website
+# studymate-ai/StudyMate_AI.apk is tracked (required for website download)
