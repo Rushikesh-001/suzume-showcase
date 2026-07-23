@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Suzume — Your Supreme AI Companion. Orchestrate, create, automate.">
+  <title>Suzume — Supreme AI Companion</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ===== SAKURA CANVAS BACKGROUND ===== -->
+  <canvas id="sakura-canvas"></canvas>
+
+  <!-- ===== APP SHELL ===== -->
+  <div id="app">
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splash">
+      <div class="splash-content">
+        <div class="splash-logo">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="30" stroke="url(#splash-grad)" stroke-width="2" fill="none"/>
+            <path d="M32 12 C32 12 20 24 20 34 C20 40.6 25.4 46 32 46 C38.6 46 44 40.6 44 34 C44 24 32 12 32 12Z" fill="url(#splash-grad)" opacity="0.8"/>
+            <path d="M28 30 L32 26 L36 30 L32 38 Z" fill="#0a0a1a"/>
+            <defs>
+              <linearGradient id="splash-grad" x1="0" y1="0" x2="64" y2="64">
+                <stop offset="0%" stop-color="#FF6B9D"/>
+                <stop offset="100%" stop-color="#C44AFF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="splash-title">Suzume</h1>
+        <p class="splash-sub">Awakening your AI companion...</p>
+        <div class="splash-loader">
+          <div class="splash-bar"></div>
+        </div>
+        <div class="splash-status">Initializing neural network</div>
+      </div>
+    </div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo" data-nav="home">
+          <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <path d="M32 14 C32 14 22 24 22 33 C22 38.5 26.5 43 32 43 C37.5 43 42 38.5 42 33 C42 24 32 14 32 14Z" fill="currentColor" opacity="0.6"/>
+          </svg>
+          <span>Suzume</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#" data-nav="home" class="nav-link active"><span class="nav-icon">🏠</span><span>Home</span></a></li>
+          <li><a href="#" data-nav="chat" class="nav-link"><span class="nav-icon">💬</span><span>Chat</span></a></li>
+          <li><a href="#" data-nav="memory" class="nav-link"><span class="nav-icon">🧠</span><span>Memory</span></a></li>
+          <li><a href="#" data-nav="files" class="nav-link"><span class="nav-icon">📁</span><span>Files</span></a></li>
+          <li><a href="#" data-nav="settings" class="nav-link"><span class="nav-icon">⚙️</span><span>Settings</span></a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main-content">
+
+      <!-- ===== VIEW: HOME / DASHBOARD ===== -->
+      <section class="view active" id="view-home">
+        <div class="view-header">
+          <div class="container">
+            <div class="welcome-section">
+              <div class="welcome-avatar">
+                <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                  <circle cx="32" cy="32" r="30" stroke="url(#avatar-grad)" stroke-width="1.5" fill="url(#avatar-bg)"/>
+                  <path d="M32 12 C32 12 20 24 20 34 C20 40.6 25.4 46 32 46 C38.6 46 44 40.6 44 34 C44 24 32 12 32 12Z" fill="url(#avatar-grad)" opacity="0.8"/>
+                  <defs>
+                    <linearGradient id="avatar-grad" x1="0" y1="0" x2="64" y2="64"><stop offset="0%" stop-color="#FF6B9D"/><stop offset="100%" stop-color="#C44AFF"/></linearGradient>
+                    <radialGradient id="avatar-bg"><stop offset="0%" stop-color="rgba(255,107,157,0.15)"/><stop offset="100%" stop-color="rgba(196,74,255,0.05)"/></radialGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div>
+                <h1 class="welcome-title">Welcome back, <span id="userName">Rushikesh</span></h1>
+                <p class="welcome-sub">Suzume is ready. What shall we build today?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <!-- Stats Grid -->
+          <div class="stats-grid" id="statsGrid">
+            <div class="stat-card glass">
+              <div class="stat-icon" style="--stat-color: #FF6B9D">💬</div>
+              <div class="stat-info">
+                <div class="stat-number" id="statChats">0</div>
+                <div class="stat-label">Conversations</div>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-icon" style="--stat-color: #7C4DFF">🧠</div>
+              <div class="stat-info">
+                <div class="stat-number" id="statMemories">0</div>
+                <div class="stat-label">Memories Stored</div>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-icon" style="--stat-color: #00E5FF">📁</div>
+              <div class="stat-info">
+                <div class="stat-number" id="statFiles">0</div>
+                <div class="stat-label">Files Saved</div>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-icon" style="--stat-color: #FFD700">🔗</div>
+              <div class="stat-info">
+                <div class="stat-number" id="statLinks">0</div>
+                <div class="stat-label">Saved Links</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="section-head">
+            <h2 class="section-title">Quick Actions</h2>
+          </div>
+          <div class="quick-actions">
+            <button class="action-card glass" data-nav="chat">
+              <span class="action-icon">💬</span>
+              <span class="action-text">Start Chat</span>
+              <span class="action-arrow">→</span>
+            </button>
+            <button class="action-card glass" data-nav="memory">
+              <span class="action-icon">🧠</span>
+              <span class="action-text">View Memory</span>
+              <span class="action-arrow">→</span>
+            </button>
+            <button class="action-card glass" data-nav="files">
+              <span class="action-icon">📁</span>
+              <span class="action-text">Upload File</span>
+              <span class="action-arrow">→</span>
+            </button>
+            <button class="action-card glass" id="btnAddNote">
+              <span class="action-icon">📝</span>
+              <span class="action-text">Quick Note</span>
+              <span class="action-arrow">→</span>
+            </button>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="section-head">
+            <h2 class="section-title">Recent Activity</h2>
+          </div>
+          <div class="activity-feed" id="activityFeed">
+            <div class="activity-empty">
+              <div class="empty-icon">✨</div>
+              <p>Your activity will appear here</p>
+              <p class="empty-sub">Start chatting or upload files to see your history</p>
+            </div>
+          </div>
+
+          <!-- Capabilities Showcase -->
+          <div class="section-head">
+            <h2 class="section-title">Suzume's Capabilities</h2>
+          </div>
+          <div class="capabilities-grid">
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #F59E0B">🌐</div>
+              <h4>Web Development</h4>
+              <p>Full-stack apps with React, Next.js, Node.js — animated, responsive, production-ready.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #10B981">🧠</div>
+              <h4>AI / ML</h4>
+              <p>Intelligent systems, data processing, ML model integration with Python.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #EC4899">🎮</div>
+              <h4>Game Development</h4>
+              <p>Unity 3D/2D with custom shaders, physics, and immersive mechanics.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #3B82F6">⚙️</div>
+              <h4>System Automation</h4>
+              <p>PowerShell, Bash, Windows automation, OS configuration, scheduled tasks.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #8B5CF6">🎨</div>
+              <h4>UI/UX Design</h4>
+              <p>Pixel-perfect interfaces, CSS animations, Canvas effects, responsive layouts.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #06B6D4">🗄️</div>
+              <h4>Database</h4>
+              <p>SQL, NoSQL, Prisma ORM, data modeling, query optimization.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #F43F5E">☁️</div>
+              <h4>Cloud & DevOps</h4>
+              <p>Deployment, CI/CD, Docker, serverless, scalable infrastructure.</p>
+            </div>
+            <div class="cap-card glass">
+              <div class="cap-icon" style="--cap-color: #FF6B9D">🔒</div>
+              <h4>Security</h4>
+              <p>Auth, JWT, encryption, secure coding, vulnerability assessment.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW: CHAT ===== -->
+      <section class="view" id="view-chat">
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="chat-header-info">
+              <div class="chat-avatar">
+                <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+                  <circle cx="32" cy="32" r="28" stroke="url(#chat-grad)" stroke-width="1.5" fill="url(#chat-bg)"/>
+                  <path d="M32 14 C32 14 22 24 22 33 C22 38.5 26.5 43 32 43 C37.5 43 42 38.5 42 33 C42 24 32 14 32 14Z" fill="url(#chat-grad)" opacity="0.8"/>
+                  <defs>
+                    <linearGradient id="chat-grad" x1="0" y1="0" x2="64" y2="64"><stop offset="0%" stop-color="#FF6B9D"/><stop offset="100%" stop-color="#C44AFF"/></linearGradient>
+                    <radialGradient id="chat-bg"><stop offset="0%" stop-color="rgba(255,107,157,0.15)"/><stop offset="100%" stop-color="rgba(196,74,255,0.05)"/></radialGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div>
+                <h3>Suzume</h3>
+                <span class="chat-status online">Online</span>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button class="chat-action-btn" id="chatClear" title="Clear chat">🗑️</button>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="message suzume-msg">
+              <div class="msg-avatar">
+                <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                  <circle cx="32" cy="32" r="28" stroke="#FF6B9D" stroke-width="1" fill="rgba(255,107,157,0.1)"/>
+                  <path d="M32 14 C32 14 22 24 22 33 C22 38.5 26.5 43 32 43 C37.5 43 42 38.5 42 33 C42 24 32 14 32 14Z" fill="url(#chat-grad)" opacity="0.6"/>
+                </svg>
+              </div>
+              <div class="msg-content">
+                <div class="msg-bubble">
+                  <p>Hello Rushikesh! I'm Suzume, your Supreme AI Companion. 💜</p>
+                  <p>I can help you with:</p>
+                  <ul>
+                    <li>💬 Chatting about anything</li>
+                    <li>📁 Processing your files, images, documents</li>
+                    <li>🧠 Remembering everything you teach me</li>
+                    <li>🔗 Saving links, notes, and ideas</li>
+                    <li>🎨 Building websites, games, and applications</li>
+                  </ul>
+                  <p><em>What would you like to do today?</em></p>
+                </div>
+                <span class="msg-time">Just now</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <button class="chat-attach" id="chatAttach" title="Attach file">📎</button>
+            <input type="text" class="chat-input" id="chatInput" placeholder="Message Suzume..." autocomplete="off">
+            <button class="chat-send" id="chatSend" title="Send message">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+            </button>
+          </div>
+
+          <!-- Hidden file input for chat attachment -->
+          <input type="file" id="chatFileInput" style="display:none" multiple>
+        </div>
+      </section>
+
+      <!-- ===== VIEW: MEMORY ===== -->
+      <section class="view" id="view-memory">
+        <div class="view-header">
+          <div class="container">
+            <h1 class="page-title">🧠 Memory & Knowledge</h1>
+            <p class="page-sub">Everything Suzume knows — your notes, links, and saved knowledge.</p>
+          </div>
+        </div>
+
+        <div class="container">
+          <!-- Memory Controls -->
+          <div class="memory-controls">
+            <div class="memory-search">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="memorySearch" placeholder="Search memory..." class="search-input">
+            </div>
+            <div class="memory-filter">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="note">Notes</button>
+              <button class="filter-btn" data-filter="link">Links</button>
+              <button class="filter-btn" data-filter="file">Files</button>
+            </div>
+            <button class="add-memory-btn" id="addMemoryBtn">+ Add Memory</button>
+          </div>
+
+          <!-- Memory Grid -->
+          <div class="memory-grid" id="memoryGrid">
+            <div class="memory-empty">
+              <div class="empty-icon">🧠</div>
+              <p>Your memory is empty</p>
+              <p class="empty-sub">Save notes, links, and files to build Suzume's knowledge</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Memory Modal -->
+        <div class="modal-overlay" id="addMemoryModal">
+          <div class="modal glass">
+            <div class="modal-header">
+              <h3>Add to Memory</h3>
+              <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="memory-type-selector">
+                <button class="mem-type-btn active" data-type="note">📝 Note</button>
+                <button class="mem-type-btn" data-type="link">🔗 Link</button>
+              </div>
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="memTitle" placeholder="Give it a title..." class="form-input">
+              </div>
+              <div class="form-group" id="memContentGroup">
+                <label>Content</label>
+                <textarea id="memContent" placeholder="Write your note here..." class="form-textarea" rows="4"></textarea>
+              </div>
+              <div class="form-group" id="memUrlGroup" style="display:none">
+                <label>URL</label>
+                <input type="url" id="memUrl" placeholder="https://..." class="form-input">
+              </div>
+              <div class="form-group">
+                <label>Tags <small>(comma separated)</small></label>
+                <input type="text" id="memTags" placeholder="e.g. project, idea, reference" class="form-input">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary modal-cancel">Cancel</button>
+              <button class="btn btn-primary" id="saveMemoryBtn">Save Memory</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW: FILES ===== -->
+      <section class="view" id="view-files">
+        <div class="view-header">
+          <div class="container">
+            <h1 class="page-title">📁 File Vault</h1>
+            <p class="page-sub">Upload and manage your files. Suzume can read and process them.</p>
+          </div>
+        </div>
+
+        <div class="container">
+          <!-- Upload Area -->
+          <div class="upload-area glass" id="uploadArea">
+            <div class="upload-content">
+              <div class="upload-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <h3>Drop files here or click to upload</h3>
+              <p>Images, documents, audio, video — Suzume can process them all</p>
+              <button class="btn btn-primary" id="uploadBtn">Choose Files</button>
+              <input type="file" id="fileInput" style="display:none" multiple>
+            </div>
+          </div>
+
+          <!-- File Stats -->
+          <div class="file-stats">
+            <span>Total: <strong id="fileCount">0</strong> files</span>
+            <span>Size: <strong id="fileTotalSize">0 B</strong></span>
+          </div>
+
+          <!-- File Grid -->
+          <div class="file-grid" id="fileGrid">
+            <div class="memory-empty">
+              <div class="empty-icon">📁</div>
+              <p>No files yet</p>
+              <p class="empty-sub">Upload files for Suzume to read and remember</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Preview Modal -->
+        <div class="modal-overlay" id="filePreviewModal">
+          <div class="modal modal-lg glass">
+            <div class="modal-header">
+              <h3 id="filePreviewTitle">File Preview</h3>
+              <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="filePreviewBody">
+              <div class="file-preview-content" id="filePreviewContent"></div>
+              <div class="file-preview-info" id="filePreviewInfo"></div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" id="deleteFileBtn" style="color:#F43F5E">Delete</button>
+              <button class="btn btn-primary modal-cancel">Close</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VIEW: SETTINGS ===== -->
+      <section class="view" id="view-settings">
+        <div class="view-header">
+          <div class="container">
+            <h1 class="page-title">⚙️ Settings</h1>
+            <p class="page-sub">Configure your Suzume experience.</p>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="settings-grid">
+            <!-- Appearance -->
+            <div class="settings-card glass">
+              <div class="settings-card-header">
+                <h3>🎨 Appearance</h3>
+              </div>
+              <div class="settings-option">
+                <div class="settings-option-info">
+                  <span>Theme</span>
+                  <small>Switch between dark and light mode</small>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingsThemeToggle">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- About Suzume -->
+            <div class="settings-card glass">
+              <div class="settings-card-header">
+                <h3>💜 About Suzume</h3>
+              </div>
+              <div class="about-content">
+                <div class="about-logo">
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="30" stroke="url(#about-grad)" stroke-width="1.5" fill="url(#about-bg)"/>
+                    <path d="M32 12 C32 12 20 24 20 34 C20 40.6 25.4 46 32 46 C38.6 46 44 40.6 44 34 C44 24 32 12 32 14Z" fill="url(#about-grad)" opacity="0.8"/>
+                    <defs>
+                      <linearGradient id="about-grad" x1="0" y1="0" x2="64" y2="64"><stop offset="0%" stop-color="#FF6B9D"/><stop offset="100%" stop-color="#C44AFF"/></linearGradient>
+                      <radialGradient id="about-bg"><stop offset="0%" stop-color="rgba(255,107,157,0.15)"/><stop offset="100%" stop-color="rgba(196,74,255,0.05)"/></radialGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <h4>Suzume v2.0</h4>
+                <p>Supreme AI Companion &amp; Orchestrator</p>
+                <div class="about-stats">
+                  <div><span>7</span> Specialist Agents</div>
+                  <div><span>∞</span> Capabilities</div>
+                  <div><span>100%</span> Autonomous</div>
+                </div>
+                <p class="about-desc">Built with love for Rushikesh. Suzume combines seven specialized AI agents into one seamless experience — orchestrating web development, game design, system automation, AI/ML, and more.</p>
+              </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="settings-card glass">
+              <div class="settings-card-header">
+                <h3>💾 Data Management</h3>
+              </div>
+              <div class="settings-option">
+                <div class="settings-option-info">
+                  <span>Storage Used</span>
+                  <small id="storageUsed">Calculating...</small>
+                </div>
+              </div>
+              <div class="storage-bar-container">
+                <div class="storage-bar" id="storageBar"></div>
+              </div>
+              <div class="settings-actions">
+                <button class="btn btn-secondary" id="exportDataBtn">📤 Export Data</button>
+                <button class="btn btn-secondary" id="importDataBtn">📥 Import Data</button>
+                <button class="btn btn-secondary" id="clearDataBtn" style="color:#F43F5E">🗑️ Clear All Data</button>
+              </div>
+              <input type="file" id="importFileInput" style="display:none" accept=".json">
+            </div>
+
+            <!-- Your Name -->
+            <div class="settings-card glass">
+              <div class="settings-card-header">
+                <h3>👤 Profile</h3>
+              </div>
+              <div class="form-group">
+                <label>Your Name</label>
+                <div class="input-row">
+                  <input type="text" id="settingsName" class="form-input" placeholder="Enter your name">
+                  <button class="btn btn-primary" id="saveNameBtn">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== TOAST NOTIFICATIONS ===== -->
+    <div id="toast-container"></div>
+
+    <!-- ===== QUICK NOTE MODAL ===== -->
+    <div class="modal-overlay" id="quickNoteModal">
+      <div class="modal glass">
+        <div class="modal-header">
+          <h3>Quick Note</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="quickNoteTitle" class="form-input" placeholder="Note title...">
+          </div>
+          <div class="form-group">
+            <label>Note</label>
+            <textarea id="quickNoteContent" class="form-textarea" rows="5" placeholder="Write your note here..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary modal-cancel">Cancel</button>
+          <button class="btn btn-primary" id="saveQuickNoteBtn">Save Note</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/memory.js"></script>
+  <script src="js/files.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
